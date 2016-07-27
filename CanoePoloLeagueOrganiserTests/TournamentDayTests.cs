@@ -1,8 +1,8 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CanoePoloLeagueOrganiser;
 using System.Collections.Generic;
 using System.Linq;
+using Xunit;
 
 namespace CanoePoloLeagueOrganiserTests
 {
@@ -11,14 +11,12 @@ namespace CanoePoloLeagueOrganiserTests
     // install sonar qube plugin
     // install that other plug in that I contributed to
     // install contracts plug in and work on the static analysis
-    // can make the tests run on github magically?
     // can get sonar qube to run on github magically?
 
     // aims:
     // - The maximum consecutive games a team plays should be minimised
     // - The number of times a team plays consecutive matches should be minimised
     // - the amount of games that teams don't play between their first and last games should be minimised
-    [TestClass]
     public class TournamentDayTests
     {
         private readonly Team Castle, Battersea, Ulu, Letchworth, Avon;
@@ -38,8 +36,8 @@ namespace CanoePoloLeagueOrganiserTests
             this.VKC = new Team("VKC");
         }
 
-        [TestMethod]
-        public void CastleAndBatterseaShouldPlay()
+        [Fact]
+        public void OneInputGameShouldResultInThisGameBeingPlayed()
         {
             var games = new List<Game> {
                  new Game(Castle, Battersea),
@@ -47,10 +45,10 @@ namespace CanoePoloLeagueOrganiserTests
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
 
-            Assert.AreEqual(1, sut.GameOrder.Count(), "One input game should result in this game being played");
+            Assert.Equal(1, sut.GameOrder.Count());
         }
 
-        [TestMethod]
+        [Fact]
         public void CastleShouldNotPlayTwiceInARow()
         {
             var games = new List<Game> {
@@ -61,11 +59,11 @@ namespace CanoePoloLeagueOrganiserTests
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
 
-            Assert.IsFalse(PlayingTwiceInARow(Castle, sut.GameOrder), "Castle should play the first and last games so that they do not play twice in a row");
+            Assert.False(PlayingTwiceInARow(Castle, sut.GameOrder));
         }
 
-        [TestMethod]
-        public void CastleAndLetchworthShouldNotPlayTwiceInARow()
+        [Fact]
+        public void CastleAndLetchworthAndAvonShouldNotPlayTwiceInARow()
         {
             var games = new List<Game> {
                  new Game(Ulu, Letchworth),
@@ -76,12 +74,12 @@ namespace CanoePoloLeagueOrganiserTests
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
 
-            Assert.IsFalse(PlayingTwiceInARow(Castle, sut.GameOrder), "Castle should play the first and third (or second and fourth) games so that they do not play twice in a row");
-            Assert.IsFalse(PlayingTwiceInARow(Letchworth, sut.GameOrder), "Letchworth should play the first and third (or second and fourth) games so that they do not play twice in a row");
-            Assert.IsFalse(PlayingTwiceInARow(Avon, sut.GameOrder), "Avon should play the first and third (or second and fourth) games so that they do not play twice in a row");
+            Assert.False(PlayingTwiceInARow(Castle, sut.GameOrder));
+            Assert.False(PlayingTwiceInARow(Letchworth, sut.GameOrder));
+            Assert.False(PlayingTwiceInARow(Avon, sut.GameOrder));
         }
 
-        [TestMethod]
+        [Fact]
         public void CastleShouldNotPlayThriceInARow()
         {
             var games = new List<Game> {
@@ -93,10 +91,10 @@ namespace CanoePoloLeagueOrganiserTests
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
 
-            Assert.AreEqual((uint) 1, sut.OccurencesOfTeamsPlayingConsecutiveMatches, "Castle have to play two in a row once");
+            Assert.Equal((uint)2, sut.MaxConsecutiveMatchesByAnyTeam);
         }
 
-        [TestMethod]
+        [Fact]
         public void NobodyShouldNotPlayThriceInARow()
         {
             var games = new List<Game> {
@@ -109,10 +107,10 @@ namespace CanoePoloLeagueOrganiserTests
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
 
-            Assert.AreEqual((uint)2, sut.MaxConsecutiveMatchesByAnyTeam, "Castle should only play two in a row, at the expense of Ulu and Letchworth also playing two in a row");
+            Assert.Equal((uint)2, sut.MaxConsecutiveMatchesByAnyTeam);
         }
 
-        [TestMethod]
+        [Fact]
         public void EveryoneShouldGetTheirGamesOutOfTheWayAsQuicklyAsPossible()
         {
             var games = new List<Game> {
@@ -138,12 +136,12 @@ namespace CanoePoloLeagueOrganiserTests
             //new Game(Blackwater, Letchworth),
             //new Game(Castle, Avon), Avon 0
 
-            Assert.AreEqual((uint) 14, sut.GamesNotPlayedBetweenFirstAndLast, "Teams should spend as litlle time on the sidelines as possible, as long as they don't play consecutive games");
+            Assert.Equal((uint)14, sut.GamesNotPlayedBetweenFirstAndLast);
         }
 
         private bool PlayingTwiceInARow(Team team, IEnumerable<Game> gameOrder)
         {
-            bool playedInLastGame = false;      
+            bool playedInLastGame = false;
 
             foreach (var game in gameOrder)
             {
