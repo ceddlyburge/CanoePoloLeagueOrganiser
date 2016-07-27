@@ -11,7 +11,6 @@ namespace CanoePoloLeagueOrganiserTests
     // install sonar qube plugin
     // install that other plug in that I contributed to
     // install contracts plug in and work on the static analysis
-    // put on to git hub
     // can make the tests run on github magically?
     // can get sonar qube to run on github magically?
 
