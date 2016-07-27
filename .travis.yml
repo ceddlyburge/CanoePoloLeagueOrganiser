@@ -1,2 +1,5 @@
 language: csharp
 solution: CanoePoloLeagueOrganiser.sln
+script:
+  - xbuild /p:Configuration=Release CanoePoloLeagueOrganiser.sln
+  - mono ./packages/xunit.runner.console.2.1.0/tools/xunit.console.exe ./CanoePoloLeagueOrganiserTests/bin/Release/CanoePoloLeagueOrganiserTests.dll
