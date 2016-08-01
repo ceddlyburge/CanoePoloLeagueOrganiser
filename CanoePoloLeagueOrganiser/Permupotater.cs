@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CanoePoloLeagueOrganiser
 {
-    public class Permupotater<T> 
-        where T : class
+    public class Permupotater<T>
+            where T : class
     {
         public List<IEnumerable<T>> GetPermutations(IEnumerable<T> things)
         {
@@ -17,8 +17,8 @@ namespace CanoePoloLeagueOrganiser
 
             foreach (var thing in things)
             {
-                foreach (var subPermuation in GetPermutations(things.Where(t => t != thing).ToList()))
-                    permutations.Add(things.Where(t => t == thing).Concat(subPermuation).ToList());
+                foreach (var subPermuation in GetPermutations(things.Where(t => !t.Equals(thing)).ToList()))
+                    permutations.Add(things.Where(t => t.Equals(thing)).Concat(subPermuation).ToList());
             }
 
             return permutations;

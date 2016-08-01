@@ -8,18 +8,24 @@ namespace CanoePoloLeagueOrganiser
 {
     public class Team
     {
+        public string Name { get; }
+
         public Team(string name)
         {
             this.Name = name;
         }
 
-        public string Name { get; }
-
-        public Game Versus(Team opponent)
+        public override bool Equals(object team)
         {
-            Contract.Requires(opponent != null);
+            if (team is Team)
+                return (team as Team).Name == Name;
 
-            return new Game(this, opponent);
+            return base.Equals(team);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
         }
     }
 }

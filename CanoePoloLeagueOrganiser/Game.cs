@@ -19,12 +19,23 @@ namespace CanoePoloLeagueOrganiser
             this.AwayTeam = awayTeam;
         }
 
+        public Game(string homeTeam, string awayTeam) : this(new Team(homeTeam), new Team(awayTeam))
+        {
+            Contract.Requires(!string.IsNullOrWhiteSpace(homeTeam));
+            Contract.Requires(!string.IsNullOrWhiteSpace(awayTeam));
+        }
+
         public Team HomeTeam { get; }
         public Team AwayTeam { get; }
 
         public bool Playing(Team team)
         {
-            return (HomeTeam == team || AwayTeam == team);
+            return (HomeTeam.Equals(team) || AwayTeam.Equals(team));
+        }
+
+        public bool Playing(string team)
+        {
+            return (HomeTeam.Name == team || AwayTeam.Name == team);
         }
     }
 }

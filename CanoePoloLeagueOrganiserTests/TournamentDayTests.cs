@@ -6,41 +6,17 @@ using Xunit;
 
 namespace CanoePoloLeagueOrganiserTests
 {
-    //3207
-
-    // install sonar qube plugin
-    // install that other plug in that I contributed to
-    // install contracts plug in and work on the static analysis
-    // can get sonar qube to run on github magically?
-
     // aims:
     // - The maximum consecutive games a team plays should be minimised
     // - The number of times a team plays consecutive matches should be minimised
     // - the amount of games that teams don't play between their first and last games should be minimised
     public class TournamentDayTests
     {
-        private readonly Team Castle, Battersea, Ulu, Letchworth, Avon;
-        private readonly Team Blackwater;
-        private readonly Team Braintree;
-        private readonly Team VKC;
-
-        public TournamentDayTests()
-        {
-            this.Castle = new Team("Castle");
-            this.Battersea = new Team("Battersea");
-            this.Ulu = new Team("ULU");
-            this.Letchworth = new Team("Letchworth");
-            this.Avon = new Team("Avon");
-            this.Blackwater = new Team("Blackwater");
-            this.Braintree = new Team("Braintree");
-            this.VKC = new Team("VKC");
-        }
-
         [Fact]
         public void OneInputGameShouldResultInThisGameBeingPlayed()
         {
             var games = new List<Game> {
-                 new Game(Castle, Battersea),
+                 new Game("Castle", "Battersea"),
              };
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
@@ -52,41 +28,41 @@ namespace CanoePoloLeagueOrganiserTests
         public void CastleShouldNotPlayTwiceInARow()
         {
             var games = new List<Game> {
-                 new Game(Castle, Battersea),
-                 new Game(Castle, Avon),
-                 new Game(Ulu, Letchworth),
+                 new Game("Castle", "Battersea"),
+                 new Game("Castle", "Avon"),
+                 new Game("Ulu", "Letchworth"),
              };
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
 
-            Assert.False(PlayingTwiceInARow(Castle, sut.GameOrder));
+            Assert.False(PlayingTwiceInARow("Castle", sut.GameOrder));
         }
 
         [Fact]
         public void CastleAndLetchworthAndAvonShouldNotPlayTwiceInARow()
         {
             var games = new List<Game> {
-                 new Game(Ulu, Letchworth),
-                 new Game(Battersea, Letchworth),
-                 new Game(Castle, Avon),
-                 new Game(Castle, Avon),
+                 new Game("Ulu", "Letchworth"),
+                 new Game("Battersea", "Letchworth"),
+                 new Game("Castle", "Avon"),
+                 new Game("Castle", "Avon"),
              };
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
 
-            Assert.False(PlayingTwiceInARow(Castle, sut.GameOrder));
-            Assert.False(PlayingTwiceInARow(Letchworth, sut.GameOrder));
-            Assert.False(PlayingTwiceInARow(Avon, sut.GameOrder));
+            Assert.False(PlayingTwiceInARow("Castle", sut.GameOrder));
+            Assert.False(PlayingTwiceInARow("Letchworth", sut.GameOrder));
+            Assert.False(PlayingTwiceInARow("Avon", sut.GameOrder));
         }
 
         [Fact]
         public void CastleShouldNotPlayThriceInARow()
         {
             var games = new List<Game> {
-                 new Game(Castle, Battersea),
-                 new Game(Castle, Letchworth),
-                 new Game(Ulu, Castle),
-                 new Game(Battersea, Letchworth),
+                 new Game("Castle", "Battersea"),
+                 new Game("Castle", "Letchworth"),
+                 new Game("Ulu", "Castle"),
+                 new Game("Battersea", "Letchworth"),
              };
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
@@ -98,11 +74,11 @@ namespace CanoePoloLeagueOrganiserTests
         public void NobodyShouldNotPlayThriceInARow()
         {
             var games = new List<Game> {
-                 new Game(Castle, Letchworth),
-                 new Game(Castle, Ulu),
-                 new Game(Ulu, Castle),
-                 new Game(Ulu, Letchworth),
-                 new Game(Letchworth, Castle),
+                 new Game("Castle", "Letchworth"),
+                 new Game("Castle", "Ulu"),
+                 new Game("Ulu", "Castle"),
+                 new Game("Ulu", "Letchworth"),
+                 new Game("Letchworth", "Castle"),
              };
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
@@ -114,32 +90,32 @@ namespace CanoePoloLeagueOrganiserTests
         public void EveryoneShouldGetTheirGamesOutOfTheWayAsQuicklyAsPossible()
         {
             var games = new List<Game> {
-                 new Game(Castle, Battersea),
-                 new Game(Braintree, VKC),
-                 new Game(Blackwater, Letchworth),
-                 new Game(Castle, Avon),
-                 new Game(Blackwater, VKC),
-                 new Game(Battersea, Ulu),
-                 new Game(Braintree, Letchworth),
-                 new Game(Castle, Ulu),
+                 new Game("Castle", "Battersea"),
+                 new Game("Braintree", "VKC"),
+                 new Game("Blackwater", "Letchworth"),
+                 new Game("Castle", "Avon"),
+                 new Game("Blackwater", "VKC"),
+                 new Game("Battersea", "Ulu"),
+                 new Game("Braintree", "Letchworth"),
+                 new Game("Castle", "Ulu"),
              };
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
 
             // hard to figure out, but this is the best order
-            //new Game(Castle, Battersea), castle 5, battersea 1
+            //new Game("Castle", Battersea), "Castle" 5, battersea 1
             //new Game(Braintree, VKC), braintree 2, vkc 1
-            //new Game(Battersea, Ulu), ulu 2
+            //new Game(Battersea, "Ulu"), "Ulu" 2
             //new Game(Blackwater, VKC), blackwater 2
-            //new Game(Braintree, Letchworth), letchworth 1
-            //new Game(Castle, Ulu), 
-            //new Game(Blackwater, Letchworth),
-            //new Game(Castle, Avon), Avon 0
+            //new Game(Braintree, "Letchworth"), "Letchworth" 1
+            //new Game("Castle", "Ulu"), 
+            //new Game(Blackwater, "Letchworth"),
+            //new Game("Castle", Avon), Avon 0
 
             Assert.Equal((uint)14, sut.GamesNotPlayedBetweenFirstAndLast);
         }
 
-        private bool PlayingTwiceInARow(Team team, IEnumerable<Game> gameOrder)
+        private bool PlayingTwiceInARow(string team, IEnumerable<Game> gameOrder)
         {
             bool playedInLastGame = false;
 

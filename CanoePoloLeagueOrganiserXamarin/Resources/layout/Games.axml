@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:text="Optimise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Optimise" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1">
+        <RelativeLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="0dip"
+            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeLayout1">
+            <AutoCompleteTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/HomeTeam" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeLayout2">
+            <TextView
+                android:text=" v "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView2" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="0dip"
+            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeLayout3">
+            <AutoCompleteTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/AwayTeam" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeLayout4">
+            <Button
+                android:text="Add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Add" />
+        </RelativeLayout>
+    </LinearLayout>
+    <TextView
+        android:text="Some info about the game order ..."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1" />
+    <ListView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/Games" />
+</LinearLayout>

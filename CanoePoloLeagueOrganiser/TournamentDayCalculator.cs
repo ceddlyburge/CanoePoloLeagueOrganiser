@@ -9,20 +9,20 @@ namespace CanoePoloLeagueOrganiser
 {
     public class TournamentDayCalculator
     {
-        public TournamentDayCalculator(List<Game> games)
+        public TournamentDayCalculator(IEnumerable<Game> games)
         {
             Contract.Requires(games != null);
 
-            this.Games = games;
+            this.games = games;
         }
 
         //public IEnumerable<Team> Teams { get; }
-        private IEnumerable<Game> Games { get; }
+        private IEnumerable<Game> games { get; }
 
         public GameOrderCandidate CalculateGameOrder()
         {
             // generate a list of all possible game orders
-            var permutations = new Permupotater<Game>().GetPermutations(this.Games);
+            var permutations = new Permupotater<Game>().GetPermutations(this.games);
 
             // create a list of candidates
             var candidates = permutations.Select(p => new GameOrderCandidate(p, OccurencesOfTeamsPlayingConsecutiveMatches(p), MaxConsecutiveMatchesByAnyTeam(p), GamesNotPlayedBetweenFirstAndLast(p)));
@@ -60,7 +60,7 @@ namespace CanoePoloLeagueOrganiser
         {
             Contract.Requires(games != null);
 
-            var teams = games.Select(g => g.HomeTeam).Concat(games.Select(g => g.AwayTeam)).Distinct();
+            var teams = games.Select(g => g.HomeTeam.Name).Concat(games.Select(g => g.AwayTeam.Name)).Distinct();
             uint gamesNotPlayedBetweenFirstAndLast = 0;
 
             foreach (var team in teams)

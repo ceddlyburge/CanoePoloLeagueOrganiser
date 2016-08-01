@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/linearLayout1">
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="0dip"
+        android:layout_weight="0.4"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout1">
+        <TextView
+            android:text="Home Team"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:id="@+id/HomeTeam" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout2">
+        <TextView
+            android:text=" v "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/V" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="0dip"
+        android:layout_weight="0.4"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout3">
+        <TextView
+            android:text="Away Team"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/AwayTeam" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout4">
+        <Button
+            android:text="Remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Remove" />
+    </RelativeLayout>
+</LinearLayout>
