@@ -1,5 +1,7 @@
 before_build:
 - nuget restore
+build:
+  project: CanoePoloLeagueOrganiser.sln 
 after_test:
 - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"CanoePoloLeagueOrganiserTests\bin\Debug\CanoePoloLeagueOrganiserTests.dll -noshadow -appveyor"  -output:.\CanoePoloLeagueOrganiser_coverage.xml
 - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
