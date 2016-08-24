@@ -25,8 +25,16 @@ namespace CanoePoloLeagueOrganiser
             Contract.Requires(!string.IsNullOrWhiteSpace(awayTeam));
         }
 
+        public Game(Team homeTeam, Team awayTeam, bool homeTeamPlayingConsecutively, bool awayTeamPlayingConsecutively) : this(homeTeam, awayTeam)
+        {
+            this.HomeTeamPlayingConsecutively = homeTeamPlayingConsecutively;
+            this.AwayTeamPlayingConsecutively = awayTeamPlayingConsecutively;
+        }
+
         public Team HomeTeam { get; }
+        public bool HomeTeamPlayingConsecutively { get; }
         public Team AwayTeam { get; }
+        public bool AwayTeamPlayingConsecutively { get; }
 
         public bool Playing(Team team)
         {

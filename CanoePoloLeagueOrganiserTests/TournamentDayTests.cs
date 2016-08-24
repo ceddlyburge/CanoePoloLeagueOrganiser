@@ -25,6 +25,22 @@ namespace CanoePoloLeagueOrganiserTests
         }
 
         [Fact]
+        public void TeamsShouldBeMarkedAsPlayingConsecutively()
+        {
+            var games = new List<Game> {
+                 new Game("Castle", "Battersea"),
+                 new Game("Avon", "Castle"),
+             };
+
+            var sut = new TournamentDayCalculator(games).CalculateGameOrder();
+
+            Assert.True(sut.GameOrder.First().HomeTeamPlayingConsecutively);
+            Assert.False(sut.GameOrder.First().AwayTeamPlayingConsecutively);
+            Assert.False(sut.GameOrder.Last().HomeTeamPlayingConsecutively);
+            Assert.True(sut.GameOrder.Last().AwayTeamPlayingConsecutively);
+        }
+
+        [Fact]
         public void CastleShouldNotPlayTwiceInARow()
         {
             var games = new List<Game> {

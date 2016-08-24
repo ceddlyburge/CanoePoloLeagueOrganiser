@@ -25,10 +25,35 @@ namespace CanoePoloLeagueOrganiser
             var permutations = new Permupotater<Game>().GetPermutations(this.games);
 
             // create a list of candidates
-            var candidates = permutations.Select(p => new GameOrderCandidate(p, OccurencesOfTeamsPlayingConsecutiveMatches(p), MaxConsecutiveMatchesByAnyTeam(p), GamesNotPlayedBetweenFirstAndLast(p)));
+            var candidates = permutations.Select(p => new GameOrderCandidate(MarkTeamsPlayingConsecutively(p), OccurencesOfTeamsPlayingConsecutiveMatches(p), MaxConsecutiveMatchesByAnyTeam(p), GamesNotPlayedBetweenFirstAndLast(p)));
 
             // sort by bestness and return the best one
             return candidates.OrderBy(c => c.MaxConsecutiveMatchesByAnyTeam).ThenBy(c => c.OccurencesOfTeamsPlayingConsecutiveMatches).ThenBy(c => c.GamesNotPlayedBetweenFirstAndLast).First();
+        }
+
+        private IEnumerable<Game> MarkTeamsPlayingConsecutively(IEnumerable<Game> games)
+        {
+            Contract.Requires(games != null);
+
+            if (games.Count() <= 1)
+                return games;
+
+            var gamesWithConsecutiveMatchesMarked = new List<Game>();
+
+            Game lastGame = games.First();
+            foreach (var game in games.Skip(1))
+            {
+                gamesWithConsecutiveMatchesMarked.Add(new Game(lastGame.HomeTeam, lastGame.AwayTeam, game.Playing(lastGame.HomeTeam), game.Playing(lastGame.AwayTeam)));
+
+                lastGame = game;
+            }
+
+            var penultimateGame = games.Reverse().Skip(1).First();
+            var finalGame = games.Last();
+            gamesWithConsecutiveMatchesMarked.Add(new Game(finalGame.HomeTeam, finalGame.AwayTeam, penultimateGame.Playing(lastGame.HomeTeam), penultimateGame.Playing(lastGame.AwayTeam)));
+
+
+            return gamesWithConsecutiveMatchesMarked;
         }
 
         private uint MaxConsecutiveMatchesByAnyTeam(IEnumerable<Game> games)
@@ -69,7 +94,7 @@ namespace CanoePoloLeagueOrganiser
                 int lastgame;
                 firstgame = games.TakeWhile(g => g.Playing(team) == false).Count();
                 lastgame = games.Count() - games.Reverse().TakeWhile(g => g.Playing(team) == false).Count();
-                gamesNotPlayedBetweenFirstAndLast += (uint) (lastgame - firstgame - games.Where(g => g.Playing(team)).Count());
+                gamesNotPlayedBetweenFirstAndLast += (uint)(lastgame - firstgame - games.Where(g => g.Playing(team)).Count());
             }
 
             return gamesNotPlayedBetweenFirstAndLast;
