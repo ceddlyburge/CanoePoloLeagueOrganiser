@@ -18,7 +18,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:id="@+id/HomeTeam" />
+            android:id="@+id/HomeTeam"
+            style="@android:style/Theme.Material.Dialog.Alert"
+            android:capitalize="words" />
     </RelativeLayout>
     <RelativeLayout
         android:minWidth="25px"
@@ -43,7 +45,8 @@
             android:text="Away Team"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/AwayTeam" />
+            android:id="@+id/AwayTeam"
+            android:capitalize="words" />
     </RelativeLayout>
     <RelativeLayout
         android:minWidth="25px"

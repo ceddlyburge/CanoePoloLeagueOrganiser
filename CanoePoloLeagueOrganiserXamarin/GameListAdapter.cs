@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using CanoePoloLeagueOrganiser;
 using System.Diagnostics.Contracts;
+using Android.Graphics;
 
 namespace CanoePoloLeagueOrganiserXamarin
 {
@@ -29,7 +30,7 @@ namespace CanoePoloLeagueOrganiserXamarin
             Contract.Requires(games != null);
             Contract.Requires(context != null);
 
-            this.games = games;// new List<Game>();
+            this.games = games;
             this.context = context;
         }
 
@@ -45,13 +46,16 @@ namespace CanoePoloLeagueOrganiserXamarin
         {
             var game = this.games[position];
 
-            // not reusing views here. This list won't be long and it is tricky to remove the old click event handler
             var view = convertView ?? context.LayoutInflater.Inflate(Resource.Layout.GameRow, null);
             if (convertView == null)
                 view.FindViewById<Button>(Resource.Id.Remove).Click += (s, e) => DeleteGame((((s as Button).Tag) as JavaGame).Game);
 
             view.FindViewById<TextView>(Resource.Id.HomeTeam).Text = game.HomeTeam.Name;
+            view.FindViewById<TextView>(Resource.Id.HomeTeam).SetTextColor(game.HomeTeamPlayingConsecutively ? Color.Red : Color.White);
+
             view.FindViewById<TextView>(Resource.Id.AwayTeam).Text = game.AwayTeam.Name;
+            view.FindViewById<TextView>(Resource.Id.AwayTeam).SetTextColor(game.AwayTeamPlayingConsecutively ? Color.Red : Color.White);
+
             view.FindViewById<Button>(Resource.Id.Remove).Tag = new JavaGame { Game = game };
             
 
