@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
     <Compile Include="GameOrderCandidate.cs" />
+    <Compile Include="MarkConsecutiveGames.cs" />
     <Compile Include="Permupotater.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
