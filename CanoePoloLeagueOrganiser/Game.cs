@@ -48,7 +48,7 @@ namespace CanoePoloLeagueOrganiser
 
         public bool SameTeams(Game game)
         {
-            return game.HomeTeam == HomeTeam && game.HomeTeam == HomeTeam;
+            return game.HomeTeam.Name == HomeTeam.Name && game.HomeTeam.Name == HomeTeam.Name;
         }
 
     }

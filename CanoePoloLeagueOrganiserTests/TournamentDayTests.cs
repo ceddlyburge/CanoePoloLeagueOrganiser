@@ -12,6 +12,8 @@ namespace CanoePoloLeagueOrganiserTests
     // - the amount of games that teams don't play between their first and last games should be minimised
     public class TournamentDayTests
     {
+        const int ANY_INT = 3; // if used the value of this variable should not affect the result of a test
+
         [Fact]
         public void OneInputGameShouldResultInThisGameBeingPlayed()
         {
@@ -24,6 +26,39 @@ namespace CanoePoloLeagueOrganiserTests
             Assert.Equal(1, sut.OptimisedGameOrder.GameOrder.Count());
         }
 
+        [Fact]
+        public void GameOrderEquals()
+        {
+            // this would get optimised so that castle do not play twice in a row
+            var games = new List<Game> {
+                 new Game("Castle", "Battersea"),
+                 new Game("Castle", "Avon"),
+             };
+
+            var gamesToCompare = new List<Game> {
+                 new Game("Castle", "Battersea"),
+                 new Game("Castle", "Avon"),
+             };
+
+            var sut = new GameOrderCandidate(games, ANY_INT, ANY_INT, ANY_INT);
+
+            Assert.True(sut.GameOrderEquals(gamesToCompare));
+        }
+
+        [Fact]
+        public void OriginalGameOrderShouldBeReturned()
+        {
+            // this would get optimised so that castle do not play twice in a row
+            var games = new List<Game> {
+                 new Game("Castle", "Battersea"),
+                 new Game("Castle", "Avon"),
+                 new Game("Ulu", "Letchworth"),
+             };
+
+            var sut = new TournamentDayCalculator(games).CalculateGameOrder().OriginalGameOrder;
+
+            Assert.True(sut.GameOrderEquals(games));
+        }
 
         [Fact]
         public void CastleShouldNotPlayTwiceInARow()

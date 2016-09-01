@@ -33,7 +33,7 @@ namespace CanoePoloLeagueOrganiser
             return (int) this.OccurencesOfTeamsPlayingConsecutiveMatches - (int) (other as GameOrderCandidate).OccurencesOfTeamsPlayingConsecutiveMatches;
         }
 
-        internal bool GameOrderEquals(IEnumerable<Game> theirGames)
+        public bool GameOrderEquals(IEnumerable<Game> theirGames)
         {
             var myGames = this.GameOrder.GetEnumerator();
 
