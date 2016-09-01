@@ -21,7 +21,7 @@ namespace CanoePoloLeagueOrganiserTests
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
 
-            Assert.Equal(1, sut.GameOrder.Count());
+            Assert.Equal(1, sut.OptimisedGameOrder.GameOrder.Count());
         }
 
 
@@ -36,7 +36,7 @@ namespace CanoePoloLeagueOrganiserTests
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
 
-            Assert.False(PlayingTwiceInARow("Castle", sut.GameOrder));
+            Assert.False(PlayingTwiceInARow("Castle", sut.OptimisedGameOrder.GameOrder));
         }
 
         [Fact]
@@ -49,7 +49,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Castle", "Avon"),
              };
 
-            var sut = new TournamentDayCalculator(games).CalculateGameOrder();
+            var sut = new TournamentDayCalculator(games).CalculateGameOrder().OptimisedGameOrder;
 
             Assert.False(PlayingTwiceInARow("Castle", sut.GameOrder));
             Assert.False(PlayingTwiceInARow("Letchworth", sut.GameOrder));
@@ -68,7 +68,7 @@ namespace CanoePoloLeagueOrganiserTests
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
 
-            Assert.Equal((uint)2, sut.MaxConsecutiveMatchesByAnyTeam);
+            Assert.Equal((uint)2, sut.OptimisedGameOrder.MaxConsecutiveMatchesByAnyTeam);
         }
 
         [Fact]
@@ -84,7 +84,7 @@ namespace CanoePoloLeagueOrganiserTests
 
             var sut = new TournamentDayCalculator(games).CalculateGameOrder();
 
-            Assert.Equal((uint)2, sut.MaxConsecutiveMatchesByAnyTeam);
+            Assert.Equal((uint)2, sut.OptimisedGameOrder.MaxConsecutiveMatchesByAnyTeam);
         }
 
         [Fact]
@@ -113,7 +113,7 @@ namespace CanoePoloLeagueOrganiserTests
             //new Game(Blackwater, "Letchworth"),
             //new Game("Castle", Avon), Avon 0
 
-            Assert.Equal((uint)14, sut.GamesNotPlayedBetweenFirstAndLast);
+            Assert.Equal((uint)14, sut.OptimisedGameOrder.GamesNotPlayedBetweenFirstAndLast);
         }
 
         private bool PlayingTwiceInARow(string team, IEnumerable<Game> gameOrder)

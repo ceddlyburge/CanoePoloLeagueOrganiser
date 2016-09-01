@@ -40,7 +40,7 @@ namespace CanoePoloLeagueOrganiser
             foreach (var theirGame in theirGames)
             {
                 myGames.MoveNext();
-                if (theirGame.SameOrder(myGames.Current) == false) return false;
+                if (theirGame.SameTeams(myGames.Current) == false) return false;
             }
 
             return true;

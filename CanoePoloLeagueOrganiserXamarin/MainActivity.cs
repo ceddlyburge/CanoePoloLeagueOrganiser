@@ -60,7 +60,7 @@ Blackwater v Battersea";
                 games.Add(new Game(teams[team1Name], teams[team2Name]));
             }
 
-            var gameOrder = new TournamentDayCalculator(games).CalculateGameOrder();
+            var gameOrder = new TournamentDayCalculator(games).CalculateGameOrder().OptimisedGameOrder;
 
             var text = 
 $@"Max consecutive matches by any team: {gameOrder.MaxConsecutiveMatchesByAnyTeam}

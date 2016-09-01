@@ -33,7 +33,7 @@ namespace CanoePoloLeagueOrganiser
             // sort by bestness and return the best one
             var orderedCandidates = candidates.OrderBy(c => c.MaxConsecutiveMatchesByAnyTeam).ThenBy(c => c.OccurencesOfTeamsPlayingConsecutiveMatches).ThenBy(c => c.GamesNotPlayedBetweenFirstAndLast);
 
-            return new GameOrderCalculation(optimisedGameOrder: orderedCandidates.First(), originalGameOrder: candidates.Where(c => c.SameOrder(this.games)));
+            return new GameOrderCalculation(optimisedGameOrder: orderedCandidates.First(), originalGameOrder: candidates.Where(c => c.GameOrderEquals(this.games)).First());
         }
 
         private uint MaxConsecutiveMatchesByAnyTeam(IEnumerable<Game> games)

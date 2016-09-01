@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
+    <Compile Include="GameOrderCalculation.cs" />
     <Compile Include="GameOrderCandidate.cs" />
     <Compile Include="MarkConsecutiveGames.cs" />
     <Compile Include="Permupotater.cs" />

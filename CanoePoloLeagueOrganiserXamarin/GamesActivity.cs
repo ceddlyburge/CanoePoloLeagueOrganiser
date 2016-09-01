@@ -63,7 +63,7 @@ namespace CanoePoloLeagueOrganiserXamarin
         {
             var gameOrder = new TournamentDayCalculator(GameListAdapter.Games).CalculateGameOrder();
 
-            GameListAdapter.SetGames(gameOrder.GameOrder);
+            GameListAdapter.SetGames(gameOrder.OptimisedGameOrder.GameOrder);
             
         }
     }
