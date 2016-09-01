@@ -30,8 +30,9 @@ namespace CanoePoloLeagueOrganiserXamarin
             Contract.Requires(games != null);
             Contract.Requires(context != null);
 
-            this.games = games;
             this.context = context;
+            this.games = new List<Game>();
+            SetGames(games);
         }
 
         public List<Game> Games => this.games;
@@ -57,7 +58,6 @@ namespace CanoePoloLeagueOrganiserXamarin
             view.FindViewById<TextView>(Resource.Id.AwayTeam).SetTextColor(game.AwayTeamPlayingConsecutively ? Color.Red : Color.White);
 
             view.FindViewById<Button>(Resource.Id.Remove).Tag = new JavaGame { Game = game };
-            
 
             return view;
         }
@@ -65,20 +65,23 @@ namespace CanoePoloLeagueOrganiserXamarin
         private void DeleteGame(Game game)
         {
             this.games.Remove(game);
-            NotifyDataSetChanged();
+            SetGames(this.games);
         }
 
         internal void SetGames(IEnumerable<Game> games)
         {
+            // creating this calculator doesn't seem very good ioc wise. hmmmm.
+            var newGames = new TournamentDayCalculator(games).CalculateGameOrder().OriginalGameOrder.GameOrder;
             this.games.Clear();
-            this.games.AddRange(games);
+            this.games.AddRange(newGames);
+
             NotifyDataSetChanged();
         }
 
         internal void AddGame(string homeTeam, string awayTeam)
         {
             this.games.Add(new Game(new Team(homeTeam), new Team(awayTeam)));
-            NotifyDataSetChanged();
+            SetGames(this.games);
         }
     }
 }

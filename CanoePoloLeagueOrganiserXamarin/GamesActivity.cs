@@ -32,10 +32,10 @@ namespace CanoePoloLeagueOrganiserXamarin
                 new Game("castle", "battersea"),
                 new Game("castle", "ulu"),
                 new Game("castle", "braintree"),
-                //new Game(castle, avon),
-                //new Game(castle, blackwater),
-                //new Game(castle, letchworth),
-                //new Game(castle, ulu),
+                //new Game("castle", "avon"),
+                //new Game("castle", "blackwater"),
+                //new Game("castle", "letchworth"),
+                //new Game("castle", "ulu"),
                 new Game("braintree", "avon"),
                 new Game("blackwater", "letchworth"),
             };
@@ -56,7 +56,6 @@ namespace CanoePoloLeagueOrganiserXamarin
         private void AddGame(object sender, EventArgs e)
         {
             GameListAdapter.AddGame(homeTeam: HomeTeamEntry.Text, awayTeam: AwayTeamEntry.Text);
-
         }
 
         private void Optimise(object sender, EventArgs e)
@@ -64,7 +63,6 @@ namespace CanoePoloLeagueOrganiserXamarin
             var gameOrder = new TournamentDayCalculator(GameListAdapter.Games).CalculateGameOrder();
 
             GameListAdapter.SetGames(gameOrder.OptimisedGameOrder.GameOrder);
-            
         }
     }
 }

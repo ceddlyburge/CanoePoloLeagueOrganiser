@@ -62,11 +62,6 @@
                 android:id="@+id/Add" />
         </RelativeLayout>
     </LinearLayout>
-    <TextView
-        android:text="Some info about the game order ..."
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView1" />
     <ListView
         android:minWidth="25px"
         android:minHeight="25px"

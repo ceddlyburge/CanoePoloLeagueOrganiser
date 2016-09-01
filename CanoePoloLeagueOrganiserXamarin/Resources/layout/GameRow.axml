@@ -55,6 +55,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/relativeLayout4">
         <Button
+            android:text="&lt;"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Up" />
+        <Button
+            android:text="&gt;"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Down" />
+        <Button
             android:text="Remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
