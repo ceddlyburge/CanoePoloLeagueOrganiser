@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:id="@+id/HomeTeam"
-            style="@android:style/Theme.Material.Dialog.Alert"
             android:capitalize="words" />
     </RelativeLayout>
     <RelativeLayout
@@ -35,7 +34,6 @@
             android:id="@+id/V" />
     </RelativeLayout>
     <RelativeLayout
-        android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="0dip"
         android:layout_weight="0.4"
@@ -48,26 +46,45 @@
             android:id="@+id/AwayTeam"
             android:capitalize="words" />
     </RelativeLayout>
-    <RelativeLayout
+    <LinearLayout
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/relativeLayout4">
-        <Button
-            android:text="&lt;"
+        android:id="@+id/relativeLayout7">
+        <RelativeLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/Up" />
-        <Button
-            android:text="&gt;"
+            android:id="@+id/relativeLayout5">
+            <Button
+                android:text="Up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Up" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:minHeight="25px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/Down" />
-        <Button
-            android:text="Remove"
+            android:id="@+id/relativeLayout6">
+            <Button
+                android:text="Down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Down" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:minHeight="25px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/Remove" />
-    </RelativeLayout>
+            android:id="@+id/relativeLayout4">
+            <Button
+                android:text="Remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Remove" />
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>
