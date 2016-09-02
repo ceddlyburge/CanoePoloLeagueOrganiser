@@ -65,6 +65,8 @@ namespace CanoePoloLeagueOrganiserXamarin
             view.FindViewById<Button>(Resource.Id.Up).Tag = new JavaGame { Game = game };
             view.FindViewById<Button>(Resource.Id.Down).Tag = new JavaGame { Game = game };
 
+            //if (position == 0) view.FindViewById<Button>(Resource.Id.Up).
+
             return view;
         }
 
@@ -94,7 +96,7 @@ namespace CanoePoloLeagueOrganiserXamarin
             SetGames(this.games);
         }
 
-        internal void SetGames(IEnumerable<Game> games)
+        internal void SetGames(IReadOnlyList<Game> games)
         {
             // creating this calculator doesn't seem very good ioc wise. hmmmm.
             var newGames = new TournamentDayCalculator(games).CalculateGameOrder().OriginalGameOrder.GameOrder;

@@ -9,12 +9,12 @@ namespace CanoePoloLeagueOrganiser
 {
     public class GameOrderCandidate : IComparable
     {
-        public IEnumerable<Game> GameOrder { get; }
+        public IReadOnlyList<Game> GameOrder { get; }
         public uint OccurencesOfTeamsPlayingConsecutiveMatches { get; }
         public uint MaxConsecutiveMatchesByAnyTeam { get; }
         public uint GamesNotPlayedBetweenFirstAndLast { get;}
 
-        public GameOrderCandidate(IEnumerable<Game> gameOrder, uint occurencesOfTeamsPlayingConsecutiveMatches, uint maxConsecutiveMatchesByAnyTeam, uint gamesNotPlayedBetweenFirstAndLast)
+        public GameOrderCandidate(IReadOnlyList<Game> gameOrder, uint occurencesOfTeamsPlayingConsecutiveMatches, uint maxConsecutiveMatchesByAnyTeam, uint gamesNotPlayedBetweenFirstAndLast)
         {
             // should also check that there are no duplicates
             Contract.Requires(gameOrder != null);

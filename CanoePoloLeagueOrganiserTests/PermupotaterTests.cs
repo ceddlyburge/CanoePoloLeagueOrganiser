@@ -38,15 +38,15 @@ namespace CanoePoloLeagueOrganiserTests
         {
             var list = new List<String> { "0", "1", "2" };
 
-            var permutations = new Permupotater<String>().GetPermutations(list);
+            var permutations = new Permupotater<String>().GetPermutations(list).Select(p => p.Aggregate("", (s, l) => s + l));
 
             Assert.Equal(6, permutations.Count());
-            Assert.Equal("012", permutations.Take(1).Single().Aggregate("", (s, l) => s + l));
-            Assert.Equal("021", permutations.Skip(1).Take(1).Single().Aggregate("", (s, l) => s + l));
-            Assert.Equal("102", permutations.Skip(2).Take(1).Single().Aggregate("", (s, l) => s + l));
-            Assert.Equal("120", permutations.Skip(3).Take(1).Single().Aggregate("", (s, l) => s + l));
-            Assert.Equal("201", permutations.Skip(4).Take(1).Single().Aggregate("", (s, l) => s + l));
-            Assert.Equal("210", permutations.Skip(5).Take(1).Single().Aggregate("", (s, l) => s + l));
+            Assert.True(permutations.Contains("012"));
+            Assert.True(permutations.Contains("021"));
+            Assert.True(permutations.Contains("102"));
+            Assert.True(permutations.Contains("120"));
+            Assert.True(permutations.Contains("201"));
+            Assert.True(permutations.Contains("210"));
         }
     }
 }
