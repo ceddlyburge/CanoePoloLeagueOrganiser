@@ -29,7 +29,6 @@ namespace CanoePoloLeagueOrganiserTests
         [Fact]
         public void GameOrderEquals()
         {
-            // this would get optimised so that castle do not play twice in a row
             var games = new List<Game> {
                  new Game("Castle", "Battersea"),
                  new Game("Castle", "Avon"),
