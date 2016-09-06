@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="MD_funConnectionImportTest" tests="1" failures="0" disabled="0" errors="0" time="0.000000" filename="C:\Projects\external\sonar-cxx-msbuild-tasks\BuildDrop\Test\testdata\file2_tests.cpp">
+   <testcase name="SetAndGetParametersNumberTest" status="run" time="0.000000" classname="MD_funConnectionImportTest"  filename="C:\Projects\external\sonar-cxx-msbuild-tasks\BuildDrop\Test\testdata\file2_tests.cpp"/>
+</testsuite>
