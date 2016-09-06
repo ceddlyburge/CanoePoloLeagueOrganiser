@@ -1,5 +1,9 @@
+environment:
+  SONARQUBE_TOKEN:
+    secure: DSwAr4fYt3Q35Sjob5qAN5ujYqFCPZQguJ2yhI3IN46AIK63sRLhpamof6BZr9lx
 before_build:
 - nuget restore
+- appveyor-retry dotnet restore -v Minimal
 build:
   project: CanoePoloLeagueOrganiser.sln 
 after_test:
@@ -7,3 +11,4 @@ after_test:
 - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
 - pip install codecov
 - codecov -f "CanoePoloLeagueOrganiser_coverage.xml"
+    

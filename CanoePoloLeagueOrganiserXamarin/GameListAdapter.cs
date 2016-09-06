@@ -15,6 +15,8 @@ using Android.Graphics;
 
 namespace CanoePoloLeagueOrganiserXamarin
 {
+    public class Dummy { }
+
     internal class JavaGame : Java.Lang.Object
     {
         public Game Game;
@@ -65,7 +67,7 @@ namespace CanoePoloLeagueOrganiserXamarin
             view.FindViewById<Button>(Resource.Id.Up).Tag = new JavaGame { Game = game };
             view.FindViewById<Button>(Resource.Id.Down).Tag = new JavaGame { Game = game };
 
-            //if (position == 0) view.FindViewById<Button>(Resource.Id.Up).
+            //cedd if  sdsd (sd sp osition == 0) view.FindViewById<Button>(Resource.Id.Up).
 
             return view;
         }

@@ -67,6 +67,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="IncludeXamarinCodeInCoverage.cs" />
     <Compile Include="MarkConsecutiveGamesTests.cs" />
     <Compile Include="PermupotaterTests.cs" />
     <Compile Include="TournamentDayTests.cs" />
