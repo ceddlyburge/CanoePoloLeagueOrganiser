@@ -63,7 +63,7 @@ namespace CanoePoloLeagueOrganiser
 
                 // we have found a new candidate so add it
                 // can optimise by only MarkTeamsPlayingConsecutively on the best result but do this later
-                candidates.Add(new GameOrderCandidate(marker.MarkTeamsPlayingConsecutively(this.Games), occurencesOfTeamsPlayingConsecutiveMatches, maxConsecutiveMatchesByAnyTeam, gamesNotPlayedBetweenFirstAndLast));
+                candidates.Add(new GameOrderCandidate(marker.MarkTeamsPlayingConsecutively(games), occurencesOfTeamsPlayingConsecutiveMatches, maxConsecutiveMatchesByAnyTeam, gamesNotPlayedBetweenFirstAndLast));
 
                 return true;
             };
