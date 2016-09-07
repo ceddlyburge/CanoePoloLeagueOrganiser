@@ -150,6 +150,27 @@ namespace CanoePoloLeagueOrganiserTests
             Assert.Equal((uint)14, sut.OptimisedGameOrder.GamesNotPlayedBetweenFirstAndLast);
         }
 
+        [Fact]
+        public void SpeedTest()
+        {
+            var games = new List<Game> {
+                 new Game("Castle", "Battersea"),
+                 new Game("Braintree", "VKC"),
+                 new Game("Blackwater", "Letchworth"),
+                 new Game("Castle", "Avon"),
+                 new Game("Blackwater", "VKC"),
+                 new Game("Battersea", "Ulu"),
+                 new Game("Braintree", "Letchworth"),
+                 new Game("Castle", "Ulu"),
+                 new Game("Avon", "VKC"),
+                 new Game("Braintree", "Ulu"),
+             };
+
+            new TournamentDayCalculator(games).CalculateGameOrder();
+
+            // 10 games takes 9 seconds to run
+        }
+
         private bool PlayingTwiceInARow(string team, IEnumerable<Game> gameOrder)
         {
             bool playedInLastGame = false;
