@@ -113,9 +113,9 @@ namespace CanoePoloLeagueOrganiserTests
             //new Game("Castle", "Ulu"), 
             //new Game(Blackwater, "Letchworth"),
             //new Game("Castle", Avon), Avon 0
-
             Assert.Equal((uint)14, sut.OptimisedGameOrder.GamesNotPlayedBetweenFirstAndLast);
         }
+
 
         [Fact]
         public void SpeedTest()

@@ -19,6 +19,8 @@ namespace CanoePoloLeagueOrganiser
             this.GameCountMinus1 = games.Count() - 1;
             this.Teams = this.Games.Select(g => g.HomeTeam.Name).Concat(this.Games.Select(g => g.AwayTeam.Name)).Distinct().ToList();
             this.NumberOfGamesPlayed = this.Teams.ToDictionary(t => t, t => this.Games.Count(g => g.Playing(t)));
+            this.FirstGames = new Dictionary<string, int>();
+            this.LastGames = new Dictionary<string, int>();
         }
 
         IReadOnlyList<Game> Games { get; }
@@ -45,13 +47,12 @@ namespace CanoePoloLeagueOrganiser
         // used in MaxConsecutiveMatchesByAnyTeam and OccurencesOfTeamsPlayingConsecutiveMatches
         string lastHomeTeam;
         string lastAwayTeam;
-
-        // used in OccurencesOfTeamsPlayingConsecutiveMatches
-        IReadOnlyList<string> Teams { get; }
         uint occurences;
-        int firstgame;
-        int lastgame;
-        int count;
+
+        // used in GamesNotPlayedBetweenFirstAndLast
+        IReadOnlyList<string> Teams { get; }
+        Dictionary<string, int> FirstGames { get; }
+        Dictionary<string, int> LastGames { get; } 
 
         bool Callback(Game[] games)
         {
@@ -139,19 +140,22 @@ namespace CanoePoloLeagueOrganiser
             this.gamesNotPlayedBetweenFirstAndLast = 0;
 
             foreach (var team in this.Teams)
+                this.FirstGames[team] = - 1;
+
+            for (int i = 0; i < games.Length; i++)
             {
-                this.count = 0;
-                while (count < games.Length && games[count].Playing(team) == false)
-                    this.count++;
-                this.firstgame = this.count;
+                if (this.FirstGames[games[i].HomeTeam.Name] == -1)
+                    this.FirstGames[games[i].HomeTeam.Name] = i;
 
-                this.count = GameCountMinus1;
-                while (this.count >= 0 && games[count].Playing(team) == false)
-                    this.count--;
-                this.lastgame = this.count;
+                if (this.FirstGames[games[i].AwayTeam.Name] == -1)
+                    this.FirstGames[games[i].AwayTeam.Name] = i;
 
-                this.gamesNotPlayedBetweenFirstAndLast += (uint)(1 + this.lastgame - this.firstgame - this.NumberOfGamesPlayed[team]);
+                this.LastGames[games[i].HomeTeam.Name] = i;  
+                this.LastGames[games[i].AwayTeam.Name] = i;
             }
+
+            foreach (var team in this.Teams)
+                this.gamesNotPlayedBetweenFirstAndLast += (uint)(1 + this.LastGames[team] - this.FirstGames[team] - this.NumberOfGamesPlayed[team]);
 
             return gamesNotPlayedBetweenFirstAndLast;
         }
