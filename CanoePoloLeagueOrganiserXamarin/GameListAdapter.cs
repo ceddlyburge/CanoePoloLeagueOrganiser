@@ -90,7 +90,7 @@ namespace CanoePoloLeagueOrganiserXamarin
 
         private void MoveGameDown(Game game)
         {
-            Contract.Requires(this.games.IndexOf(game) + 1 < this.games.Count());
+            Contract.Requires(this.games.IndexOf(game) + 1 < this.games.Count);
 
             var index = this.games.IndexOf(game);
             this.games.Remove(game);

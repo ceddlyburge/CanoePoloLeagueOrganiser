@@ -27,39 +27,6 @@ namespace CanoePoloLeagueOrganiserTests
         }
 
         [Fact]
-        public void GameOrderEquals()
-        {
-            var games = new List<Game> {
-                 new Game("Castle", "Battersea"),
-                 new Game("Castle", "Avon"),
-             };
-
-            var gamesToCompare = new List<Game> {
-                 new Game("Castle", "Battersea"),
-                 new Game("Castle", "Avon"),
-             };
-
-            var sut = new GameOrderCandidate(games, ANY_INT, ANY_INT, ANY_INT);
-
-            Assert.True(sut.GameOrderEquals(gamesToCompare));
-        }
-
-        [Fact]
-        public void OriginalGameOrderShouldBeReturned()
-        {
-            // this would get optimised so that castle do not play twice in a row
-            var games = new List<Game> {
-                 new Game("Castle", "Battersea"),
-                 new Game("Castle", "Avon"),
-                 new Game("Ulu", "Letchworth"),
-             };
-
-            var sut = new TournamentDayCalculator(games).CalculateGameOrder().OriginalGameOrder;
-
-            Assert.True(sut.GameOrderEquals(games));
-        }
-
-        [Fact]
         public void CastleShouldNotPlayTwiceInARow()
         {
             var games = new List<Game> {
@@ -168,7 +135,7 @@ namespace CanoePoloLeagueOrganiserTests
 
             new TournamentDayCalculator(games).CalculateGameOrder();
 
-            // 10 games takes 9 seconds to run
+            // 10 games takes 6-7 seconds to run
         }
 
         private bool PlayingTwiceInARow(string team, IEnumerable<Game> gameOrder)

@@ -23,8 +23,6 @@ namespace CanoePoloLeagueOrganiser
             {
                 for (var i = 0; i < length; i++) result[i] = items[index[i]];
                 if (callback(result) == false) break;
-                //yield return result;
-                //Debug.WriteLine(Concatentate(index));
             }
         }
         public IEnumerable<T[]> GetPermutations<T>(T[] items)
@@ -39,7 +37,6 @@ namespace CanoePoloLeagueOrganiser
                 var result = new T[index.Length];
                 for (var i = 0; i < index.Length; i++) result[i] = items[index[i]];
                 yield return result;
-                //Debug.WriteLine(result.ToString());
             }
         }
 
@@ -49,21 +46,17 @@ namespace CanoePoloLeagueOrganiser
             {
                 case 1:
                     yield return index;
-                    //Debug.WriteLine(Concatentate(index));
                     break;
                 case 2:
                     yield return index;
-                    //Debug.WriteLine(Concatentate(index));
                     Swap(index, offset, offset + 1);
                     yield return index;
-                    //Debug.WriteLine(Concatentate(index));
                     Swap(index, offset, offset + 1);
                     break;
                 default:
                     foreach (var result in GetIntPermutations(index, offset + 1, len - 1))
                     {
                         yield return result;
-                        //Debug.WriteLine(Concatentate(index));
                     }
                     for (var i = 1; i < len; i++)
                     {
@@ -71,7 +64,6 @@ namespace CanoePoloLeagueOrganiser
                         foreach (var result in GetIntPermutations(index, offset + 1, len - 1))
                         {
                             yield return result;
-                            //Debug.WriteLine(Concatentate(index));
                         }
                         Swap(index, offset, offset + i);
                     }
@@ -81,7 +73,7 @@ namespace CanoePoloLeagueOrganiser
 
         private string Concatentate(int[] index)
         {
-            return index.Aggregate("", (s, i) => s + i.ToString());
+            return index.Aggregate("", (s, i) => s + i);
         }
 
         private static void Swap(IList<int> index, int offset1, int offset2)
@@ -107,25 +99,4 @@ namespace CanoePoloLeagueOrganiser
             return perms;
         }
     }
-
-
-
-    //public class Permupotater<T>
-    //            where T : class
-    //    {
-    //        public List<IEnumerable<T>> GetPermutations(IEnumerable<T> things)
-    //        {
-    //            if (things.Count() == 1) return new List<IEnumerable<T>> { things.Take(1) };
-
-    //            var permutations = new List<IEnumerable<T>>();
-
-    //            foreach (var thing in things)
-    //            {
-    //                foreach (var subPermuation in GetPermutations(things.Where(t => !t.Equals(thing)).ToList()))
-    //                    permutations.Add(things.Where(t => t.Equals(thing)).Concat(subPermuation).ToList());
-    //            }
-
-    //            return permutations;
-    //        }
-    //    }
 }

@@ -39,11 +39,15 @@ namespace CanoePoloLeagueOrganiser
         uint lastAwayTeamConsecutiveGames;
 
         // used in MaxConsecutiveMatchesByAnyTeam and OccurencesOfTeamsPlayingConsecutiveMatches
-        Team lastHomeTeam = null;
-        Team lastAwayTeam = null;
+        string lastHomeTeam;
+        string lastAwayTeam;
 
         // used in OccurencesOfTeamsPlayingConsecutiveMatches
+        IEnumerable<string> Teams;
         uint occurences;
+        int firstgame;
+        int lastgame;
+        int count;
 
         bool Callback(Game[] games)
         {
@@ -90,16 +94,18 @@ namespace CanoePoloLeagueOrganiser
             this.lowestGamesNotPlayedBetweenFirstAndLast = uint.MaxValue;
             this.Candidates.Clear();
 
+            this.Teams = this.Games.Select(g => g.HomeTeam.Name).Concat(this.Games.Select(g => g.AwayTeam.Name)).Distinct();
+
             // generate a list of all possible game orders
             new Permutation().EnumeratePermutations<Game>(this.Games.ToArray(), Callback);
 
             // sort by bestness and return the best one
             var orderedCandidates = this.Candidates.OrderBy(c => c.MaxConsecutiveMatchesByAnyTeam).ThenBy(c => c.OccurencesOfTeamsPlayingConsecutiveMatches).ThenBy(c => c.GamesNotPlayedBetweenFirstAndLast).ToList();
 
-            return new GameOrderCalculation(optimisedGameOrder: orderedCandidates.First(), originalGameOrder: new GameOrderCandidate(this.Marker.MarkTeamsPlayingConsecutively(this.Games), OccurencesOfTeamsPlayingConsecutiveMatches(this.Games), MaxConsecutiveMatchesByAnyTeam(this.Games), GamesNotPlayedBetweenFirstAndLast(this.Games)));
+            return new GameOrderCalculation(optimisedGameOrder: orderedCandidates.First(), originalGameOrder: new GameOrderCandidate(this.Marker.MarkTeamsPlayingConsecutively(this.Games), OccurencesOfTeamsPlayingConsecutiveMatches(this.Games.ToArray()), MaxConsecutiveMatchesByAnyTeam(this.Games.ToArray()), GamesNotPlayedBetweenFirstAndLast(this.Games.ToArray())));
         }
 
-        uint MaxConsecutiveMatchesByAnyTeam(IEnumerable<Game> games)
+        uint MaxConsecutiveMatchesByAnyTeam(Game[] games)
         {
             Contract.Requires(games != null);
 
@@ -117,33 +123,39 @@ namespace CanoePoloLeagueOrganiser
                 this.maxConsecutiveGames = (this.maxConsecutiveGames < this.lastHomeTeamConsecutiveGames) ? this.lastHomeTeamConsecutiveGames : this.maxConsecutiveGames;
                 this.maxConsecutiveGames = (this.maxConsecutiveGames < this.lastAwayTeamConsecutiveGames) ? this.lastAwayTeamConsecutiveGames : this.maxConsecutiveGames;
 
-                this.lastHomeTeam = game.HomeTeam;
-                this.lastAwayTeam = game.AwayTeam;
+                this.lastHomeTeam = game.HomeTeam.Name;
+                this.lastAwayTeam = game.AwayTeam.Name;
             }
 
             return this.maxConsecutiveGames;
         }
 
-        uint GamesNotPlayedBetweenFirstAndLast(IEnumerable<Game> games)
+        uint GamesNotPlayedBetweenFirstAndLast(Game[] games)
         {
             Contract.Requires(games != null);
 
-            var teams = games.Select(g => g.HomeTeam.Name).Concat(games.Select(g => g.AwayTeam.Name)).Distinct();
             this.gamesNotPlayedBetweenFirstAndLast = 0;
 
-            foreach (var team in teams)
+            foreach (var team in this.Teams)
             {
-                int firstgame;
-                int lastgame;
-                firstgame = games.TakeWhile(g => g.Playing(team) == false).Count();
-                lastgame = games.Count() - games.Reverse().TakeWhile(g => g.Playing(team) == false).Count();
-                gamesNotPlayedBetweenFirstAndLast += (uint)(lastgame - firstgame - games.Count(g => g.Playing(team)));
+                this.count = 0;
+                while (count < games.Length && games[count].Playing(team) == false)
+                    this.count++;
+                this.firstgame = this.count;
+
+                this.count = games.Length - 1;
+                while (this.count >= 0 && games[count].Playing(team) == false)
+                    this.count--;
+                this.lastgame = this.count;
+                
+                // can still optimise this games.count(...) line by calculating it once at the start
+                this.gamesNotPlayedBetweenFirstAndLast += (uint)(1 + this.lastgame - this.firstgame - games.Count(g => g.Playing(team)));
             }
 
             return gamesNotPlayedBetweenFirstAndLast;
         }
 
-        uint OccurencesOfTeamsPlayingConsecutiveMatches(IEnumerable<Game> games)
+        uint OccurencesOfTeamsPlayingConsecutiveMatches(Game[] games)
         {
             Contract.Requires(games != null);
 
@@ -154,8 +166,8 @@ namespace CanoePoloLeagueOrganiser
                 if (game.Playing(lastHomeTeam) == true) occurences++;
                 if (game.Playing(lastAwayTeam) == true) occurences++;
 
-                lastHomeTeam = game.HomeTeam;
-                lastAwayTeam = game.AwayTeam;
+                lastHomeTeam = game.HomeTeam.Name;
+                lastAwayTeam = game.AwayTeam.Name;
             }
 
             return occurences;
