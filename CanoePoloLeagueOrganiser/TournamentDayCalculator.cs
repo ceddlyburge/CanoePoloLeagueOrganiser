@@ -16,10 +16,14 @@ namespace CanoePoloLeagueOrganiser
             this.Games = games;
             this.Candidates = new List<GameOrderCandidate>();
             this.Marker = new MarkConsecutiveGames();
-
+            this.GameCountMinus1 = games.Count() - 1;
+            this.Teams = this.Games.Select(g => g.HomeTeam.Name).Concat(this.Games.Select(g => g.AwayTeam.Name)).Distinct().ToList();
+            this.NumberOfGamesPlayed = this.Teams.ToDictionary(t => t, t => this.Games.Count(g => g.Playing(t)));
         }
 
         IReadOnlyList<Game> Games { get; }
+        int GameCountMinus1 { get; }
+        IReadOnlyDictionary<string, int> NumberOfGamesPlayed { get; }
         List<GameOrderCandidate> Candidates { get; }
         // probably interface this out soon
         MarkConsecutiveGames Marker { get; }
@@ -43,7 +47,7 @@ namespace CanoePoloLeagueOrganiser
         string lastAwayTeam;
 
         // used in OccurencesOfTeamsPlayingConsecutiveMatches
-        IEnumerable<string> Teams;
+        IReadOnlyList<string> Teams { get; }
         uint occurences;
         int firstgame;
         int lastgame;
@@ -94,8 +98,6 @@ namespace CanoePoloLeagueOrganiser
             this.lowestGamesNotPlayedBetweenFirstAndLast = uint.MaxValue;
             this.Candidates.Clear();
 
-            this.Teams = this.Games.Select(g => g.HomeTeam.Name).Concat(this.Games.Select(g => g.AwayTeam.Name)).Distinct();
-
             // generate a list of all possible game orders
             new Permutation().EnumeratePermutations<Game>(this.Games.ToArray(), Callback);
 
@@ -143,13 +145,12 @@ namespace CanoePoloLeagueOrganiser
                     this.count++;
                 this.firstgame = this.count;
 
-                this.count = games.Length - 1;
+                this.count = GameCountMinus1;
                 while (this.count >= 0 && games[count].Playing(team) == false)
                     this.count--;
                 this.lastgame = this.count;
-                
-                // can still optimise this games.count(...) line by calculating it once at the start
-                this.gamesNotPlayedBetweenFirstAndLast += (uint)(1 + this.lastgame - this.firstgame - games.Count(g => g.Playing(team)));
+
+                this.gamesNotPlayedBetweenFirstAndLast += (uint)(1 + this.lastgame - this.firstgame - this.NumberOfGamesPlayed[team]);
             }
 
             return gamesNotPlayedBetweenFirstAndLast;
