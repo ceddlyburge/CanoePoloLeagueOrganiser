@@ -101,7 +101,7 @@ namespace CanoePoloLeagueOrganiserXamarin
         internal void SetGames(IReadOnlyList<Game> games)
         {
             // creating this calculator doesn't seem very good ioc wise. hmmmm.
-            var newGames = new TournamentDayCalculator(games).CalculateGameOrder().OriginalGameOrder.GameOrder;
+            var newGames = new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder().OriginalGameOrder.GameOrder;
             this.games.Clear();
             this.games.AddRange(newGames);
 

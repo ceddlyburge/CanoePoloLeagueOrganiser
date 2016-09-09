@@ -21,7 +21,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Castle", "Battersea"),
              };
 
-            var sut = new TournamentDayCalculator(games).CalculateGameOrder();
+            var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
 
             Assert.Equal(1, sut.OptimisedGameOrder.GameOrder.Count());
         }
@@ -35,7 +35,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Ulu", "Letchworth"),
              };
 
-            var sut = new TournamentDayCalculator(games).CalculateGameOrder();
+            var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
 
             Assert.False(PlayingTwiceInARow("Castle", sut.OptimisedGameOrder.GameOrder));
         }
@@ -50,7 +50,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Castle", "Avon"),
              };
 
-            var sut = new TournamentDayCalculator(games).CalculateGameOrder().OptimisedGameOrder;
+            var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder().OptimisedGameOrder;
 
             Assert.False(PlayingTwiceInARow("Castle", sut.GameOrder));
             Assert.False(PlayingTwiceInARow("Letchworth", sut.GameOrder));
@@ -67,7 +67,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Battersea", "Letchworth"),
              };
 
-            var sut = new TournamentDayCalculator(games).CalculateGameOrder();
+            var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
 
             Assert.Equal((uint)2, sut.OptimisedGameOrder.MaxConsecutiveMatchesByAnyTeam);
         }
@@ -83,7 +83,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Letchworth", "Castle"),
              };
 
-            var sut = new TournamentDayCalculator(games).CalculateGameOrder();
+            var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
 
             Assert.Equal((uint)2, sut.OptimisedGameOrder.MaxConsecutiveMatchesByAnyTeam);
         }
@@ -102,7 +102,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Castle", "Ulu"),
              };
 
-            var sut = new TournamentDayCalculator(games).CalculateGameOrder();
+            var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
 
             // hard to figure out, but this is the best order
             //new Game("Castle", Battersea), "Castle" 5, battersea 1
@@ -116,6 +116,70 @@ namespace CanoePoloLeagueOrganiserTests
             Assert.Equal((uint)14, sut.OptimisedGameOrder.GamesNotPlayedBetweenFirstAndLast);
         }
 
+        [Fact]
+        public void RespondWithSomethingWhenPermutationsGetOutOfHand()
+        {
+            DateTime dateStarted = DateTime.Now;
+
+            var games = new List<Game> {
+                 new Game("Castle", "Battersea"),
+                 new Game("Braintree", "VKC"),
+                 new Game("Blackwater", "Letchworth"),
+                 new Game("Castle", "Avon"),
+                 new Game("Blackwater", "VKC"),
+                 new Game("Battersea", "Ulu"),
+                 new Game("Braintree", "Letchworth"),
+                 new Game("Castle", "Ulu"),
+                 new Game("Avon", "VKC"),
+                 new Game("Castle", "Battersea"),
+                 new Game("Braintree", "VKC"),
+                 new Game("Blackwater", "Letchworth"),
+                 new Game("Castle", "Avon"),
+                 new Game("Blackwater", "VKC"),
+                 new Game("Battersea", "Ulu"),
+                 new Game("Braintree", "Letchworth"),
+                 new Game("Castle", "Ulu"),
+                 new Game("Avon", "VKC"),
+             };
+
+            new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder();
+
+            // allow it an extra second to finish up or whatever. It actually finished in two seconds as it finds an acceptable solution earlier.
+            Assert.True(DateTime.Now.Subtract(dateStarted) < TimeSpan.FromSeconds(11));
+        }
+
+        [Fact]
+        public void RespondWithSomethingWhenPermutationsGetOutOfHandAndNoGoodSolution()
+        {
+            DateTime dateStarted = DateTime.Now;
+
+            var games = new List<Game> {
+                 new Game("Castle", "1"),
+                 new Game("Castle", "2"),
+                 new Game("Castle", "3"),
+                 new Game("Castle", "4"),
+                 new Game("Castle", "5"),
+                 new Game("Castle", "6"),
+                 new Game("Castle", "7"),
+                 new Game("Castle", "8"),
+                 new Game("Castle", "9"),
+                 new Game("Castle", "10"),
+                 new Game("Castle", "11"),
+                 new Game("Castle", "12"),
+                 new Game("Castle", "13"),
+                 new Game("Castle", "14"),
+                 new Game("Castle", "15"),
+                 new Game("Castle", "16"),
+                 new Game("Castle", "17"),
+                 new Game("Castle", "18"),
+                 new Game("Castle", "19"),
+             };
+
+            new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder();
+
+            // allow it an extra second to finish up or whatever. This test must take 10 seconds as there are non possible good solutions
+            Assert.True(DateTime.Now.Subtract(dateStarted) < TimeSpan.FromSeconds(11));
+        }
 
         [Fact]
         public void SpeedTest()
@@ -133,7 +197,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Braintree", "Ulu"),
              };
 
-            new TournamentDayCalculator(games).CalculateGameOrder();
+            new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
 
             // 10 games takes 6-7 seconds to run
         }

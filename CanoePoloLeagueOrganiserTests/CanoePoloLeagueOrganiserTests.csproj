@@ -69,7 +69,9 @@
   <ItemGroup>
     <Compile Include="IncludeXamarinCodeInCoverage.cs" />
     <Compile Include="MarkConsecutiveGamesTests.cs" />
+    <Compile Include="NoCompromisesPragmatiser.cs" />
     <Compile Include="PermupotaterTests.cs" />
+    <Compile Include="PragmatiserTests.cs" />
     <Compile Include="TournamentDayTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

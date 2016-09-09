@@ -9,13 +9,16 @@ namespace CanoePoloLeagueOrganiser
 {
     public class TournamentDayCalculator
     {
-        public TournamentDayCalculator(IReadOnlyList<Game> games)
+        public TournamentDayCalculator(IReadOnlyList<Game> games, IPragmatiser pragmatiser)
         {
             Contract.Requires(games != null);
 
             this.Games = games;
             this.Candidates = new List<GameOrderCandidate>();
             this.Marker = new MarkConsecutiveGames();
+            this.Pragmatiser = pragmatiser;
+
+            // bit naughty doing all this work in the constructor, but it does mean I can make them readonly
             this.GameCountMinus1 = games.Count() - 1;
             this.Teams = this.Games.Select(g => g.HomeTeam.Name).Concat(this.Games.Select(g => g.AwayTeam.Name)).Distinct().ToList();
             this.NumberOfGamesPlayed = this.Teams.ToDictionary(t => t, t => this.Games.Count(g => g.Playing(t)));
@@ -24,6 +27,8 @@ namespace CanoePoloLeagueOrganiser
         }
 
         IReadOnlyList<Game> Games { get; }
+        IPragmatiser Pragmatiser { get; }
+
         int GameCountMinus1 { get; }
         IReadOnlyDictionary<string, int> NumberOfGamesPlayed { get; }
         List<GameOrderCandidate> Candidates { get; }
@@ -38,7 +43,8 @@ namespace CanoePoloLeagueOrganiser
         uint lowestOccurencesOfTeamsPlayingConsecutiveMatches;
         uint lowestGamesNotPlayedBetweenFirstAndLast;
         bool addCandidate;
-
+        uint permutationCount;
+        DateTime timeStartedCalculation;
         // used in MaxConsecutiveMatchesByAnyTeam
         uint maxConsecutiveGames;
         uint lastHomeTeamConsecutiveGames;
@@ -89,6 +95,11 @@ namespace CanoePoloLeagueOrganiser
             // can optimise by only MarkTeamsPlayingConsecutively on the best result but do this later. Actually not many candidates get added so it may not be worth it
             this.Candidates.Add(new GameOrderCandidate(this.Marker.MarkTeamsPlayingConsecutively(games), this.occurencesOfTeamsPlayingConsecutiveMatches, this.maxConsecutiveMatchesByAnyTeam, this.gamesNotPlayedBetweenFirstAndLast));
 
+            if (this.permutationCount % 1000 == 0)
+            {
+                return this.Pragmatiser.AcceptableSolution(DateTime.Now.Subtract(this.timeStartedCalculation), this.lowestOccurencesOfTeamsPlayingConsecutiveMatches) == false;
+            }
+
             return true;
         }
 
@@ -98,6 +109,8 @@ namespace CanoePoloLeagueOrganiser
             this.lowestOccurencesOfTeamsPlayingConsecutiveMatches = uint.MaxValue;
             this.lowestGamesNotPlayedBetweenFirstAndLast = uint.MaxValue;
             this.Candidates.Clear();
+            permutationCount = 0;
+            timeStartedCalculation = DateTime.Now;
 
             // generate a list of all possible game orders
             new Permutation().EnumeratePermutations<Game>(this.Games.ToArray(), Callback);
