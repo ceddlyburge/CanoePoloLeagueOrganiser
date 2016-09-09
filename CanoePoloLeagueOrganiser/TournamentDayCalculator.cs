@@ -113,7 +113,7 @@ namespace CanoePoloLeagueOrganiser
             timeStartedCalculation = DateTime.Now;
 
             // generate a list of all possible game orders
-            new Permutation().EnumeratePermutations<Game>(this.Games.ToArray(), Callback);
+            new Permupotater().EnumeratePermutations<Game>(this.Games.ToArray(), Callback);
 
             // sort by bestness and return the best one
             var orderedCandidates = this.Candidates.OrderBy(c => c.MaxConsecutiveMatchesByAnyTeam).ThenBy(c => c.OccurencesOfTeamsPlayingConsecutiveMatches).ThenBy(c => c.GamesNotPlayedBetweenFirstAndLast).ToList();

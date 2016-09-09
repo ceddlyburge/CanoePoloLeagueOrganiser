@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CanoePoloLeagueOrganiser
 {
-    public class Permutation
+    public class Permupotater
     {
         public void EnumeratePermutations<T>(T[] items, Func<T[], bool> callback)
         {
@@ -23,20 +23,6 @@ namespace CanoePoloLeagueOrganiser
             {
                 for (var i = 0; i < length; i++) result[i] = items[index[i]];
                 if (callback(result) == false) break;
-            }
-        }
-        public IEnumerable<T[]> GetPermutations<T>(T[] items)
-        {
-            var work = new int[items.Length];
-            for (var i = 0; i < work.Length; i++)
-            {
-                work[i] = i;
-            }
-            foreach (var index in GetIntPermutations(work, 0, work.Length))
-            {
-                var result = new T[index.Length];
-                for (var i = 0; i < index.Length; i++) result[i] = items[index[i]];
-                yield return result;
             }
         }
 
@@ -83,20 +69,5 @@ namespace CanoePoloLeagueOrganiser
             index[offset2] = temp;
         }
 
-    }
-
-    public class Permupotater<T>
-                where T : class
-    {
-        public IReadOnlyList<IReadOnlyList<T>> GetPermutations(IEnumerable<T> things)
-        {
-            var lists = new Permutation().GetPermutations<T>(things.ToArray()).ToList();
-
-            var perms = new List<IReadOnlyList<T>>();
-            foreach (var list in lists)
-                perms.Add(list.ToList());
-
-            return perms;
-        }
     }
 }
