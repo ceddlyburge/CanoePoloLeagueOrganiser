@@ -40,9 +40,6 @@ namespace CanoePoloLeagueOrganiserXamarin
                 new Game("blackwater", "letchworth"),
             };
             SetContentView(Resource.Layout.Games);
-            GameList = FindViewById<ListView>(Resource.Id.Games);
-            GameListAdapter = new GameListAdapter(games, this);
-            GameList.Adapter = GameListAdapter;
 
             OptimiseButton = FindViewById<Button>(Resource.Id.Optimise);
             OptimiseButton.Click += Optimise;
@@ -51,6 +48,15 @@ namespace CanoePoloLeagueOrganiserXamarin
             AwayTeamEntry = FindViewById<AutoCompleteTextView>(Resource.Id.AwayTeam);
             AddButton = FindViewById<Button>(Resource.Id.Add);
             AddButton.Click += AddGame;
+
+            GameList = FindViewById<ListView>(Resource.Id.Games);
+            GameListAdapter = new GameListAdapter(games, this);
+            GameList.Adapter = GameListAdapter;
+        }
+
+        internal void Update()
+        {
+            if (OptimiseButton != null && this.GameListAdapter != null) OptimiseButton.Enabled = (this.GameListAdapter.Games.Count > 0);
         }
 
         private void AddGame(object sender, EventArgs e)

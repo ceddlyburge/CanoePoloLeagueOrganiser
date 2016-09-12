@@ -25,9 +25,9 @@ namespace CanoePoloLeagueOrganiserXamarin
     public class GameListAdapter : BaseAdapter<Game>
     {
         readonly List<Game> games;
-        readonly Activity context;
+        readonly GamesActivity context;
 
-        public GameListAdapter(List<Game> games, Activity context)
+        public GameListAdapter(List<Game> games, GamesActivity context)
         {
             Contract.Requires(games != null);
             Contract.Requires(context != null);
@@ -37,7 +37,7 @@ namespace CanoePoloLeagueOrganiserXamarin
             CalculateAndSetGames(games);
         }
 
-        public List<Game> Games => this.games;
+        public IReadOnlyList<Game> Games => this.games;
 
         public override Game this[int position] => this.games[position];
 
@@ -67,7 +67,8 @@ namespace CanoePoloLeagueOrganiserXamarin
             view.FindViewById<Button>(Resource.Id.Up).Tag = new JavaGame { Game = game };
             view.FindViewById<Button>(Resource.Id.Down).Tag = new JavaGame { Game = game };
 
-            //cedd if  sdsd (sd sp osition == 0) view.FindViewById<Button>(Resource.Id.Up).
+            view.FindViewById<Button>(Resource.Id.Up).Enabled = (position > 0);
+            view.FindViewById<Button>(Resource.Id.Down).Enabled = (position < this.Games.Count - 1);
 
             return view;
         }
@@ -116,6 +117,7 @@ namespace CanoePoloLeagueOrganiserXamarin
             this.games.AddRange(newGames);
 
             NotifyDataSetChanged();
+            this.context.Update();
         }
     }
 }
