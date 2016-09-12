@@ -113,12 +113,17 @@ namespace CanoePoloLeagueOrganiser
             timeStartedCalculation = DateTime.Now;
 
             // generate a list of all possible game orders
-            new Permupotater().EnumeratePermutations<Game>(this.Games.ToArray(), Callback);
+            var perfectOptimistaion = new Permupotater().EnumeratePermutations<Game>(this.Games.ToArray(), Callback);
 
             // sort by bestness and return the best one
             var orderedCandidates = this.Candidates.OrderBy(c => c.MaxConsecutiveMatchesByAnyTeam).ThenBy(c => c.OccurencesOfTeamsPlayingConsecutiveMatches).ThenBy(c => c.GamesNotPlayedBetweenFirstAndLast).ToList();
 
-            return new GameOrderCalculation(optimisedGameOrder: orderedCandidates.First(), originalGameOrder: new GameOrderCandidate(this.Marker.MarkTeamsPlayingConsecutively(this.Games), OccurencesOfTeamsPlayingConsecutiveMatches(this.Games.ToArray()), MaxConsecutiveMatchesByAnyTeam(this.Games.ToArray()), GamesNotPlayedBetweenFirstAndLast(this.Games.ToArray())));
+            return new GameOrderCalculation(optimisedGameOrder: orderedCandidates.First(), originalGameOrder: CalculateOriginalGameOrder(), perfectOptimisation: perfectOptimistaion, optimisationMessage: this.Pragmatiser.Message);
+        }
+
+        private GameOrderCandidate CalculateOriginalGameOrder()
+        {
+            return new GameOrderCandidate(this.Marker.MarkTeamsPlayingConsecutively(this.Games), OccurencesOfTeamsPlayingConsecutiveMatches(this.Games.ToArray()), MaxConsecutiveMatchesByAnyTeam(this.Games.ToArray()), GamesNotPlayedBetweenFirstAndLast(this.Games.ToArray()));
         }
 
         uint MaxConsecutiveMatchesByAnyTeam(Game[] games)

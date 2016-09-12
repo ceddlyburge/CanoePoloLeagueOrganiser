@@ -9,9 +9,8 @@ namespace CanoePoloLeagueOrganiserTests
 {
     internal class NoCompromisesPragmatiser : IPragmatiser
     {
-        public bool AcceptableSolution(TimeSpan timeElapsed, uint lowestOccurencesOfTeamsPlayingConsecutiveMatches)
-        {
-            return false;
-        }
+        public string Message => "";
+
+        public bool AcceptableSolution(TimeSpan timeElapsed, uint lowestOccurencesOfTeamsPlayingConsecutiveMatches) => false;
     }
 }

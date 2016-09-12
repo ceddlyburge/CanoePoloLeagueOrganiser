@@ -5,5 +5,6 @@ namespace CanoePoloLeagueOrganiser
     public interface IPragmatiser
     {
         bool AcceptableSolution(TimeSpan timeElapsed, uint lowestOccurencesOfTeamsPlayingConsecutiveMatches);
+        string Message { get; }
     }
 }

@@ -102,7 +102,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Castle", "Ulu"),
              };
 
-            var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
+            var gameOrder = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
 
             // hard to figure out, but this is the best order
             //new Game("Castle", Battersea), "Castle" 5, battersea 1
@@ -113,7 +113,9 @@ namespace CanoePoloLeagueOrganiserTests
             //new Game("Castle", "Ulu"), 
             //new Game(Blackwater, "Letchworth"),
             //new Game("Castle", Avon), Avon 0
-            Assert.Equal((uint)14, sut.OptimisedGameOrder.GamesNotPlayedBetweenFirstAndLast);
+            Assert.Equal((uint)14, gameOrder.OptimisedGameOrder.GamesNotPlayedBetweenFirstAndLast);
+            Assert.True(gameOrder.PerfectOptimisation);
+            Assert.True(string.IsNullOrEmpty(gameOrder.OptimisationMessage));
         }
 
         [Fact]
@@ -142,10 +144,12 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Avon", "VKC"),
              };
 
-            new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder();
+            var gameOrder = new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder();
 
             // allow it an extra second to finish up or whatever. It actually finished in two seconds as it finds an acceptable solution earlier.
             Assert.True(DateTime.Now.Subtract(dateStarted) < TimeSpan.FromSeconds(11));
+            Assert.False(gameOrder.PerfectOptimisation);
+            Assert.False(string.IsNullOrEmpty(gameOrder.OptimisationMessage));
         }
 
         [Fact]
@@ -175,10 +179,12 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Castle", "19"),
              };
 
-            new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder();
+            var gameOrder = new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder();
 
             // allow it an extra second to finish up or whatever. This test must take 10 seconds as there are non possible good solutions
             Assert.True(DateTime.Now.Subtract(dateStarted) < TimeSpan.FromSeconds(11));
+            Assert.False(gameOrder.PerfectOptimisation);
+            Assert.False(string.IsNullOrEmpty(gameOrder.OptimisationMessage));
         }
 
         [Fact]
@@ -199,7 +205,7 @@ namespace CanoePoloLeagueOrganiserTests
 
             new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
 
-            // 10 games takes 6-7 seconds to run
+            // 10 games takes 5-7 seconds to run, this test is just here to make analysing optimisations easier
         }
 
         private bool PlayingTwiceInARow(string team, IEnumerable<Game> gameOrder)

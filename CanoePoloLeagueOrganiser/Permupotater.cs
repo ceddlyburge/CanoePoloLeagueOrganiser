@@ -9,7 +9,7 @@ namespace CanoePoloLeagueOrganiser
 {
     public class Permupotater
     {
-        public void EnumeratePermutations<T>(T[] items, Func<T[], bool> callback)
+        public bool EnumeratePermutations<T>(T[] items, Func<T[], bool> callback)
         {
             int length = items.Length;
 
@@ -22,8 +22,10 @@ namespace CanoePoloLeagueOrganiser
             foreach (var index in GetIntPermutations(work, 0, length))
             {
                 for (var i = 0; i < length; i++) result[i] = items[index[i]];
-                if (callback(result) == false) break;
+                if (callback(result) == false) return false;
             }
+
+            return true;
         }
 
         public IEnumerable<int[]> GetIntPermutations(int[] index, int offset, int len)
@@ -55,11 +57,6 @@ namespace CanoePoloLeagueOrganiser
                     }
                     break;
             }
-        }
-
-        private string Concatentate(int[] index)
-        {
-            return index.Aggregate("", (s, i) => s + i);
         }
 
         private static void Swap(IList<int> index, int offset1, int offset2)

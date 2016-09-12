@@ -15,12 +15,12 @@ namespace CanoePoloLeagueOrganiser
             this.Name = name;
         }
 
-        public override bool Equals(object team)
+        public override bool Equals(object  obj)
         {
-            if (team is Team)
-                return (team as Team).Name == Name;
+            if (obj is Team)
+                return (obj as Team).Name == Name;
 
-            return base.Equals(team);
+            return false;
         }
 
         public override int GetHashCode()

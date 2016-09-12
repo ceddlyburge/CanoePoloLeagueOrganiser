@@ -12,23 +12,27 @@ namespace CanoePoloLeagueOrganiserTests
     {
         readonly TimeSpan ONE_SECOND = TimeSpan.FromSeconds(1);
         readonly TimeSpan TEN_SECONDS = TimeSpan.FromSeconds(10);   
-        const uint NO_CONSECUTIVE_MATCHES_BY_ANY_TEAM = 0;
-        const uint NO_TEAMS_PLAYING_CONSECUTIVE_MATCHES = 0;
         const uint A_LOT = uint.MaxValue;
 
         [Fact]
         public void AfterOneSecondDontWorryAboutGamesNotPlayed()
         {
-            var acceptableSolution = new TenSecondPragmatiser().AcceptableSolution(ONE_SECOND, lowestOccurencesOfTeamsPlayingConsecutiveMatches: 0);
+            var pragmatiser = new TenSecondPragmatiser();
 
+            var acceptableSolution = pragmatiser.AcceptableSolution(ONE_SECOND, lowestOccurencesOfTeamsPlayingConsecutiveMatches: 0);
+            
             Assert.True(acceptableSolution);
+            Assert.Equal(pragmatiser.Message, "There are too many teams to analyse all possible combinations, so this is the best solution that has no team playing twice in a row");
         }
 
         [Fact]
         public void AfterTenSecondsJustStop()
         {
-            var acceptableSolution = new TenSecondPragmatiser().AcceptableSolution(TEN_SECONDS, lowestOccurencesOfTeamsPlayingConsecutiveMatches: A_LOT);
+            var pragmatiser = new TenSecondPragmatiser();
 
+            var acceptableSolution = pragmatiser.AcceptableSolution(TEN_SECONDS, lowestOccurencesOfTeamsPlayingConsecutiveMatches: A_LOT);
+
+            Assert.Equal(pragmatiser.Message, "There are too many teams to analyse all possible combinations, so this is the best solution found after ten seconds of number crunching");
             Assert.True(acceptableSolution);
         }
     }
