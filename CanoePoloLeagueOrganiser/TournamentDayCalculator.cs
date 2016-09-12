@@ -121,7 +121,7 @@ namespace CanoePoloLeagueOrganiser
             return new GameOrderCalculation(optimisedGameOrder: orderedCandidates.First(), originalGameOrder: CalculateOriginalGameOrder(), perfectOptimisation: perfectOptimistaion, optimisationMessage: this.Pragmatiser.Message);
         }
 
-        private GameOrderCandidate CalculateOriginalGameOrder()
+        public GameOrderCandidate CalculateOriginalGameOrder()
         {
             return new GameOrderCandidate(this.Marker.MarkTeamsPlayingConsecutively(this.Games), OccurencesOfTeamsPlayingConsecutiveMatches(this.Games.ToArray()), MaxConsecutiveMatchesByAnyTeam(this.Games.ToArray()), GamesNotPlayedBetweenFirstAndLast(this.Games.ToArray()));
         }

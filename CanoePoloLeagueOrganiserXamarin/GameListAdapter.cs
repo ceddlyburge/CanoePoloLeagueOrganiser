@@ -34,7 +34,7 @@ namespace CanoePoloLeagueOrganiserXamarin
 
             this.context = context;
             this.games = new List<Game>();
-            SetGames(games);
+            CalculateAndSetGames(games);
         }
 
         public List<Game> Games => this.games;
@@ -75,7 +75,7 @@ namespace CanoePoloLeagueOrganiserXamarin
         private void DeleteGame(Game game)
         {
             this.games.Remove(game);
-            SetGames(this.games);
+            CalculateAndSetGames(this.games);
         }
 
         private void MoveGameUp(Game game)
@@ -85,7 +85,7 @@ namespace CanoePoloLeagueOrganiserXamarin
             var index = this.games.IndexOf(game);
             this.games.Remove(game);
             this.games.Insert(index - 1, game);
-            SetGames(this.games);
+            CalculateAndSetGames(this.games);
         }
 
         private void MoveGameDown(Game game)
@@ -95,23 +95,27 @@ namespace CanoePoloLeagueOrganiserXamarin
             var index = this.games.IndexOf(game);
             this.games.Remove(game);
             this.games.Insert(index + 1, game);
-            SetGames(this.games);
-        }
-
-        internal void SetGames(IReadOnlyList<Game> games)
-        {
-            // creating this calculator doesn't seem very good ioc wise. hmmmm.
-            var newGames = new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder().OriginalGameOrder.GameOrder;
-            this.games.Clear();
-            this.games.AddRange(newGames);
-
-            NotifyDataSetChanged();
+            CalculateAndSetGames(this.games);
         }
 
         internal void AddGame(string homeTeam, string awayTeam)
         {
             this.games.Add(new Game(new Team(homeTeam), new Team(awayTeam)));
-            SetGames(this.games);
+            CalculateAndSetGames(this.games);
+        }
+
+        internal void CalculateAndSetGames(IReadOnlyList<Game> games)
+        {
+            // creating this calculator doesn't seem very good ioc wise. hmmmm.
+            SetGames(new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateOriginalGameOrder().GameOrder);
+        }
+
+        internal void SetGames(IReadOnlyList<Game> newGames)
+        {
+            this.games.Clear();
+            this.games.AddRange(newGames);
+
+            NotifyDataSetChanged();
         }
     }
 }
