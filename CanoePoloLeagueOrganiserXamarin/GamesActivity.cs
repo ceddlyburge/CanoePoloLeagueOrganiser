@@ -22,6 +22,7 @@ namespace CanoePoloLeagueOrganiserXamarin
         Button AddButton;
         AutoCompleteTextView HomeTeamEntry;
         AutoCompleteTextView AwayTeamEntry;
+        TextView OptimisationExplanation;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -44,6 +45,8 @@ namespace CanoePoloLeagueOrganiserXamarin
             OptimiseButton = FindViewById<Button>(Resource.Id.Optimise);
             OptimiseButton.Click += Optimise;
 
+            OptimisationExplanation = FindViewById<TextView>(Resource.Id.OptimisationExplanation);
+
             HomeTeamEntry = FindViewById<AutoCompleteTextView>(Resource.Id.HomeTeam);
             AwayTeamEntry = FindViewById<AutoCompleteTextView>(Resource.Id.AwayTeam);
             AddButton = FindViewById<Button>(Resource.Id.Add);
@@ -52,11 +55,16 @@ namespace CanoePoloLeagueOrganiserXamarin
             GameList = FindViewById<ListView>(Resource.Id.Games);
             GameListAdapter = new GameListAdapter(games, this);
             GameList.Adapter = GameListAdapter;
+
         }
 
-        internal void Update()
+        internal void Update(string optimisationExplanation)
         {
-            if (OptimiseButton != null && this.GameListAdapter != null) OptimiseButton.Enabled = (this.GameListAdapter.Games.Count > 0);
+            if (OptimisationExplanation != null)
+                OptimisationExplanation.Text = optimisationExplanation;
+
+            if (OptimiseButton != null && this.GameListAdapter != null)
+                    OptimiseButton.Enabled = (this.GameListAdapter.Games.Count > 2);
         }
 
         private void AddGame(object sender, EventArgs e)
@@ -68,7 +76,8 @@ namespace CanoePoloLeagueOrganiserXamarin
         {
             var gameOrder = new TournamentDayCalculator(GameListAdapter.Games, new TenSecondPragmatiser()).CalculateGameOrder();
 
-            GameListAdapter.CalculateAndSetGames(gameOrder.OptimisedGameOrder.GameOrder);
+            // the game list adapter will callback the update method with this optimisation method, not sure if this is the best way of doing it.
+            GameListAdapter.SetGames(gameOrder.OptimisedGameOrder.GameOrder, gameOrder.OptimisationMessage);
         }
     }
 }

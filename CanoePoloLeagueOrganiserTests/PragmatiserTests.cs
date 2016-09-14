@@ -26,6 +26,17 @@ namespace CanoePoloLeagueOrganiserTests
         }
 
         [Fact]
+        public void IfNoPragmatisationHappensThereShouldBeNoMessage()
+        {
+            var pragmatiser = new TenSecondPragmatiser();
+
+            var acceptableSolution = pragmatiser.AcceptableSolution(ONE_SECOND, lowestOccurencesOfTeamsPlayingConsecutiveMatches: 1);
+
+            Assert.False(acceptableSolution);
+            Assert.Equal(pragmatiser.Message, "");
+        }
+
+        [Fact]
         public void AfterTenSecondsJustStop()
         {
             var pragmatiser = new TenSecondPragmatiser();

@@ -20,10 +20,10 @@ namespace CanoePoloLeagueOrganiser
                 return true;
             }
 
-            if (timeElapsed >= ONE_SECOND)
+            if (timeElapsed >= ONE_SECOND && lowestOccurencesOfTeamsPlayingConsecutiveMatches == 0)
             {
                 Message = "There are too many teams to analyse all possible combinations, so this is the best solution that has no team playing twice in a row";
-                return (lowestOccurencesOfTeamsPlayingConsecutiveMatches == 0);
+                return true;
             }
 
             return false;
