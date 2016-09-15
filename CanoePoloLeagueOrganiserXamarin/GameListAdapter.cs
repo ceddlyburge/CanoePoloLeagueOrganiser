@@ -101,7 +101,7 @@ namespace CanoePoloLeagueOrganiserXamarin
 
         internal void AddGame(string homeTeam, string awayTeam)
         {
-            this.games.Add(new Game(new Team(homeTeam), new Team(awayTeam)));
+            this.games.Add(new Game(homeTeam, awayTeam));
             CalculateOriginalGameOrderAndSetGames(this.games);
         }
 

@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CanoePoloLeagueOrganiser;
+using Newtonsoft.Json;
 
 namespace CanoePoloLeagueOrganiserXamarin
 {
@@ -28,18 +29,21 @@ namespace CanoePoloLeagueOrganiserXamarin
         {
             base.OnCreate(savedInstanceState);
 
+            // ioc this later
+            var games = new GamesSerialiser().DeSerialise(savedInstanceState.GetString("games", "[]"));
+
             // Create your application here
-            var games = new List<Game> {
-                new Game("castle", "battersea"),
-                new Game("castle", "ulu"),
-                new Game("castle", "braintree"),
-                new Game("castle", "avon"),
-                new Game("castle", "blackwater"),
-                new Game("castle", "letchworth"),
-                new Game("castle", "ulu"),
-                new Game("braintree", "avon"),
-                new Game("blackwater", "letchworth"),
-            };
+            //var games = new List<Game> {
+            //    new Game("castle", "battersea"),
+            //    new Game("castle", "ulu"),
+            //    new Game("castle", "braintree"),
+            //    new Game("castle", "avon"),
+            //    new Game("castle", "blackwater"),
+            //    new Game("castle", "letchworth"),
+            //    new Game("castle", "ulu"),
+            //    new Game("braintree", "avon"),
+            //    new Game("blackwater", "letchworth"),
+            //};
             SetContentView(Resource.Layout.Games);
 
             OptimiseButton = FindViewById<Button>(Resource.Id.Optimise);
@@ -55,7 +59,14 @@ namespace CanoePoloLeagueOrganiserXamarin
             GameList = FindViewById<ListView>(Resource.Id.Games);
             GameListAdapter = new GameListAdapter(games, this);
             GameList.Adapter = GameListAdapter;
+        }
 
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+
+            // ioc this later
+            outState.PutString("games", new GamesSerialiser().Serialise(GameListAdapter.Games)); 
         }
 
         internal void Update(string optimisationExplanation)
