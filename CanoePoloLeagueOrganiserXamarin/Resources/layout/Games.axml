@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/Optimise" />
     <TextView
+        android:minWidth="0px"
+        android:minHeight="0px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/OptimisationExplanation" />
@@ -60,6 +62,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/relativeLayout4">
             <Button
+                android:minWidth="0px"
+                android:minHeight="0px"
                 android:text="Add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

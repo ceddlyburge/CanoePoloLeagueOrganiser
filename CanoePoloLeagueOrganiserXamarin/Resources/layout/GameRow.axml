@@ -47,44 +47,31 @@
             android:capitalize="words" />
     </RelativeLayout>
     <LinearLayout
-        android:minWidth="25px"
-        android:minHeight="25px"
+        android:minWidth="0px"
+        android:minHeight="0px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/relativeLayout7">
-        <RelativeLayout
-            android:minWidth="25px"
-            android:minHeight="25px"
+        <Button
+            android:minWidth="0px"
+            android:minHeight="0px"
+            android:text="Up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/relativeLayout5">
-            <Button
-                android:text="Up"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/Up" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:minHeight="25px"
+            android:id="@+id/Up" />
+        <Button
+            android:minWidth="0px"
+            android:minHeight="0px"
+            android:text="Down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/relativeLayout6">
-            <Button
-                android:text="Down"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/Down" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:minHeight="25px"
+            android:id="@+id/Down" />
+        <Button
+            android:minWidth="0px"
+            android:minHeight="0px"
+            android:text="Remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/relativeLayout4">
-            <Button
-                android:text="Remove"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/Remove" />
-        </RelativeLayout>
+            android:id="@+id/Remove" />
     </LinearLayout>
 </LinearLayout>
