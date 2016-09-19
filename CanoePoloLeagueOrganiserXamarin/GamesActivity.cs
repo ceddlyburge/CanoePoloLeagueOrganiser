@@ -30,20 +30,10 @@ namespace CanoePoloLeagueOrganiserXamarin
             base.OnCreate(savedInstanceState);
 
             // ioc this later
-            var games = new GamesSerialiser().DeSerialise(savedInstanceState.GetString("games", "[]"));
+            var games = (savedInstanceState == null)
+                ? new List<Game>()
+                : new GamesSerialiser().DeSerialise(savedInstanceState.GetString("games", "[]"));
 
-            // Create your application here
-            //var games = new List<Game> {
-            //    new Game("castle", "battersea"),
-            //    new Game("castle", "ulu"),
-            //    new Game("castle", "braintree"),
-            //    new Game("castle", "avon"),
-            //    new Game("castle", "blackwater"),
-            //    new Game("castle", "letchworth"),
-            //    new Game("castle", "ulu"),
-            //    new Game("braintree", "avon"),
-            //    new Game("blackwater", "letchworth"),
-            //};
             SetContentView(Resource.Layout.Games);
 
             OptimiseButton = FindViewById<Button>(Resource.Id.Optimise);
@@ -78,12 +68,16 @@ namespace CanoePoloLeagueOrganiserXamarin
                     OptimiseButton.Enabled = (this.GameListAdapter.Games.Count > 2);
         }
 
-        private void AddGame(object sender, EventArgs e)
+        void AddGame(object sender, EventArgs e)
         {
             GameListAdapter.AddGame(homeTeam: HomeTeamEntry.Text, awayTeam: AwayTeamEntry.Text);
+
+            HomeTeamEntry.Text = "";
+            AwayTeamEntry.Text = "";
+            HomeTeamEntry.RequestFocus();
         }
 
-        private void Optimise(object sender, EventArgs e)
+        void Optimise(object sender, EventArgs e)
         {
             var gameOrder = new TournamentDayCalculator(GameListAdapter.Games, new TenSecondPragmatiser()).CalculateGameOrder();
 
