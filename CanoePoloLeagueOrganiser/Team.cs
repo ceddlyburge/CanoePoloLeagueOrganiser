@@ -18,7 +18,7 @@ namespace CanoePoloLeagueOrganiser
         public override bool Equals(object  obj)
         {
             if (obj is Team)
-                return (obj as Team).Name == Name;
+                return (obj as Team).Name.Equals(Name, StringComparison.CurrentCultureIgnoreCase);
 
             return false;
         }
