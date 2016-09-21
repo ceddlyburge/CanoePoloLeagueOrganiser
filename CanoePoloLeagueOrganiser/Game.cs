@@ -14,7 +14,7 @@ namespace CanoePoloLeagueOrganiser
         {
             Contract.Requires(homeTeam != null);
             Contract.Requires(awayTeam != null);
-            Contract.Requires(homeTeam != awayTeam);
+            Contract.Requires(!homeTeam.Equals(awayTeam));
 
             this.HomeTeam = homeTeam;
             this.AwayTeam = awayTeam;

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -23,12 +23,12 @@ namespace CanoePoloLeagueOrganiserXamarin
         AutoCompleteTextView HomeTeamEntry;
         AutoCompleteTextView AwayTeamEntry;
         TextView Help;
+        IGameOrderCalculator GameOrderCalculator;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            // ioc this later
             var games = (savedInstanceState == null)
                 ? new List<Game>()
                 : new GamesSerialiser().DeSerialise(savedInstanceState.GetString("games", "[]"));
@@ -46,9 +46,12 @@ namespace CanoePoloLeagueOrganiserXamarin
             AddButton = FindViewById<Android.Widget.Button>(Resource.Id.Add);
             AddButton.Click += AddGame;
 
+            // I might be able to ioc this if I move to xamarin forms
+            this.GameOrderCalculator = new GameOrderCalculator(new TenSecondPragmatiser());
             GameList = FindViewById<Android.Widget.ListView>(Resource.Id.Games);
-            GameListAdapter = new GameListAdapter(games, this, new GameOrderCalculator(new TenSecondPragmatiser()));
+            GameListAdapter = new GameListAdapter(games, this, this.GameOrderCalculator);
             GameList.Adapter = GameListAdapter;
+            // I think this would work with the x platform xamarin forms, but i am using android specific stuff at the moment
             //var deleteAction = new MenuItem { Text = "Delete", IsDestructive = true };
             // deleteAction.SetBinding (MenuItem.CommandParameterProperty, new Binding (.));
             // deleteAction.Clicked + async (sender, e) => {
@@ -85,7 +88,7 @@ namespace CanoePoloLeagueOrganiserXamarin
 
         void Optimise(object sender, EventArgs e)
         {
-            var gameOrder = new TournamentDayCalculator(GameListAdapter.Games, new TenSecondPragmatiser()).CalculateGameOrder();
+            var gameOrder = this.GameOrderCalculator.OptimiseGameOrder(GameListAdapter.Games);
 
             // the game list adapter will callback the update method with this optimisation method, not sure if this is the best way of doing it.
             GameListAdapter.SetGames(gameOrder.OptimisedGameOrder.GameOrder, gameOrder.OptimisationMessage);
