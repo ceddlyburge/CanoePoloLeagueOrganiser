@@ -26,12 +26,15 @@ namespace CanoePoloLeagueOrganiserXamarin
     {
         readonly List<Game> games;
         readonly GamesActivity context;
+        readonly IGameOrderCalculator gameOrderCalculator;
 
-        public GameListAdapter(List<Game> games, GamesActivity context)
+        public GameListAdapter(List<Game> games, GamesActivity context, IGameOrderCalculator gameOrderCalculator)
         {
+            Contract.Requires(gameOrderCalculator != null);
             Contract.Requires(games != null);
             Contract.Requires(context != null);
 
+            this.gameOrderCalculator = gameOrderCalculator;
             this.context = context;
             this.games = new List<Game>();
             CalculateOriginalGameOrderAndSetGames(games);
@@ -47,6 +50,8 @@ namespace CanoePoloLeagueOrganiserXamarin
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
+            Contract.Ensures(Contract.Result<View>() != null);
+
             var game = this.games[position];
 
             var view = convertView ?? context.LayoutInflater.Inflate(Resource.Layout.GameRow, null);
@@ -107,9 +112,7 @@ namespace CanoePoloLeagueOrganiserXamarin
 
         internal void CalculateOriginalGameOrderAndSetGames(IReadOnlyList<Game> games)
         {
-            // creating this calculator doesn't seem very good ioc wise. hmmmm.
-            var calculator = new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateOriginalGameOrder();
-            SetGames(calculator.GameOrder, "");
+            SetGames(gameOrderCalculator.CalculateOriginalGameOrder(games).GameOrder, "");
         }
 
         internal void SetGames(IReadOnlyList<Game> newGames, string optimisationExplanation)
