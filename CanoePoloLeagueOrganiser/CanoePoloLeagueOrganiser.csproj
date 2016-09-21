@@ -41,9 +41,11 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
     <Compile Include="GameOrderCalculation.cs" />
+    <Compile Include="GameOrderCalculator.cs" />
     <Compile Include="GameOrderCandidate.cs" />
     <Compile Include="GameOrderStat.cs" />
     <Compile Include="GamesSerialiser.cs" />
+    <Compile Include="IGameOrderCalculator.cs" />
     <Compile Include="IPragmatiser.cs" />
     <Compile Include="MarkConsecutiveGames.cs" />
     <Compile Include="Permupotater.cs" />

@@ -13,7 +13,7 @@
         android:minHeight="0px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/OptimisationExplanation" />
+        android:id="@+id/Help" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"

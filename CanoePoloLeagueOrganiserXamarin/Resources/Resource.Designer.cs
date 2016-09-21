@@ -78,14 +78,14 @@ namespace CanoePoloLeagueOrganiserXamarin
 			// aapt resource value: 0x7f050010
 			public const int Games = 2131034128;
 			
+			// aapt resource value: 0x7f05000c
+			public const int Help = 2131034124;
+			
 			// aapt resource value: 0x7f050002
 			public const int HomeTeam = 2131034114;
 			
 			// aapt resource value: 0x7f050011
 			public const int Matches = 2131034129;
-			
-			// aapt resource value: 0x7f05000c
-			public const int OptimisationExplanation = 2131034124;
 			
 			// aapt resource value: 0x7f05000b
 			public const int Optimise = 2131034123;
