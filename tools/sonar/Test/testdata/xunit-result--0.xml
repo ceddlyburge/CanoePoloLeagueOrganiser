@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="MD_cieExportLibraryTest" tests="4" failures="0" disabled="1" errors="0" time="0.010000" filename="C:\Projects\external\sonar-cxx-msbuild-tasks\BuildDrop\Test\testdata\file1_test.cpp">
-   <testcase name="ExportLibraryCreatesLibrary2Database" status="run" time="0.002000" classname="MD_cieExportLibraryTest"  filename="C:\Projects\external\sonar-cxx-msbuild-tasks\BuildDrop\Test\testdata\file1_test.cpp"/>
-   <testcase name="ExportLibraryDestroysLibrary2Database" status="run" time="0.003000" classname="MD_cieExportLibraryTest"  filename="C:\Projects\external\sonar-cxx-msbuild-tasks\BuildDrop\Test\testdata\file1_test.cpp"/>
-   <testcase name="ExportLibrarySavesDbToFile" status="run" time="0.005000" classname="MD_cieExportLibraryTest"  filename="C:\Projects\external\sonar-cxx-msbuild-tasks\BuildDrop\Test\testdata\file1_test.cpp"/>
-   <testcase name="DISABLED_ExportLibraryCopiesJointFromLibrary" status="notrun" time="0.000000" classname="MD_cieExportLibraryTest"  filename=""/>
-</testsuite>
