@@ -43,7 +43,6 @@
     <Compile Include="GameOrderCalculation.cs" />
     <Compile Include="GameOrderCalculator.cs" />
     <Compile Include="GameOrderCandidate.cs" />
-    <Compile Include="GameOrderStat.cs" />
     <Compile Include="GamesSerialiser.cs" />
     <Compile Include="IGameOrderCalculator.cs" />
     <Compile Include="IPragmatiser.cs" />
