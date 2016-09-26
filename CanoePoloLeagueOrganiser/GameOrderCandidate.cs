@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CanoePoloLeagueOrganiser
 {
-    public class GameOrderCandidate : IComparable
+    public class GameOrderCandidate
     {
         public IReadOnlyList<Game> GameOrder { get; }
         public uint OccurencesOfTeamsPlayingConsecutiveMatches { get; }
