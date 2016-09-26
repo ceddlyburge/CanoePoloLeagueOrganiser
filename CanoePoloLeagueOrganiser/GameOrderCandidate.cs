@@ -24,13 +24,5 @@ namespace CanoePoloLeagueOrganiser
             this.MaxConsecutiveMatchesByAnyTeam = maxConsecutiveMatchesByAnyTeam;
             this.GamesNotPlayedBetweenFirstAndLast = gamesNotPlayedBetweenFirstAndLast;
         }
-
-        public int CompareTo(object other)
-        {
-            Contract.Requires(other != null);
-            Contract.Requires(other is GameOrderCandidate);
-
-            return (int) this.OccurencesOfTeamsPlayingConsecutiveMatches - (int) (other as GameOrderCandidate).OccurencesOfTeamsPlayingConsecutiveMatches;
-        }
     }
 }
