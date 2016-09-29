@@ -12,13 +12,11 @@ namespace CanoePoloLeagueOrganiserTests
     // - the amount of games that teams don't play between their first and last games should be minimised
     public class TournamentDayTests
     {
-        const int ANY_INT = 3; // if used the value of this variable should not affect the result of a test
-
         [Fact]
         public void OneInputGameShouldResultInThisGameBeingPlayed()
         {
             var games = new List<Game> {
-                 new Game("Castle", "Battersea"),
+                 new Game("Castle", "Battersea")
              };
 
             var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
@@ -32,7 +30,7 @@ namespace CanoePoloLeagueOrganiserTests
             var games = new List<Game> {
                  new Game("Castle", "Battersea"),
                  new Game("Castle", "Avon"),
-                 new Game("Ulu", "Letchworth"),
+                 new Game("Ulu", "Letchworth")
              };
 
             var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
@@ -47,7 +45,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Ulu", "Letchworth"),
                  new Game("Battersea", "Letchworth"),
                  new Game("Castle", "Avon"),
-                 new Game("Castle", "Avon"),
+                 new Game("Castle", "Avon")
              };
 
             var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder().OptimisedGameOrder;
@@ -64,7 +62,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Castle", "Battersea"),
                  new Game("Castle", "Letchworth"),
                  new Game("Ulu", "Castle"),
-                 new Game("Battersea", "Letchworth"),
+                 new Game("Battersea", "Letchworth")
              };
 
             var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
@@ -80,7 +78,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Castle", "Ulu"),
                  new Game("Ulu", "Castle"),
                  new Game("Ulu", "Letchworth"),
-                 new Game("Letchworth", "Castle"),
+                 new Game("Letchworth", "Castle")
              };
 
             var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
@@ -99,7 +97,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Blackwater", "VKC"),
                  new Game("Battersea", "Ulu"),
                  new Game("Braintree", "Letchworth"),
-                 new Game("Castle", "Ulu"),
+                 new Game("Castle", "Ulu")
              };
 
             var gameOrder = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
@@ -141,7 +139,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Battersea", "Ulu"),
                  new Game("Braintree", "Letchworth"),
                  new Game("Castle", "Ulu"),
-                 new Game("Avon", "VKC"),
+                 new Game("Avon", "VKC")
              };
 
             var gameOrder = new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder();
@@ -176,7 +174,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Castle", "16"),
                  new Game("Castle", "17"),
                  new Game("Castle", "18"),
-                 new Game("Castle", "19"),
+                 new Game("Castle", "19")
              };
 
             var gameOrder = new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder();
@@ -200,7 +198,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Braintree", "Letchworth"),
                  new Game("Castle", "Ulu"),
                  new Game("Avon", "VKC"),
-                 new Game("Braintree", "Ulu"),
+                 new Game("Braintree", "Ulu")
              };
 
             new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
@@ -214,7 +212,7 @@ namespace CanoePoloLeagueOrganiserTests
 
             foreach (var game in gameOrder)
             {
-                bool playingInThisGame = game.Playing(team);
+                var playingInThisGame = game.Playing(team);
                 if (playingInThisGame && playedInLastGame) return true;
                 playedInLastGame = playingInThisGame;
             }
