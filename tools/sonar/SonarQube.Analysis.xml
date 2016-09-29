@@ -21,7 +21,7 @@
   <Property Name="sonar.host.url">https://sonarqube.com/</Property>
   <Property Name="sonar.login">ba1634038ebd1b45bbc70822d60aac741c1d987f</Property>
   <Property Name="sonar.password"></Property>
-  
+  <Property Name="sonar.verbose">true</Property>  
 
   <!-- Required only for versions of SonarQube prior to 5.2 -->
   <!--
