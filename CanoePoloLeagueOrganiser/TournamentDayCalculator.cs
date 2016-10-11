@@ -62,6 +62,9 @@ namespace CanoePoloLeagueOrganiser
 
         bool Callback(Game[] games)
         {
+            if (this.permutationCount++ % 1000 == 0)
+                return this.Pragmatiser.AcceptableSolution(DateTime.Now.Subtract(this.timeStartedCalculation), this.lowestOccurencesOfTeamsPlayingConsecutiveMatches) == false;
+
             this.addCandidate = false;
 
             this.maxConsecutiveMatchesByAnyTeam = MaxConsecutiveMatchesByAnyTeam(games);
@@ -95,11 +98,6 @@ namespace CanoePoloLeagueOrganiser
             // can optimise by only MarkTeamsPlayingConsecutively on the best result but do this later. Actually not many candidates get added so it may not be worth it
             this.Candidates.Add(new GameOrderCandidate(this.Marker.MarkTeamsPlayingConsecutively(games), this.occurencesOfTeamsPlayingConsecutiveMatches, this.maxConsecutiveMatchesByAnyTeam, this.gamesNotPlayedBetweenFirstAndLast));
 
-            if (this.permutationCount % 1000 == 0)
-            {
-                return this.Pragmatiser.AcceptableSolution(DateTime.Now.Subtract(this.timeStartedCalculation), this.lowestOccurencesOfTeamsPlayingConsecutiveMatches) == false;
-            }
-
             return true;
         }
 
@@ -113,12 +111,24 @@ namespace CanoePoloLeagueOrganiser
             timeStartedCalculation = DateTime.Now;
 
             // generate a list of all possible game orders
-            var perfectOptimistaion = new Permupotater().EnumeratePermutations<Game>(this.Games.ToArray(), Callback);
+            var perfectOptimistaion = new Permupotater<Game>().EnumeratePermutations(this.Games.ToArray(), Callback, CurtailWhenATeamPlaysTwiceInARow);
 
             // sort by bestness and return the best one
             var orderedCandidates = this.Candidates.OrderBy(c => c.MaxConsecutiveMatchesByAnyTeam).ThenBy(c => c.OccurencesOfTeamsPlayingConsecutiveMatches).ThenBy(c => c.GamesNotPlayedBetweenFirstAndLast).ToList();
 
             return new GameOrderCalculation(optimisedGameOrder: orderedCandidates.First(), originalGameOrder: CalculateOriginalGameOrder(), perfectOptimisation: perfectOptimistaion, optimisationMessage: this.Pragmatiser.Message);
+        }
+
+        // the permupotater will call the curtailment function after every item in the permutation is fixed, so we don't need to analyse all the games in the permutation for teams playing twice in a row, and can instead just analyse the last two.
+        bool CurtailWhenATeamPlaysTwiceInARow(int[] gameIndexes, int length)
+        {
+            if (length < 1)
+                return false;
+
+            var currentGame = this.Games[gameIndexes[length]];
+            var previousGame = this.Games[gameIndexes[length - 1]];
+
+            return (currentGame.Playing(previousGame.HomeTeam) || currentGame.Playing(previousGame.AwayTeam));
         }
 
         public GameOrderCandidate CalculateOriginalGameOrder()

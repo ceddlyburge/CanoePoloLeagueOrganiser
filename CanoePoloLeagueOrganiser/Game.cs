@@ -20,7 +20,6 @@ namespace CanoePoloLeagueOrganiser
             this.AwayTeam = awayTeam;
         }
 
-        [JsonConstructor]
         public Game(string homeTeam, string awayTeam) : this(new Team(homeTeam), new Team(awayTeam))
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(homeTeam));
@@ -46,6 +45,11 @@ namespace CanoePoloLeagueOrganiser
         public bool Playing(string team)
         {
             return (HomeTeam.Name == team || AwayTeam.Name == team);
+        }
+
+        public override string ToString()
+        {
+            return $"{HomeTeam.Name} v {AwayTeam.Name}";
         }
 
     }

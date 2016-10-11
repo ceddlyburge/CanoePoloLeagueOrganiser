@@ -1,16 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CanoePoloLeagueOrganiser
 {
-    public class Permupotater
+    public class Permupotater<T>
     {
-        public bool EnumeratePermutations<T>(T[] items, Func<T[], bool> callback)
+        Func<int[], int, bool> Curtail { get; set; }
+        T[] Items { get; set; }
+
+        public bool EnumeratePermutations(T[] items, Func<T[], bool> callback, Func<int[], int, bool> curtail)
         {
+            Contract.Requires(callback != null);
+            Contract.Requires(items != null);
+            Contract.Requires(curtail != null);
+
+            Curtail = curtail;
+            Items = items;
+
             int length = items.Length;
 
             var work = new int[length];
@@ -30,36 +41,37 @@ namespace CanoePoloLeagueOrganiser
 
         public IEnumerable<int[]> GetIntPermutations(int[] index, int offset, int len)
         {
-            switch (len)
+            if (Curtail(index, offset - 1) == false)
             {
-                case 1:
-                    yield return index;
-                    break;
-                case 2:
-                    yield return index;
-                    Swap(index, offset, offset + 1);
-                    yield return index;
-                    Swap(index, offset, offset + 1);
-                    break;
-                default:
-                    foreach (var result in GetIntPermutations(index, offset + 1, len - 1))
-                    {
-                        yield return result;
-                    }
-                    for (var i = 1; i < len; i++)
-                    {
-                        Swap(index, offset, offset + i);
+                switch (len)
+                {
+                    case 1:
+                        yield return index;
+                        break;
+                    case 2:
+                        if (Curtail(index, offset) == false && (Curtail(index, offset + 1) == false))
+                            yield return index;
+                        Swap(index, offset, offset + 1);
+                        if (Curtail(index, offset) == false && (Curtail(index, offset + 1) == false))
+                            yield return index;
+                        Swap(index, offset, offset + 1);
+                        break;
+                    default:
                         foreach (var result in GetIntPermutations(index, offset + 1, len - 1))
-                        {
                             yield return result;
+                        for (var i = 1; i < len; i++)
+                        {
+                            Swap(index, offset, offset + i);
+                            foreach (var result in GetIntPermutations(index, offset + 1, len - 1))
+                                yield return result;
+                            Swap(index, offset, offset + i);
                         }
-                        Swap(index, offset, offset + i);
-                    }
-                    break;
+                        break;
+                }
             }
         }
 
-        private static void Swap(IList<int> index, int offset1, int offset2)
+        private static void Swap(int[] index, int offset1, int offset2)
         {
             var temp = index[offset1];
             index[offset1] = index[offset2];

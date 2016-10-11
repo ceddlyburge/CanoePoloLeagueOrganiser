@@ -3,6 +3,7 @@ using CanoePoloLeagueOrganiser;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
+using static System.Math;
 
 namespace CanoePoloLeagueOrganiserTests
 {
@@ -11,47 +12,130 @@ namespace CanoePoloLeagueOrganiserTests
         [Fact]
         public void OneItem()
         {
-            string[] list = { "0" };
-            var permutations = new List<String[]>();
+            int[] list = { 0 };
+            var permutations = new List<String>();
 
-            new Permupotater().EnumeratePermutations<String>(list, s => { permutations.Add((string[])s.Clone()); return true;  } );
+            new Permupotater<int>().EnumeratePermutations(
+                list
+                , AddStringPermuation(permutations)
+                , NoCurtailment);
 
             Assert.Equal(1, permutations.Count);
-            Assert.Equal("0", permutations.First().First());
+            Assert.Equal("0", permutations[0]);
         }
 
         [Fact]
         public void TwoItems()
         {
-            string[] list = { "0", "1" };
-            var permutations = new List<String[]>();
+            int[] list = { 0, 1 };
+            var permutations = new List<String>();
 
-            new Permupotater().EnumeratePermutations<String>(list, s => { permutations.Add((string []) s.Clone()); return true; });
+            new Permupotater<int>().EnumeratePermutations(
+                list
+                , AddStringPermuation(permutations)
+                , NoCurtailment);
 
             Assert.Equal(2, permutations.Count);
-            Assert.Equal("0", permutations.First()[0]);
-            Assert.Equal("1", permutations.First()[1]);
-            Assert.Equal("1", permutations.Last()[0]);
-            Assert.Equal("0", permutations.Last()[1]);
+            Assert.True(permutations.Contains("01"));
+            Assert.True(permutations.Contains("10"));
         }
 
         [Fact]
         public void ThreeItems()
         {
-            string[] list = { "0", "1", "2" };
-            var permutations = new List<String[]>();
+            int[] list = { 0, 1, 2 };
+            var permutations = new List<String>();
 
-            new Permupotater().EnumeratePermutations<String>(list, s => { permutations.Add((string[])s.Clone()); return true; });
+            new Permupotater<int>().EnumeratePermutations(
+                list
+                , AddStringPermuation(permutations)
+                , NoCurtailment);
 
-            var flattenedPermutations = permutations.Select(p => p.Aggregate("", (s, l) => s + l)).ToList();
+            Assert.Equal(6, permutations.Count);
+            Assert.True(permutations.Contains("012"));
+            Assert.True(permutations.Contains("021"));
+            Assert.True(permutations.Contains("102"));
+            Assert.True(permutations.Contains("120"));
+            Assert.True(permutations.Contains("201"));
+            Assert.True(permutations.Contains("210"));
+        }
 
-            Assert.Equal(6, flattenedPermutations.Count);
-            Assert.True(flattenedPermutations.Contains("012"));
-            Assert.True(flattenedPermutations.Contains("021"));
-            Assert.True(flattenedPermutations.Contains("102"));
-            Assert.True(flattenedPermutations.Contains("120"));
-            Assert.True(flattenedPermutations.Contains("201"));
-            Assert.True(flattenedPermutations.Contains("210"));
+        [Fact]
+        public void CurtailSinglePermutation()
+        {
+            int[] list = { 0 };
+            var permutations = new List<string>();
+
+            // curtail all permutations 
+            new Permupotater<int>().EnumeratePermutations(
+                list
+                , AddStringPermuation(permutations)
+                , (items, length) => true);
+
+            Assert.Equal(0, permutations.Count);
+        }
+
+        [Fact]
+        public void CurtailOneOfTwoPermutations()
+        {
+            int[] list = { 0, 1 };
+            var permutations = new List<string>();
+
+            // curtail the 0 - 1 permutation
+            new Permupotater<int>().EnumeratePermutations(
+                list
+                , AddStringPermuation(permutations)
+                , (items, length) => (length == 1 && items[0] == 0 && items[1] == 1));
+
+            Assert.Equal(1, permutations.Count);
+            Assert.True(permutations.Contains("10"));
+        }
+
+        [Fact]
+        public void CurtailFiveOfSixPermutations()
+        {
+            int[] list = { 0, 1, 2 };
+            var permutations = new List<string>();
+
+            // curtail permutations that are not in ascending order
+            new Permupotater<int>().EnumeratePermutations(
+                list
+                , AddStringPermuation(permutations)
+                , (items, length) => (length > 0 && items[length] < items[length - 1]));
+
+            Assert.Equal(1, permutations.Count);
+            Assert.True(permutations.Contains("012"));
+        }
+
+        [Fact]
+        public void CurtailEnumerations()
+        {
+            int[] list = { 0, 1, 2, 3 };
+            var permutations = new List<string>();
+
+            // curtail any permutations where a number is within one of the previous number
+            new Permupotater<int>().EnumeratePermutations(
+                list
+                , AddStringPermuation(permutations)
+                , (items, length) => (length > 0 && Abs(items[length - 1] - items[length]) == 1) );
+
+            Assert.Equal(2, permutations.Count);
+            Assert.True(permutations.Contains("1302"));
+            Assert.True(permutations.Contains("2031"));
+        }
+
+        static Func<int[], bool> AddStringPermuation(List<string> permutations)
+        {
+            return i =>
+            {
+                permutations.Add(i.Aggregate("", (s, l) => s + l.ToString()));
+                return true;
+            };
+        }
+
+        static bool NoCurtailment(int[] items, int length)
+        {
+            return false;
         }
     }
 }

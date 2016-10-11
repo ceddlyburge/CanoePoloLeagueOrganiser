@@ -150,6 +150,35 @@ namespace CanoePoloLeagueOrganiserTests
             Assert.False(string.IsNullOrEmpty(gameOrder.OptimisationMessage));
         }
 
+        // This is an actual game order that I used. The ten second pragmatiser didn't work, I think because it took more than ten seconds to return the first result. It also didn't produce a very good solution, as it got stuck analysing a gazillion permutations that all started with clapham playing three times in a row. I want it to produce a good result within 10 seconds.
+        [Fact]
+        public void FourteenGamesNeedsToProduceAUsefulResult()
+        {
+            DateTime dateStarted = DateTime.Now;
+
+            var games = new List<Game> {
+                new Game("Clapham", "Surrey"),
+                new Game("Clapham", "ULU"),
+                new Game("Clapham", "Meridian"),
+                new Game("Blackwater", "Clapham"),
+                new Game("ULU", "Blackwater"),
+                new Game("Surrey", "Castle"),
+                new Game("ULU", "Meridian"),
+                new Game("Letchworth", "ULU"),
+                new Game("Castle", "Blackwater"),
+                new Game("Surrey", "Letchworth"),
+                new Game("Meridian", "Castle"),
+                new Game("Blackwater", "Letchworth"),
+                new Game("Meridian", "Surrey"),
+                new Game("Castle", "Letchworth")
+             };
+
+            var gameOrder = new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder();
+
+            Assert.True(DateTime.Now.Subtract(dateStarted) < TimeSpan.FromSeconds(11));
+            Assert.True(gameOrder.OptimisedGameOrder.MaxConsecutiveMatchesByAnyTeam == 0);
+        }
+
         [Fact]
         public void RespondWithSomethingWhenPermutationsGetOutOfHandAndNoGoodSolution()
         {
@@ -203,7 +232,7 @@ namespace CanoePoloLeagueOrganiserTests
 
             new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
 
-            // 10 games takes 5-7 seconds to run, this test is just here to make analysing optimisations easier
+            // 10 games takes 0.5 - 1 seconds to run, this test is just here to make analysing optimisations easier
         }
 
         private bool PlayingTwiceInARow(string team, IEnumerable<Game> gameOrder)
