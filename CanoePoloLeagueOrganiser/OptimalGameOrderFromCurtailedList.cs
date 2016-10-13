@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace CanoePoloLeagueOrganiser
 {
-    public class CalculatedOptimalGameOrderFromCurtailedList
+    public class OptimalGameOrderFromCurtailedList
     {
 
-        public CalculatedOptimalGameOrderFromCurtailedList(IReadOnlyList<Game> games, IPragmatiser pragmatiser, IPermupotater<Game> permupotater)
+        public OptimalGameOrderFromCurtailedList(IReadOnlyList<Game> games, IPragmatiser pragmatiser, IPermupotater<Game> permupotater)
         {
             Permupotater = permupotater;
             Contract.Requires(permupotater != null);

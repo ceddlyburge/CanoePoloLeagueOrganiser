@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace CanoePoloLeagueOrganiser
 {
-    public class CalculatedOptimalGameOrder : ICalculatedOptimalGameOrder
+    public class OptimalGameOrder : IOptimalGameOrder
     {
         readonly IPragmatiser pragmatiser;
 
-        public CalculatedOptimalGameOrder(IPragmatiser pragmatiser)
+        public OptimalGameOrder(IPragmatiser pragmatiser)
         {
             Contract.Requires(pragmatiser != null);
             this.pragmatiser = pragmatiser;
@@ -21,19 +21,19 @@ namespace CanoePoloLeagueOrganiser
         {
             Contract.Requires(games != null);
 
-            return new CalculatedOptimalGameOrderFromCurtailedList(games, pragmatiser, new Permupotater<Game>(games.ToArray(), new CurtailWhenATeamPlaysTwiceInARow(games).Curtail)).CalculateOriginalGameOrder();
+            return new OptimalGameOrderFromCurtailedList(games, pragmatiser, new Permupotater<Game>(games.ToArray(), new CurtailWhenATeamPlaysTwiceInARow(games).Curtail)).CalculateOriginalGameOrder();
         }
 
         public GameOrderCalculation OptimiseGameOrder(IReadOnlyList<Game> games)
         {
             Contract.Requires(games != null);
 
-            var gameOrderResult = new CalculatedOptimalGameOrderFromCurtailedList(games, pragmatiser, new Permupotater<Game>(games.ToArray(), new CurtailWhenATeamPlaysTwiceInARow(games).Curtail)).CalculateGameOrder();
+            var gameOrderResult = new OptimalGameOrderFromCurtailedList(games, pragmatiser, new Permupotater<Game>(games.ToArray(), new CurtailWhenATeamPlaysTwiceInARow(games).Curtail)).CalculateGameOrder();
 
             if (gameOrderResult.OptimisedGameOrder != null)
                 return gameOrderResult;
 
-            return new CalculatedOptimalGameOrderFromCurtailedList(games, pragmatiser, new Permupotater<Game>(games.ToArray(), NoCurtailment)).CalculateGameOrder();
+            return new OptimalGameOrderFromCurtailedList(games, pragmatiser, new Permupotater<Game>(games.ToArray(), NoCurtailment)).CalculateGameOrder();
         }
 
         bool NoCurtailment(int[] gameIndexes, int length)

@@ -26,9 +26,9 @@ namespace CanoePoloLeagueOrganiserXamarin
     {
         readonly List<Game> games;
         readonly GamesActivity context;
-        readonly ICalculatedOptimalGameOrder gameOrderCalculator;
+        readonly IOptimalGameOrder gameOrderCalculator;
 
-        public GameListAdapter(List<Game> games, GamesActivity context, ICalculatedOptimalGameOrder gameOrderCalculator)
+        public GameListAdapter(List<Game> games, GamesActivity context, IOptimalGameOrder gameOrderCalculator)
         {
             Contract.Requires(gameOrderCalculator != null);
             Contract.Requires(games != null);
