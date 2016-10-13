@@ -23,7 +23,7 @@ namespace CanoePoloLeagueOrganiserXamarin
         AutoCompleteTextView HomeTeamEntry;
         AutoCompleteTextView AwayTeamEntry;
         TextView Help;
-        IGameOrderCalculator GameOrderCalculator;
+        ICalculatedOptimalGameOrder GameOrderCalculator;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -47,7 +47,7 @@ namespace CanoePoloLeagueOrganiserXamarin
             AddButton.Click += AddGame;
 
             // I might be able to ioc this if I move to xamarin forms
-            this.GameOrderCalculator = new GameOrderCalculator(new TenSecondPragmatiser());
+            this.GameOrderCalculator = new CalculatedOptimalGameOrder(new TenSecondPragmatiser());
             GameList = FindViewById<Android.Widget.ListView>(Resource.Id.Games);
             GameListAdapter = new GameListAdapter(games, this, this.GameOrderCalculator);
             GameList.Adapter = GameListAdapter;

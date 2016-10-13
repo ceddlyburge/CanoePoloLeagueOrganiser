@@ -15,10 +15,7 @@ namespace CanoePoloLeagueOrganiserTests
             int[] list = { 0 };
             var permutations = new List<String>();
 
-            new Permupotater<int>().EnumeratePermutations(
-                list
-                , AddStringPermuation(permutations)
-                , NoCurtailment);
+            new Permupotater<int>(list, NoCurtailment).EnumeratePermutations(AddStringPermuation(permutations));
 
             Assert.Equal(1, permutations.Count);
             Assert.Equal("0", permutations[0]);
@@ -30,10 +27,7 @@ namespace CanoePoloLeagueOrganiserTests
             int[] list = { 0, 1 };
             var permutations = new List<String>();
 
-            new Permupotater<int>().EnumeratePermutations(
-                list
-                , AddStringPermuation(permutations)
-                , NoCurtailment);
+            new Permupotater<int>(list, NoCurtailment).EnumeratePermutations(AddStringPermuation(permutations));
 
             Assert.Equal(2, permutations.Count);
             Assert.True(permutations.Contains("01"));
@@ -46,10 +40,7 @@ namespace CanoePoloLeagueOrganiserTests
             int[] list = { 0, 1, 2 };
             var permutations = new List<String>();
 
-            new Permupotater<int>().EnumeratePermutations(
-                list
-                , AddStringPermuation(permutations)
-                , NoCurtailment);
+            new Permupotater<int>(list, NoCurtailment).EnumeratePermutations(AddStringPermuation(permutations));
 
             Assert.Equal(6, permutations.Count);
             Assert.True(permutations.Contains("012"));
@@ -67,10 +58,7 @@ namespace CanoePoloLeagueOrganiserTests
             var permutations = new List<string>();
 
             // curtail all permutations 
-            new Permupotater<int>().EnumeratePermutations(
-                list
-                , AddStringPermuation(permutations)
-                , (items, length) => true);
+            new Permupotater<int>(list, (items, length) => true).EnumeratePermutations(AddStringPermuation(permutations));
 
             Assert.Equal(0, permutations.Count);
         }
@@ -82,10 +70,10 @@ namespace CanoePoloLeagueOrganiserTests
             var permutations = new List<string>();
 
             // curtail the 0 - 1 permutation
-            new Permupotater<int>().EnumeratePermutations(
-                list
-                , AddStringPermuation(permutations)
-                , (items, length) => (length == 1 && items[0] == 0 && items[1] == 1));
+            new Permupotater<int>(
+                list, 
+                (items, length) => (length == 1 && items[0] == 0 && items[1] == 1)
+                ).EnumeratePermutations(AddStringPermuation(permutations));
 
             Assert.Equal(1, permutations.Count);
             Assert.True(permutations.Contains("10"));
@@ -98,10 +86,10 @@ namespace CanoePoloLeagueOrganiserTests
             var permutations = new List<string>();
 
             // curtail permutations that are not in ascending order
-            new Permupotater<int>().EnumeratePermutations(
+            new Permupotater<int>(
                 list
-                , AddStringPermuation(permutations)
-                , (items, length) => (length > 0 && items[length] < items[length - 1]));
+                , (items, length) => (length > 0 && items[length] < items[length - 1])
+                ).EnumeratePermutations(AddStringPermuation(permutations));
 
             Assert.Equal(1, permutations.Count);
             Assert.True(permutations.Contains("012"));
@@ -114,10 +102,10 @@ namespace CanoePoloLeagueOrganiserTests
             var permutations = new List<string>();
 
             // curtail any permutations where a number is within one of the previous number
-            new Permupotater<int>().EnumeratePermutations(
+            new Permupotater<int>(
                 list
-                , AddStringPermuation(permutations)
-                , (items, length) => (length > 0 && Abs(items[length - 1] - items[length]) == 1) );
+                , (items, length) => (length > 0 && Abs(items[length - 1] - items[length]) == 1)
+                ).EnumeratePermutations(AddStringPermuation(permutations));
 
             Assert.Equal(2, permutations.Count);
             Assert.True(permutations.Contains("1302"));

@@ -10,7 +10,7 @@ namespace CanoePoloLeagueOrganiserTests
     // - The maximum consecutive games a team plays should be minimised
     // - The number of times a team plays consecutive matches should be minimised
     // - the amount of games that teams don't play between their first and last games should be minimised
-    public class TournamentDayTests
+    public class CalculatedOptimalGameOrderFromCurtailedListTests
     {
         [Fact]
         public void OneInputGameShouldResultInThisGameBeingPlayed()
@@ -19,9 +19,19 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Castle", "Battersea")
              };
 
-            var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
+            var sut = new CalculatedOptimalGameOrderFromCurtailedList(games, new NoCompromisesPragmatiser(), EnumerateAllPermutations(games)).CalculateGameOrder();
 
             Assert.Equal(1, sut.OptimisedGameOrder.GameOrder.Count());
+        }
+
+        Permupotater<Game> EnumerateAllPermutations(List<Game> games)
+        {
+            return new Permupotater<Game>(games.ToArray(), NoCurtailment);
+        }
+
+        bool NoCurtailment(int[] gameIndexes, int length)
+        {
+            return false;
         }
 
         [Fact]
@@ -33,7 +43,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Ulu", "Letchworth")
              };
 
-            var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
+            var sut = new CalculatedOptimalGameOrderFromCurtailedList(games, new NoCompromisesPragmatiser(), EnumerateAllPermutations(games)).CalculateGameOrder();
 
             Assert.False(PlayingTwiceInARow("Castle", sut.OptimisedGameOrder.GameOrder));
         }
@@ -48,7 +58,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Castle", "Avon")
              };
 
-            var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder().OptimisedGameOrder;
+            var sut = new CalculatedOptimalGameOrderFromCurtailedList(games, new NoCompromisesPragmatiser(), EnumerateAllPermutations(games)).CalculateGameOrder().OptimisedGameOrder;
 
             Assert.False(PlayingTwiceInARow("Castle", sut.GameOrder));
             Assert.False(PlayingTwiceInARow("Letchworth", sut.GameOrder));
@@ -65,7 +75,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Battersea", "Letchworth")
              };
 
-            var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
+            var sut = new CalculatedOptimalGameOrderFromCurtailedList(games, new NoCompromisesPragmatiser(), EnumerateAllPermutations(games)).CalculateGameOrder();
 
             Assert.Equal((uint)2, sut.OptimisedGameOrder.MaxConsecutiveMatchesByAnyTeam);
         }
@@ -81,7 +91,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Letchworth", "Castle")
              };
 
-            var sut = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
+            var sut = new CalculatedOptimalGameOrderFromCurtailedList(games, new NoCompromisesPragmatiser(), EnumerateAllPermutations(games)).CalculateGameOrder();
 
             Assert.Equal((uint)2, sut.OptimisedGameOrder.MaxConsecutiveMatchesByAnyTeam);
         }
@@ -100,7 +110,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Castle", "Ulu")
              };
 
-            var gameOrder = new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
+            var gameOrder = new CalculatedOptimalGameOrderFromCurtailedList(games, new NoCompromisesPragmatiser(), EnumerateAllPermutations(games)).CalculateGameOrder();
 
             // hard to figure out, but this is the best order
             //new Game("Castle", Battersea), "Castle" 5, battersea 1
@@ -142,41 +152,12 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Avon", "VKC")
              };
 
-            var gameOrder = new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder();
+            var gameOrder = new CalculatedOptimalGameOrderFromCurtailedList(games, new TenSecondPragmatiser(), EnumerateAllPermutations(games)).CalculateGameOrder();
 
             // allow it an extra second to finish up or whatever. It actually finished in two seconds as it finds an acceptable solution earlier.
             Assert.True(DateTime.Now.Subtract(dateStarted) < TimeSpan.FromSeconds(11));
             Assert.False(gameOrder.PerfectOptimisation);
             Assert.False(string.IsNullOrEmpty(gameOrder.OptimisationMessage));
-        }
-
-        // This is an actual game order that I used. The ten second pragmatiser didn't work, I think because it took more than ten seconds to return the first result. It also didn't produce a very good solution, as it got stuck analysing a gazillion permutations that all started with clapham playing three times in a row. I want it to produce a good result within 10 seconds.
-        [Fact]
-        public void FourteenGamesNeedsToProduceAUsefulResult()
-        {
-            DateTime dateStarted = DateTime.Now;
-
-            var games = new List<Game> {
-                new Game("Clapham", "Surrey"),
-                new Game("Clapham", "ULU"),
-                new Game("Clapham", "Meridian"),
-                new Game("Blackwater", "Clapham"),
-                new Game("ULU", "Blackwater"),
-                new Game("Surrey", "Castle"),
-                new Game("ULU", "Meridian"),
-                new Game("Letchworth", "ULU"),
-                new Game("Castle", "Blackwater"),
-                new Game("Surrey", "Letchworth"),
-                new Game("Meridian", "Castle"),
-                new Game("Blackwater", "Letchworth"),
-                new Game("Meridian", "Surrey"),
-                new Game("Castle", "Letchworth")
-             };
-
-            var gameOrder = new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder();
-
-            Assert.True(DateTime.Now.Subtract(dateStarted) < TimeSpan.FromSeconds(11));
-            Assert.True(gameOrder.OptimisedGameOrder.MaxConsecutiveMatchesByAnyTeam == 0);
         }
 
         [Fact]
@@ -206,7 +187,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Castle", "19")
              };
 
-            var gameOrder = new TournamentDayCalculator(games, new TenSecondPragmatiser()).CalculateGameOrder();
+            var gameOrder = new CalculatedOptimalGameOrderFromCurtailedList(games, new TenSecondPragmatiser(), EnumerateAllPermutations(games)).CalculateGameOrder();
 
             // allow it an extra second to finish up or whatever. This test must take 10 seconds as there are non possible good solutions
             Assert.True(DateTime.Now.Subtract(dateStarted) < TimeSpan.FromSeconds(11));
@@ -230,7 +211,7 @@ namespace CanoePoloLeagueOrganiserTests
                  new Game("Braintree", "Ulu")
              };
 
-            new TournamentDayCalculator(games, new NoCompromisesPragmatiser()).CalculateGameOrder();
+            new CalculatedOptimalGameOrderFromCurtailedList(games, new NoCompromisesPragmatiser(), EnumerateAllPermutations(games)).CalculateGameOrder();
 
             // 10 games takes 0.5 - 1 seconds to run, this test is just here to make analysing optimisations easier
         }

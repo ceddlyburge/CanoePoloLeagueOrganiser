@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CanoePoloLeagueOrganiser
 {
-    public interface IGameOrderCalculator
+    public interface ICalculatedOptimalGameOrder
     {
         GameOrderCandidate CalculateOriginalGameOrder(IReadOnlyList<Game> games);
         GameOrderCalculation OptimiseGameOrder(IReadOnlyList<Game> games);

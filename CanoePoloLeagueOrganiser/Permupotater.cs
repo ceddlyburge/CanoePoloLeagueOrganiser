@@ -8,21 +8,25 @@ using System.Threading.Tasks;
 
 namespace CanoePoloLeagueOrganiser
 {
-    public class Permupotater<T>
+    public class Permupotater<T> : IPermupotater<T>
     {
-        Func<int[], int, bool> Curtail { get; set; }
-        T[] Items { get; set; }
+        Func<int[], int, bool> Curtail { get; }
+        T[] Items { get; }
 
-        public bool EnumeratePermutations(T[] items, Func<T[], bool> callback, Func<int[], int, bool> curtail)
+        public Permupotater(T[] items, Func<int[], int, bool> curtail)
         {
-            Contract.Requires(callback != null);
             Contract.Requires(items != null);
             Contract.Requires(curtail != null);
 
             Curtail = curtail;
             Items = items;
+        }
 
-            int length = items.Length;
+        public bool EnumeratePermutations(Func<T[], bool> callback)
+        {
+            Contract.Requires(callback != null);
+
+            int length = this.Items.Length;
 
             var work = new int[length];
             for (var i = 0; i < length; i++)
@@ -32,7 +36,7 @@ namespace CanoePoloLeagueOrganiser
 
             foreach (var index in GetIntPermutations(work, 0, length))
             {
-                for (var i = 0; i < length; i++) result[i] = items[index[i]];
+                for (var i = 0; i < length; i++) result[i] = this.Items[index[i]];
                 if (callback(result) == false) return false;
             }
 
@@ -71,7 +75,7 @@ namespace CanoePoloLeagueOrganiser
             }
         }
 
-        private static void Swap(int[] index, int offset1, int offset2)
+        static void Swap(int[] index, int offset1, int offset2)
         {
             var temp = index[offset1];
             index[offset1] = index[offset2];

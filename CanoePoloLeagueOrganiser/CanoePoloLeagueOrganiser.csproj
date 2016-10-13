@@ -39,19 +39,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CurtailWhenATeamPlaysTwiceInARow.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameOrderCalculation.cs" />
-    <Compile Include="GameOrderCalculator.cs" />
+    <Compile Include="CalculatedOptimalGameOrder.cs" />
     <Compile Include="GameOrderCandidate.cs" />
     <Compile Include="GamesSerialiser.cs" />
     <Compile Include="IGameOrderCalculator.cs" />
+    <Compile Include="IPermupotater.cs" />
     <Compile Include="IPragmatiser.cs" />
     <Compile Include="MarkConsecutiveGames.cs" />
     <Compile Include="Permupotater.cs" />
     <Compile Include="TenSecondPragmatiser.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TournamentDayCalculator.cs" />
+    <Compile Include="CalculatedOptimalGameOrderFromCurtailedList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
