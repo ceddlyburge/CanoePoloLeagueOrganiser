@@ -8,7 +8,7 @@ using Xunit;
 
 namespace CanoePoloLeagueOrganiserTests
 {
-    public class CalculatedOptimalGameOrderTests
+    public class OptimalGameOrderTests
     {
         // This is an actual game order that I used. The ten second pragmatiser didn't work, I think because it took more than ten seconds to return the first result. It also didn't produce a very good solution, as it got stuck analysing a gazillion permutations that all started with clapham playing three times in a row. I want it to produce a good result within 10 seconds.
         [Fact]
@@ -33,7 +33,7 @@ namespace CanoePoloLeagueOrganiserTests
                 new Game("Castle", "Letchworth")
              };
 
-            var gameOrder = new CalculatedOptimalGameOrder(new TenSecondPragmatiser()).OptimiseGameOrder(games);
+            var gameOrder = new OptimalGameOrder(new TenSecondPragmatiser()).OptimiseGameOrder(games);
 
             Assert.True(DateTime.Now.Subtract(dateStarted) < TimeSpan.FromSeconds(11));
             Assert.True(gameOrder.OptimisedGameOrder.OccurencesOfTeamsPlayingConsecutiveMatches == 0);

@@ -21,7 +21,11 @@ namespace CanoePoloLeagueOrganiser
         {
             Contract.Requires(games != null);
 
-            return new OptimalGameOrderFromCurtailedList(games, pragmatiser, new Permupotater<Game>(games.ToArray(), new CurtailWhenATeamPlaysTwiceInARow(games).Curtail)).CalculateOriginalGameOrder();
+            var gameOrderProperties = new CalculateGameOrderProperties();
+
+            return new GameOrderCandidate(
+                new MarkConsecutiveGames().MarkTeamsPlayingConsecutively(games),
+                gameOrderProperties.OccurencesOfTeamsPlayingConsecutiveMatches(games.ToArray()), gameOrderProperties.MaxConsecutiveMatchesByAnyTeam(games.ToArray()), gameOrderProperties.GamesNotPlayedBetweenFirstAndLast(games.ToArray()));
         }
 
         public GameOrderCalculation OptimiseGameOrder(IReadOnlyList<Game> games)
