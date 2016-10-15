@@ -21,8 +21,9 @@ namespace CanoePoloLeagueOrganiser
             this.Candidates = new List<GameOrderCandidate>();
             this.Marker = new MarkConsecutiveGames();
             this.Pragmatiser = pragmatiser;
-            CalculateGameOrderProperties = new CalculateGameOrderProperties();
-
+            MaxConsecutiveMatchesByAnyTeam = new MaxConsecutiveMatchesByAnyTeam();
+            GamesNotPlayedBetweenFirstAndLast = new GamesNotPlayedBetweenFirstAndLast(games.ToArray());
+            OccurencesOfTeamsPlayingConsecutiveMatches = new OccurencesOfTeamsPlayingConsecutiveMatches();
         }
 
         IPermupotater<Game> Permupotater { get; }
@@ -33,7 +34,9 @@ namespace CanoePoloLeagueOrganiser
         MarkConsecutiveGames Marker { get; }
 
         // used in Callback
-        CalculateGameOrderProperties CalculateGameOrderProperties { get; }
+        MaxConsecutiveMatchesByAnyTeam MaxConsecutiveMatchesByAnyTeam { get; }
+        GamesNotPlayedBetweenFirstAndLast GamesNotPlayedBetweenFirstAndLast { get; }
+        OccurencesOfTeamsPlayingConsecutiveMatches OccurencesOfTeamsPlayingConsecutiveMatches { get; }
         uint gamesNotPlayedBetweenFirstAndLast;
         uint maxConsecutiveMatchesByAnyTeam;
         uint occurencesOfTeamsPlayingConsecutiveMatches;
@@ -51,7 +54,7 @@ namespace CanoePoloLeagueOrganiser
 
             this.addCandidate = false;
 
-            this.maxConsecutiveMatchesByAnyTeam = CalculateGameOrderProperties.MaxConsecutiveMatchesByAnyTeam(games);
+            this.maxConsecutiveMatchesByAnyTeam = MaxConsecutiveMatchesByAnyTeam.Calculate(games);
             if (this.maxConsecutiveMatchesByAnyTeam < this.lowestMaxConsecutiveMatchesByAnyTeam)
             {
                 this.lowestMaxConsecutiveMatchesByAnyTeam = this.maxConsecutiveMatchesByAnyTeam;
@@ -60,7 +63,7 @@ namespace CanoePoloLeagueOrganiser
             else if (this.maxConsecutiveMatchesByAnyTeam > this.lowestMaxConsecutiveMatchesByAnyTeam)
                 return continuePermupotatering;
 
-            this.occurencesOfTeamsPlayingConsecutiveMatches = CalculateGameOrderProperties.OccurencesOfTeamsPlayingConsecutiveMatches(games);
+            this.occurencesOfTeamsPlayingConsecutiveMatches = OccurencesOfTeamsPlayingConsecutiveMatches.Calculate(games);
             if (this.occurencesOfTeamsPlayingConsecutiveMatches < this.lowestOccurencesOfTeamsPlayingConsecutiveMatches)
             {
                 this.lowestOccurencesOfTeamsPlayingConsecutiveMatches = this.occurencesOfTeamsPlayingConsecutiveMatches;
@@ -69,7 +72,7 @@ namespace CanoePoloLeagueOrganiser
             else if (this.addCandidate == false && this.occurencesOfTeamsPlayingConsecutiveMatches > this.lowestOccurencesOfTeamsPlayingConsecutiveMatches)
                 return continuePermupotatering;
 
-            this.gamesNotPlayedBetweenFirstAndLast = CalculateGameOrderProperties.GamesNotPlayedBetweenFirstAndLast(games);
+            this.gamesNotPlayedBetweenFirstAndLast = GamesNotPlayedBetweenFirstAndLast.Calculate(games);
             if (this.gamesNotPlayedBetweenFirstAndLast <= this.lowestGamesNotPlayedBetweenFirstAndLast)
             {
                 this.lowestGamesNotPlayedBetweenFirstAndLast = this.gamesNotPlayedBetweenFirstAndLast;
@@ -87,6 +90,8 @@ namespace CanoePoloLeagueOrganiser
 
         public GameOrderCalculation CalculateGameOrder()
         {
+            Contract.Ensures(Contract.Result<GameOrderCalculation>() != null);
+
             this.lowestMaxConsecutiveMatchesByAnyTeam = uint.MaxValue;
             this.lowestOccurencesOfTeamsPlayingConsecutiveMatches = uint.MaxValue;
             this.lowestGamesNotPlayedBetweenFirstAndLast = uint.MaxValue;
@@ -102,6 +107,5 @@ namespace CanoePoloLeagueOrganiser
 
             return new GameOrderCalculation(optimisedGameOrder: orderedCandidates.FirstOrDefault(), perfectOptimisation: perfectOptimistaion, optimisationMessage: this.Pragmatiser.Message);
         }
-
     }
 }

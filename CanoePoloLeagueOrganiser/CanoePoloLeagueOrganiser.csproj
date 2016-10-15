@@ -39,11 +39,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CalculateGameOrderProperties.cs" />
     <Compile Include="CurtailWhenATeamPlaysTwiceInARow.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameOrderCalculation.cs" />
-    <Compile Include="GameOrderProperties.cs" />
+    <Compile Include="GamesNotPlayedBetweenFirstAndLast.cs" />
+    <Compile Include="MaxConsecutiveMatchesByAnyTeam.cs" />
+    <Compile Include="OccurencesOfTeamsPlayingConsecutiveMatches.cs" />
     <Compile Include="OptimalGameOrder.cs" />
     <Compile Include="GameOrderCandidate.cs" />
     <Compile Include="GamesSerialiser.cs" />

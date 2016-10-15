@@ -17,16 +17,16 @@ namespace CanoePoloLeagueOrganiserXamarin
 {
     public class Dummy { }
 
-    internal class JavaGame : Java.Lang.Object
+    class JavaGame : Java.Lang.Object
     {
         public Game Game;
     }
 
     public class GameListAdapter : BaseAdapter<Game>
     {
-        readonly List<Game> games;
-        readonly GamesActivity context;
-        readonly IOptimalGameOrder gameOrderCalculator;
+        List<Game> GamesMutable { get; }
+        GamesActivity Context { get; }
+        IOptimalGameOrder GameOrderCalculator { get; }
 
         public GameListAdapter(List<Game> games, GamesActivity context, IOptimalGameOrder gameOrderCalculator)
         {
@@ -34,17 +34,17 @@ namespace CanoePoloLeagueOrganiserXamarin
             Contract.Requires(games != null);
             Contract.Requires(context != null);
 
-            this.gameOrderCalculator = gameOrderCalculator;
-            this.context = context;
-            this.games = new List<Game>();
+            GameOrderCalculator = gameOrderCalculator;
+            Context = context;
+            GamesMutable = new List<Game>();
             CalculateOriginalGameOrderAndSetGames(games);
         }
 
-        public IReadOnlyList<Game> Games => this.games;
+        public IReadOnlyList<Game> Games => GamesMutable;
 
-        public override Game this[int position] => this.games[position];
+        public override Game this[int position] => this.GamesMutable[position];
 
-        public override int Count => this.games.Count;
+        public override int Count => this.GamesMutable.Count;
 
         public override long GetItemId(int position) => position;
 
@@ -52,9 +52,9 @@ namespace CanoePoloLeagueOrganiserXamarin
         {
             Contract.Ensures(Contract.Result<View>() != null);
 
-            var game = this.games[position];
+            var game = GamesMutable[position];
 
-            var view = convertView ?? context.LayoutInflater.Inflate(Resource.Layout.GameRow, null);
+            var view = convertView ?? Context.LayoutInflater.Inflate(Resource.Layout.GameRow, null);
             if (convertView == null)
             {
                 view.FindViewById<Button>(Resource.Id.Remove).Click += (s, e) => DeleteGame((((s as Button).Tag) as JavaGame).Game);
@@ -78,50 +78,52 @@ namespace CanoePoloLeagueOrganiserXamarin
             return view;
         }
 
-        private void DeleteGame(Game game)
+        void DeleteGame(Game game)
         {
-            this.games.Remove(game);
-            CalculateOriginalGameOrderAndSetGames(this.games);
+            GamesMutable.Remove(game);
+            CalculateOriginalGameOrderAndSetGames(this.GamesMutable);
         }
 
-        private void MoveGameUp(Game game)
+        void MoveGameUp(Game game)
         {
-            Contract.Requires(this.games.IndexOf(game) > 0);
+#pragma warning disable S2692 // "IndexOf" checks should not be for positive numbers
+            Contract.Requires(GamesMutable.IndexOf(game) > 0);
+#pragma warning restore S2692 // "IndexOf" checks should not be for positive numbers
 
-            var index = this.games.IndexOf(game);
-            this.games.Remove(game);
-            this.games.Insert(index - 1, game);
-            CalculateOriginalGameOrderAndSetGames(this.games);
+            var index = GamesMutable.IndexOf(game);
+            GamesMutable.Remove(game);
+            GamesMutable.Insert(index - 1, game);
+            CalculateOriginalGameOrderAndSetGames(GamesMutable);
         }
 
-        private void MoveGameDown(Game game)
+        void MoveGameDown(Game game)
         {
-            Contract.Requires(this.games.IndexOf(game) + 1 < this.games.Count);
+            Contract.Requires(GamesMutable.IndexOf(game) + 1 < GamesMutable.Count);
 
-            var index = this.games.IndexOf(game);
-            this.games.Remove(game);
-            this.games.Insert(index + 1, game);
-            CalculateOriginalGameOrderAndSetGames(this.games);
+            var index = GamesMutable.IndexOf(game);
+            GamesMutable.Remove(game);
+            GamesMutable.Insert(index + 1, game);
+            CalculateOriginalGameOrderAndSetGames(GamesMutable);
         }
 
         internal void AddGame(string homeTeam, string awayTeam)
         {
-            this.games.Add(new Game(homeTeam, awayTeam));
-            CalculateOriginalGameOrderAndSetGames(this.games);
+            GamesMutable.Add(new Game(homeTeam, awayTeam));
+            CalculateOriginalGameOrderAndSetGames(GamesMutable);
         }
 
         internal void CalculateOriginalGameOrderAndSetGames(IReadOnlyList<Game> games)
         {
-            SetGames(gameOrderCalculator.CalculateOriginalGameOrder(games).GameOrder, "");
+            SetGames(GameOrderCalculator.CalculateOriginalGameOrder(games).GameOrder, "");
         }
 
         internal void SetGames(IReadOnlyList<Game> newGames, string optimisationExplanation)
         {
-            this.games.Clear();
-            this.games.AddRange(newGames);
+            GamesMutable.Clear();
+            GamesMutable.AddRange(newGames);
 
             NotifyDataSetChanged();
-            this.context.Update(optimisationExplanation);
+            Context.Update(optimisationExplanation);
         }
     }
 }

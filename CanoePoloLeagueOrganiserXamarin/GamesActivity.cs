@@ -16,10 +16,8 @@ namespace CanoePoloLeagueOrganiserXamarin
     [Activity(Label = "Optimise Game Order", MainLauncher = true, Icon = "@drawable/canoe_polo_ball")]
     public class GamesActivity : Activity
     {
-        Android.Widget.ListView GameList;
         GameListAdapter GameListAdapter;
         Android.Widget.Button OptimiseButton;
-        Android.Widget.Button AddButton;
         AutoCompleteTextView HomeTeamEntry;
         AutoCompleteTextView AwayTeamEntry;
         TextView Help;
@@ -43,14 +41,14 @@ namespace CanoePoloLeagueOrganiserXamarin
 
             HomeTeamEntry = FindViewById<AutoCompleteTextView>(Resource.Id.HomeTeam);
             AwayTeamEntry = FindViewById<AutoCompleteTextView>(Resource.Id.AwayTeam);
-            AddButton = FindViewById<Android.Widget.Button>(Resource.Id.Add);
-            AddButton.Click += AddGame;
+            var addButton = FindViewById<Android.Widget.Button>(Resource.Id.Add);
+            addButton.Click += AddGame;
 
             // I might be able to ioc this if I move to xamarin forms
             this.GameOrderCalculator = new OptimalGameOrder(new TenSecondPragmatiser());
-            GameList = FindViewById<Android.Widget.ListView>(Resource.Id.Games);
+            var gameList = FindViewById<Android.Widget.ListView>(Resource.Id.Games);
             GameListAdapter = new GameListAdapter(games, this, this.GameOrderCalculator);
-            GameList.Adapter = GameListAdapter;
+            gameList.Adapter = GameListAdapter;
             // I think this would work with the x platform xamarin forms, but i am using android specific stuff at the moment
             //var deleteAction = new MenuItem { Text = "Delete", IsDestructive = true };
             // deleteAction.SetBinding (MenuItem.CommandParameterProperty, new Binding (.));
