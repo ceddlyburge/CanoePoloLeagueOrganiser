@@ -38,5 +38,21 @@ namespace CanoePoloLeagueOrganiserTests
             Assert.True(DateTime.Now.Subtract(dateStarted) < TimeSpan.FromSeconds(11));
             Assert.True(gameOrder.OptimisedGameOrder.OccurencesOfTeamsPlayingConsecutiveMatches == 0);
         }
+
+        [Fact]
+        public void NoSolutionAvailableWithNoTeamsPlayingConsecutively()
+        {
+            var games = new List<Game> {
+                 new Game("Castle", "Battersea"),
+                 new Game("Castle", "Letchworth"),
+                 new Game("Ulu", "Castle"),
+                 new Game("Battersea", "Letchworth")
+             };
+
+            var gameOrder = new OptimalGameOrder(new NoCompromisesPragmatiser()).OptimiseGameOrder(games);
+
+            Assert.Equal((uint)2, gameOrder.OptimisedGameOrder.MaxConsecutiveMatchesByAnyTeam);
+        }
+
     }
 }

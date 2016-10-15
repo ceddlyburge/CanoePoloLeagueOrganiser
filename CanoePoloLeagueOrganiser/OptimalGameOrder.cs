@@ -19,6 +19,7 @@ namespace CanoePoloLeagueOrganiser
 
         public GameOrderCandidate CalculateOriginalGameOrder(IReadOnlyList<Game> games)
         {
+            Contract.Ensures(Contract.Result<GameOrderCandidate>() != null);
             Contract.Requires(games != null);
 
             return new GameOrderCandidate(
@@ -28,14 +29,15 @@ namespace CanoePoloLeagueOrganiser
 
         public GameOrderCalculation OptimiseGameOrder(IReadOnlyList<Game> games)
         {
+            Contract.Ensures(Contract.Result<GameOrderCalculation>() != null);
             Contract.Requires(games != null);
 
-            var gameOrderResult = new OptimalGameOrderFromCurtailedList(games, pragmatiser, new Permupotater<Game>(games.ToArray(), new CurtailWhenATeamPlaysTwiceInARow(games).Curtail)).CalculateGameOrder();
+            var gameOrder = new OptimalGameOrderFromCurtailedList(games, pragmatiser, new Permupotater<Game>(games.ToArray(), new CurtailWhenATeamPlaysTwiceInARow(games).Curtail)).CalculateGameOrder();
 
-            if (gameOrderResult.OptimisedGameOrder != null)
-                return gameOrderResult;
+            if (gameOrder.OptimisedGameOrder == null)
+                gameOrder = new OptimalGameOrderFromCurtailedList(games, pragmatiser, new Permupotater<Game>(games.ToArray(), NoCurtailment)).CalculateGameOrder();
 
-            return new OptimalGameOrderFromCurtailedList(games, pragmatiser, new Permupotater<Game>(games.ToArray(), NoCurtailment)).CalculateGameOrder();
+            return new GameOrderCalculation(gameOrder.OptimisedGameOrder, gameOrder.PerfectOptimisation, gameOrder.OptimisationMessage);
         }
 
         bool NoCurtailment(int[] gameIndexes, int length)

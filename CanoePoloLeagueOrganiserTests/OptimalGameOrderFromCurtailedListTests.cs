@@ -24,16 +24,6 @@ namespace CanoePoloLeagueOrganiserTests
             Assert.Equal(1, sut.OptimisedGameOrder.GameOrder.Count());
         }
 
-        Permupotater<Game> EnumerateAllPermutations(List<Game> games)
-        {
-            return new Permupotater<Game>(games.ToArray(), NoCurtailment);
-        }
-
-        bool NoCurtailment(int[] gameIndexes, int length)
-        {
-            return false;
-        }
-
         [Fact]
         public void CastleShouldNotPlayTwiceInARow()
         {
@@ -213,10 +203,10 @@ namespace CanoePoloLeagueOrganiserTests
 
             new OptimalGameOrderFromCurtailedList(games, new NoCompromisesPragmatiser(), EnumerateAllPermutations(games)).CalculateGameOrder();
 
-            // 10 games takes 0.5 - 1 seconds to run, this test is just here to make analysing optimisations easier
+            // 10 games takes 5 - 6 seconds to run with no curtailment, this test is just here to make analysing optimisations easier
         }
 
-        private bool PlayingTwiceInARow(string team, IEnumerable<Game> gameOrder)
+        bool PlayingTwiceInARow(string team, IEnumerable<Game> gameOrder)
         {
             bool playedInLastGame = false;
 
@@ -227,6 +217,16 @@ namespace CanoePoloLeagueOrganiserTests
                 playedInLastGame = playingInThisGame;
             }
 
+            return false;
+        }
+
+        Permupotater<Game> EnumerateAllPermutations(List<Game> games)
+        {
+            return new Permupotater<Game>(games.ToArray(), NoCurtailment);
+        }
+
+        bool NoCurtailment(int[] gameIndexes, int length)
+        {
             return false;
         }
     }

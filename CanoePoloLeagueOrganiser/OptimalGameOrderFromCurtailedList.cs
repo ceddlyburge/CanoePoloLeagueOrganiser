@@ -88,9 +88,9 @@ namespace CanoePoloLeagueOrganiser
             return continuePermupotatering;
         }
 
-        public GameOrderCalculation CalculateGameOrder()
+        public GameOrderPossiblyNullCalculation CalculateGameOrder()
         {
-            Contract.Ensures(Contract.Result<GameOrderCalculation>() != null);
+            Contract.Ensures(Contract.Result<GameOrderPossiblyNullCalculation>() != null);
 
             lowestMaxConsecutiveMatchesByAnyTeam = uint.MaxValue;
             lowestOccurencesOfTeamsPlayingConsecutiveMatches = uint.MaxValue;
@@ -105,7 +105,7 @@ namespace CanoePoloLeagueOrganiser
             // sort by bestness and return the best one
             var orderedCandidates = Candidates.OrderBy(c => c.MaxConsecutiveMatchesByAnyTeam).ThenBy(c => c.OccurencesOfTeamsPlayingConsecutiveMatches).ThenBy(c => c.GamesNotPlayedBetweenFirstAndLast).ToList();
 
-            return new GameOrderCalculation(optimisedGameOrder: orderedCandidates.FirstOrDefault(), perfectOptimisation: perfectOptimistaion, optimisationMessage: Pragmatiser.Message);
+            return new GameOrderPossiblyNullCalculation(optimisedGameOrder: orderedCandidates.FirstOrDefault(), perfectOptimisation: perfectOptimistaion, optimisationMessage: Pragmatiser.Message);
         }
     }
 }
