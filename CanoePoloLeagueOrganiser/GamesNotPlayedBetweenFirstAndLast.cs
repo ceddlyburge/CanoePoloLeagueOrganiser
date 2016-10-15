@@ -26,10 +26,10 @@ namespace CanoePoloLeagueOrganiser
         {
             Contract.Requires(gamesInAnyOrder != null);
 
-            this.Teams = gamesInAnyOrder.Select(g => g.HomeTeam.Name).Concat(gamesInAnyOrder.Select(g => g.AwayTeam.Name)).Distinct().ToList();
-            this.NumberOfGamesPlayed = this.Teams.ToDictionary(t => t, t => gamesInAnyOrder.Count(g => g.Playing(t)));
-            this.FirstGames = new Dictionary<string, int>();
-            this.LastGames = new Dictionary<string, int>();
+            Teams = gamesInAnyOrder.Select(g => g.HomeTeam.Name).Concat(gamesInAnyOrder.Select(g => g.AwayTeam.Name)).Distinct().ToList();
+            NumberOfGamesPlayed = Teams.ToDictionary(t => t, t => gamesInAnyOrder.Count(g => g.Playing(t)));
+            FirstGames = new Dictionary<string, int>();
+            LastGames = new Dictionary<string, int>();
         }
 
         public uint Calculate(Game[] games)
@@ -37,25 +37,25 @@ namespace CanoePoloLeagueOrganiser
             // Could add a contract to check that games contains the same games that were passed in to the constructor. Not doing so to keep it fast.
             Contract.Requires(games != null);
 
-            this.gamesNotPlayedBetweenFirstAndLast = 0;
+            gamesNotPlayedBetweenFirstAndLast = 0;
 
-            foreach (var team in this.Teams)
-                this.FirstGames[team] = -1;
+            foreach (var team in Teams)
+                FirstGames[team] = -1;
 
             for (int i = 0; i < games.Length; i++)
             {
-                if (this.FirstGames[games[i].HomeTeam.Name] == -1)
-                    this.FirstGames[games[i].HomeTeam.Name] = i;
+                if (FirstGames[games[i].HomeTeam.Name] == -1)
+                    FirstGames[games[i].HomeTeam.Name] = i;
 
-                if (this.FirstGames[games[i].AwayTeam.Name] == -1)
-                    this.FirstGames[games[i].AwayTeam.Name] = i;
+                if (FirstGames[games[i].AwayTeam.Name] == -1)
+                    FirstGames[games[i].AwayTeam.Name] = i;
 
-                this.LastGames[games[i].HomeTeam.Name] = i;
-                this.LastGames[games[i].AwayTeam.Name] = i;
+                LastGames[games[i].HomeTeam.Name] = i;
+                LastGames[games[i].AwayTeam.Name] = i;
             }
 
-            foreach (var team in this.Teams)
-                this.gamesNotPlayedBetweenFirstAndLast += (uint)(1 + this.LastGames[team] - this.FirstGames[team] - this.NumberOfGamesPlayed[team]);
+            foreach (var team in Teams)
+                gamesNotPlayedBetweenFirstAndLast += (uint)(1 + LastGames[team] - FirstGames[team] - NumberOfGamesPlayed[team]);
 
             return gamesNotPlayedBetweenFirstAndLast;
         }

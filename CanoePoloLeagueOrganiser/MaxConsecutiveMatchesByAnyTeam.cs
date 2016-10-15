@@ -20,25 +20,25 @@ namespace CanoePoloLeagueOrganiser
         {
             Contract.Requires(games != null);
 
-            this.maxConsecutiveGames = 1;
-            this.lastHomeTeamConsecutiveGames = 0;
-            this.lastAwayTeamConsecutiveGames = 0;
-            this.lastHomeTeam = null;
-            this.lastAwayTeam = null;
+            maxConsecutiveGames = 1;
+            lastHomeTeamConsecutiveGames = 0;
+            lastAwayTeamConsecutiveGames = 0;
+            lastHomeTeam = null;
+            lastAwayTeam = null;
 
             foreach (var game in games)
             {
-                this.lastHomeTeamConsecutiveGames = (game.Playing(lastHomeTeam) == true) ? this.lastHomeTeamConsecutiveGames + 1 : 1;
-                this.lastAwayTeamConsecutiveGames = (game.Playing(lastAwayTeam) == true) ? this.lastAwayTeamConsecutiveGames + 1 : 1;
+                lastHomeTeamConsecutiveGames = (game.Playing(lastHomeTeam) == true) ? lastHomeTeamConsecutiveGames + 1 : 1;
+                lastAwayTeamConsecutiveGames = (game.Playing(lastAwayTeam) == true) ? lastAwayTeamConsecutiveGames + 1 : 1;
 
-                this.maxConsecutiveGames = (this.maxConsecutiveGames < this.lastHomeTeamConsecutiveGames) ? this.lastHomeTeamConsecutiveGames : this.maxConsecutiveGames;
-                this.maxConsecutiveGames = (this.maxConsecutiveGames < this.lastAwayTeamConsecutiveGames) ? this.lastAwayTeamConsecutiveGames : this.maxConsecutiveGames;
+                maxConsecutiveGames = (maxConsecutiveGames < lastHomeTeamConsecutiveGames) ? lastHomeTeamConsecutiveGames : maxConsecutiveGames;
+                maxConsecutiveGames = (maxConsecutiveGames < lastAwayTeamConsecutiveGames) ? lastAwayTeamConsecutiveGames : maxConsecutiveGames;
 
-                this.lastHomeTeam = game.HomeTeam.Name;
-                this.lastAwayTeam = game.AwayTeam.Name;
+                lastHomeTeam = game.HomeTeam.Name;
+                lastAwayTeam = game.AwayTeam.Name;
             }
 
-            return this.maxConsecutiveGames;
+            return maxConsecutiveGames;
         }
     }
 }
