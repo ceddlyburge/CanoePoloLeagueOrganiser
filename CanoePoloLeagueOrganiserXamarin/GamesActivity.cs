@@ -13,7 +13,7 @@ using CanoePoloLeagueOrganiser;
 
 namespace CanoePoloLeagueOrganiserXamarin
 {
-    [Activity(Label = "Optimise Game Order", MainLauncher = true, Icon = "@drawable/canoe_polo_ball")]
+    [Activity(Label = "Canoe Polo Organisr", MainLauncher = true, Icon = "@drawable/canoe_polo_ball")]
     public class GamesActivity : Activity
     {
         GameListAdapter GameListAdapter;
