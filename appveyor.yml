@@ -10,7 +10,7 @@ build:
   project: CanoePoloLeagueOrganiser.sln 
   verbosity: quiet
 after_test:
-- msbuild /verbosity:quiet "/t:SignAndroidPackage" "/p:Configuration=Release" "/p:AndroidKeyStore=true" "/p:AndroidSigningKeyAlias=cuddlyburger" "/p:AndroidSigningKeyPass=%key-store-password%" "/p:AndroidSigningKeyStore=CanoePoloLeageOrganiserAndroidKey" "/p:AndroidSigningStorePass=%key-store-password%"  "C:\Users\ceddl\Documents\GITHub\CanoePoloLeagueOrganiser\CanoePoloLeagueOrganiserXamarin\CanoePoloLeagueOrganiserXamarin.csproj"
+- msbuild /verbosity:quiet "/t:SignAndroidPackage" "/p:Configuration=Release" "/p:AndroidKeyStore=true" "/p:AndroidSigningKeyAlias=cuddlyburger" "/p:AndroidSigningKeyPass=%key-store-password%" "/p:AndroidSigningKeyStore=CanoePoloLeageOrganiserAndroidKey" "/p:AndroidSigningStorePass=%key-store-password%"  "CanoePoloLeagueOrganiser\CanoePoloLeagueOrganiserXamarin\CanoePoloLeagueOrganiserXamarin.csproj"
 - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"CanoePoloLeagueOrganiserTests\bin\Debug\CanoePoloLeagueOrganiserTests.dll -noshadow -appveyor"  -output:.\CanoePoloLeagueOrganiser_coverage.xml
 - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
 - pip install codecov
