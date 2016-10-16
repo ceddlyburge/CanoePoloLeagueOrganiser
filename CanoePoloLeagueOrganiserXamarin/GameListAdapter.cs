@@ -42,9 +42,9 @@ namespace CanoePoloLeagueOrganiserXamarin
 
         public IReadOnlyList<Game> Games => GamesMutable;
 
-        public override Game this[int position] => this.GamesMutable[position];
+        public override Game this[int position] => GamesMutable[position];
 
-        public override int Count => this.GamesMutable.Count;
+        public override int Count => GamesMutable.Count;
 
         public override long GetItemId(int position) => position;
 
@@ -73,7 +73,7 @@ namespace CanoePoloLeagueOrganiserXamarin
             view.FindViewById<Button>(Resource.Id.Down).Tag = new JavaGame { Game = game };
 
             view.FindViewById<Button>(Resource.Id.Up).Enabled = (position > 0);
-            view.FindViewById<Button>(Resource.Id.Down).Enabled = (position < this.Games.Count - 1);
+            view.FindViewById<Button>(Resource.Id.Down).Enabled = (position < Games.Count - 1);
 
             return view;
         }
@@ -81,7 +81,7 @@ namespace CanoePoloLeagueOrganiserXamarin
         void DeleteGame(Game game)
         {
             GamesMutable.Remove(game);
-            CalculateOriginalGameOrderAndSetGames(this.GamesMutable);
+            CalculateOriginalGameOrderAndSetGames(GamesMutable);
         }
 
         void MoveGameUp(Game game)

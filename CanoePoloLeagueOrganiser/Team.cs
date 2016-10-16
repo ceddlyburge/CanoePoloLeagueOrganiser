@@ -12,7 +12,7 @@ namespace CanoePoloLeagueOrganiser
 
         public Team(string name)
         {
-            this.Name = name;
+            Name = name;
         }
 
         public override bool Equals(object  obj)

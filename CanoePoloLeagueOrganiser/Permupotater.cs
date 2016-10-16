@@ -26,7 +26,7 @@ namespace CanoePoloLeagueOrganiser
         {
             Contract.Requires(callback != null);
 
-            int length = this.Items.Length;
+            int length = Items.Length;
 
             var work = new int[length];
             for (var i = 0; i < length; i++)
@@ -36,7 +36,7 @@ namespace CanoePoloLeagueOrganiser
 
             foreach (var index in GetIntPermutations(work, 0, length))
             {
-                for (var i = 0; i < length; i++) result[i] = this.Items[index[i]];
+                for (var i = 0; i < length; i++) result[i] = Items[index[i]];
                 if (callback(result) == false) return false;
             }
 

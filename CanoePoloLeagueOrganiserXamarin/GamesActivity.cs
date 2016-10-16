@@ -45,9 +45,9 @@ namespace CanoePoloLeagueOrganiserXamarin
             addButton.Click += AddGame;
 
             // I might be able to ioc this if I move to xamarin forms
-            this.GameOrderCalculator = new OptimalGameOrder(new TenSecondPragmatiser());
+            GameOrderCalculator = new OptimalGameOrder(new TenSecondPragmatiser());
             var gameList = FindViewById<Android.Widget.ListView>(Resource.Id.Games);
-            GameListAdapter = new GameListAdapter(games, this, this.GameOrderCalculator);
+            GameListAdapter = new GameListAdapter(games, this, GameOrderCalculator);
             gameList.Adapter = GameListAdapter;
             // I think this would work with the x platform xamarin forms, but i am using android specific stuff at the moment
             //var deleteAction = new MenuItem { Text = "Delete", IsDestructive = true };
@@ -71,8 +71,8 @@ namespace CanoePoloLeagueOrganiserXamarin
             if (Help != null)
                 Help.Text = optimisationExplanation;
 
-            if (OptimiseButton != null && this.GameListAdapter != null)
-                    OptimiseButton.Enabled = (this.GameListAdapter.Games.Count > 2);
+            if (OptimiseButton != null && GameListAdapter != null)
+                    OptimiseButton.Enabled = (GameListAdapter.Games.Count > 2);
         }
 
         void AddGame(object sender, EventArgs e)
@@ -86,7 +86,7 @@ namespace CanoePoloLeagueOrganiserXamarin
 
         void Optimise(object sender, EventArgs e)
         {
-            var gameOrder = this.GameOrderCalculator.OptimiseGameOrder(GameListAdapter.Games);
+            var gameOrder = GameOrderCalculator.OptimiseGameOrder(GameListAdapter.Games);
 
             // the game list adapter will callback the update method with this optimisation method, not sure if this is the best way of doing it.
             GameListAdapter.SetGames(gameOrder.OptimisedGameOrder.GameOrder, gameOrder.OptimisationMessage);

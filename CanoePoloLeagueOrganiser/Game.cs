@@ -28,8 +28,8 @@ namespace CanoePoloLeagueOrganiser
 
         public Game(Team homeTeam, Team awayTeam, bool homeTeamPlayingConsecutively, bool awayTeamPlayingConsecutively) : this(homeTeam, awayTeam)
         {
-            this.HomeTeamPlayingConsecutively = homeTeamPlayingConsecutively;
-            this.AwayTeamPlayingConsecutively = awayTeamPlayingConsecutively;
+            HomeTeamPlayingConsecutively = homeTeamPlayingConsecutively;
+            AwayTeamPlayingConsecutively = awayTeamPlayingConsecutively;
         }
 
         public Team HomeTeam { get; }
