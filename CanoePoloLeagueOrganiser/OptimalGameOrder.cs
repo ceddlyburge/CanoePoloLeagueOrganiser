@@ -9,12 +9,12 @@ namespace CanoePoloLeagueOrganiser
 {
     public class OptimalGameOrder : IOptimalGameOrder
     {
-        readonly IPragmatiser pragmatiser;
+        IPragmatiser Pragmatiser { get; }
 
         public OptimalGameOrder(IPragmatiser pragmatiser)
         {
             Contract.Requires(pragmatiser != null);
-            this.pragmatiser = pragmatiser;
+            Pragmatiser = pragmatiser;
         }
 
         public GameOrderCandidate CalculateOriginalGameOrder(IReadOnlyList<Game> games)
@@ -32,10 +32,10 @@ namespace CanoePoloLeagueOrganiser
             Contract.Ensures(Contract.Result<GameOrderCalculation>() != null);
             Contract.Requires(games != null);
 
-            var gameOrder = new OptimalGameOrderFromCurtailedList(games, pragmatiser, new Permupotater<Game>(games.ToArray(), new CurtailWhenATeamPlaysTwiceInARow(games).Curtail)).CalculateGameOrder();
+            var gameOrder = new OptimalGameOrderFromCurtailedList(games, Pragmatiser, new Permupotater<Game>(games.ToArray(), new CurtailWhenATeamPlaysTwiceInARow(games).Curtail)).CalculateGameOrder();
 
             if (gameOrder.OptimisedGameOrder == null)
-                gameOrder = new OptimalGameOrderFromCurtailedList(games, pragmatiser, new Permupotater<Game>(games.ToArray(), NoCurtailment)).CalculateGameOrder();
+                gameOrder = new OptimalGameOrderFromCurtailedList(games, Pragmatiser, new Permupotater<Game>(games.ToArray(), NoCurtailment)).CalculateGameOrder();
 
             return new GameOrderCalculation(gameOrder.OptimisedGameOrder, gameOrder.PerfectOptimisation, gameOrder.OptimisationMessage);
         }

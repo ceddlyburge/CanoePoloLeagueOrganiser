@@ -19,10 +19,10 @@ namespace CanoePoloLeagueOrganiser
             // should also check that there are no duplicates
             Contract.Requires(gameOrder != null);
 
-            this.GameOrder = gameOrder;
-            this.OccurencesOfTeamsPlayingConsecutiveMatches = occurencesOfTeamsPlayingConsecutiveMatches;
-            this.MaxConsecutiveMatchesByAnyTeam = maxConsecutiveMatchesByAnyTeam;
-            this.GamesNotPlayedBetweenFirstAndLast = gamesNotPlayedBetweenFirstAndLast;
+            GameOrder = gameOrder;
+            OccurencesOfTeamsPlayingConsecutiveMatches = occurencesOfTeamsPlayingConsecutiveMatches;
+            MaxConsecutiveMatchesByAnyTeam = maxConsecutiveMatchesByAnyTeam;
+            GamesNotPlayedBetweenFirstAndLast = gamesNotPlayedBetweenFirstAndLast;
         }
     }
 }
