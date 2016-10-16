@@ -16,4 +16,4 @@ after_test:
 - pip install codecov
 - codecov -f "CanoePoloLeagueOrganiser_coverage.xml"
 artifacts:
-- path: '**\*.apk' # publish all apk files
+  - path: CanoePoloLeagueOrganiserXamarin\bin\Release\com.canoe_polo_organisr-Signed.apk
