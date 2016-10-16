@@ -185,7 +185,7 @@ namespace CanoePoloLeagueOrganiserTests
             Assert.False(string.IsNullOrEmpty(gameOrder.OptimisationMessage));
         }
 
-        [Fact]
+        //this takes 20 minutes on appveyor so just use it locally [Fact]
         public void SpeedTest()
         {
             var games = new List<Game> {
