@@ -15,4 +15,5 @@ after_test:
 - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
 - pip install codecov
 - codecov -f "CanoePoloLeagueOrganiser_coverage.xml"
-    
+artifacts:
+- path: '**\*.apk' # publish all apk files
