@@ -89,7 +89,8 @@ namespace CanoePoloLeagueOrganiserXamarin
             var gameOrder = GameOrderCalculator.OptimiseGameOrder(GameListAdapter.Games);
 
             // the game list adapter will callback the update method with this optimisation method, not sure if this is the best way of doing it.
-            GameListAdapter.SetGames(gameOrder.OptimisedGameOrder.GameOrder, gameOrder.OptimisationMessage);
+            // I am doing some logic about what to show to the user and what not to in the untested ui here. Not that good. Do something better when I move to generic xamarin project.
+            GameListAdapter.SetGames(gameOrder.OptimisedGameOrder.GameOrder, (gameOrder.PragmatisationLevel == PragmatisationLevel.OutOfTime)? gameOrder.OptimisationMessage : "");
         }
     }
 }

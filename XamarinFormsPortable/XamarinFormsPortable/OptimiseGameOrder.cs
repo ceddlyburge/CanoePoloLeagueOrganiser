@@ -32,8 +32,8 @@ namespace XamarinFormsPortable
             Content = new StackLayoutCedd
             {
                 AddSomeChildren = new List<View>{
-                    AddNewGame(),
                     OptimiseButton(),
+                    AddNewGame(),
                     Games(games)
                 }
             };

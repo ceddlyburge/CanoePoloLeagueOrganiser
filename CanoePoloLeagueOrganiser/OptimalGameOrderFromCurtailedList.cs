@@ -100,12 +100,12 @@ namespace CanoePoloLeagueOrganiser
             timeStartedCalculation = DateTime.Now;
 
             // generate a list of all possible game orders
-            var perfectOptimistaion = Permupotater.EnumeratePermutations(Callback);
+            Permupotater.EnumeratePermutations(Callback);
 
             // sort by bestness and return the best one
             var orderedCandidates = Candidates.OrderBy(c => c.MaxConsecutiveMatchesByAnyTeam).ThenBy(c => c.OccurencesOfTeamsPlayingConsecutiveMatches).ThenBy(c => c.GamesNotPlayedBetweenFirstAndLast).ToList();
 
-            return new GameOrderPossiblyNullCalculation(optimisedGameOrder: orderedCandidates.FirstOrDefault(), perfectOptimisation: perfectOptimistaion, optimisationMessage: Pragmatiser.Message);
+            return new GameOrderPossiblyNullCalculation(optimisedGameOrder: orderedCandidates.FirstOrDefault(), pragmatisationLevel: Pragmatiser.Level, optimisationMessage: Pragmatiser.Message);
         }
     }
 }

@@ -53,6 +53,7 @@
     <Compile Include="IPragmatiser.cs" />
     <Compile Include="MarkConsecutiveGames.cs" />
     <Compile Include="Permupotater.cs" />
+    <Compile Include="PragmatisationLevel.cs" />
     <Compile Include="TenSecondPragmatiser.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

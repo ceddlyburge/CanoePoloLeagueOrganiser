@@ -5,20 +5,20 @@ namespace CanoePoloLeagueOrganiser
     public class GameOrderPossiblyNullCalculation
     {
         public GameOrderCandidate OptimisedGameOrder { get; }
-        public bool PerfectOptimisation { get; }
+        public PragmatisationLevel PragmatisationLevel { get; }
         public string OptimisationMessage { get; }
 
-        public GameOrderPossiblyNullCalculation(GameOrderCandidate optimisedGameOrder, bool perfectOptimisation, string optimisationMessage)
+        public GameOrderPossiblyNullCalculation(GameOrderCandidate optimisedGameOrder, PragmatisationLevel pragmatisationLevel, string optimisationMessage)
         {
             OptimisationMessage = optimisationMessage;
-            PerfectOptimisation = perfectOptimisation;
+            PragmatisationLevel = pragmatisationLevel;
             OptimisedGameOrder = optimisedGameOrder;
         }
     }
 
     public class GameOrderCalculation : GameOrderPossiblyNullCalculation
     {
-        public GameOrderCalculation(GameOrderCandidate optimisedGameOrder, bool perfectOptimisation, string optimisationMessage) : base(optimisedGameOrder, perfectOptimisation, optimisationMessage)
+        public GameOrderCalculation(GameOrderCandidate optimisedGameOrder, PragmatisationLevel pragmatisationLevel, string optimisationMessage) : base(optimisedGameOrder, pragmatisationLevel, optimisationMessage)
         {
             Contract.Requires(optimisedGameOrder != null);
         }

@@ -22,6 +22,7 @@ namespace CanoePoloLeagueOrganiserTests
             var acceptableSolution = pragmatiser.AcceptableSolution(ONE_SECOND, lowestOccurencesOfTeamsPlayingConsecutiveMatches: 0);
             
             Assert.True(acceptableSolution);
+            Assert.Equal(pragmatiser.Level, PragmatisationLevel.NoTeamPlayingConsecutively);
             Assert.Equal(pragmatiser.Message, "There are too many teams to analyse all possible combinations, so this is the best solution that has no team playing twice in a row");
         }
 
@@ -33,6 +34,7 @@ namespace CanoePoloLeagueOrganiserTests
             var acceptableSolution = pragmatiser.AcceptableSolution(ONE_SECOND, lowestOccurencesOfTeamsPlayingConsecutiveMatches: 1);
 
             Assert.False(acceptableSolution);
+            Assert.Equal(pragmatiser.Level, PragmatisationLevel.Perfect);
             Assert.Equal(pragmatiser.Message, "");
         }
 
@@ -43,6 +45,7 @@ namespace CanoePoloLeagueOrganiserTests
 
             var acceptableSolution = pragmatiser.AcceptableSolution(TEN_SECONDS, lowestOccurencesOfTeamsPlayingConsecutiveMatches: A_LOT);
 
+            Assert.Equal(pragmatiser.Level, PragmatisationLevel.OutOfTime);
             Assert.Equal(pragmatiser.Message, "There are too many teams to analyse all possible combinations, so this is the best solution found after ten seconds of number crunching");
             Assert.True(acceptableSolution);
         }

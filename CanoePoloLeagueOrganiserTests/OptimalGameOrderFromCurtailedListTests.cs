@@ -112,7 +112,7 @@ namespace CanoePoloLeagueOrganiserTests
             //new Game(Blackwater, "Letchworth"),
             //new Game("Castle", Avon), Avon 0
             Assert.Equal((uint)14, gameOrder.OptimisedGameOrder.GamesNotPlayedBetweenFirstAndLast);
-            Assert.True(gameOrder.PerfectOptimisation);
+            Assert.Equal(PragmatisationLevel.Perfect, gameOrder.PragmatisationLevel);
             Assert.True(string.IsNullOrEmpty(gameOrder.OptimisationMessage));
         }
 
@@ -146,7 +146,7 @@ namespace CanoePoloLeagueOrganiserTests
 
             // allow it an extra second to finish up or whatever. It actually finished in two seconds as it finds an acceptable solution earlier.
             Assert.True(DateTime.Now.Subtract(dateStarted) < TimeSpan.FromSeconds(11));
-            Assert.False(gameOrder.PerfectOptimisation);
+            Assert.NotEqual(PragmatisationLevel.Perfect, gameOrder.PragmatisationLevel);
             Assert.False(string.IsNullOrEmpty(gameOrder.OptimisationMessage));
         }
 
@@ -181,7 +181,7 @@ namespace CanoePoloLeagueOrganiserTests
 
             // allow it an extra second to finish up or whatever. This test must take 10 seconds as there are non possible good solutions
             Assert.True(DateTime.Now.Subtract(dateStarted) < TimeSpan.FromSeconds(11));
-            Assert.False(gameOrder.PerfectOptimisation);
+            Assert.NotEqual(PragmatisationLevel.Perfect, gameOrder.PragmatisationLevel);
             Assert.False(string.IsNullOrEmpty(gameOrder.OptimisationMessage));
         }
 

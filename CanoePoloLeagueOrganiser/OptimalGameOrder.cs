@@ -37,7 +37,7 @@ namespace CanoePoloLeagueOrganiser
             if (gameOrder.OptimisedGameOrder == null)
                 gameOrder = new OptimalGameOrderFromCurtailedList(games, Pragmatiser, new Permupotater<Game>(games.ToArray(), NoCurtailment)).CalculateGameOrder();
 
-            return new GameOrderCalculation(gameOrder.OptimisedGameOrder, gameOrder.PerfectOptimisation, gameOrder.OptimisationMessage);
+            return new GameOrderCalculation(gameOrder.OptimisedGameOrder, gameOrder.PragmatisationLevel, gameOrder.OptimisationMessage);
         }
 
         bool NoCurtailment(int[] gameIndexes, int length)
