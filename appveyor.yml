@@ -1,6 +1,6 @@
 environment:
   key-store-password:
-    secure: pGrDZahzdzmTIoHkPspWbQ==
+    secure: pGrDZahzdzmTIoHkPspWbQ==    
   SONARQUBE_TOKEN:
     secure: DSwAr4fYt3Q35Sjob5qAN5ujYqFCPZQguJ2yhI3IN46AIK63sRLhpamof6BZr9lx
 before_build:
@@ -17,3 +17,15 @@ after_test:
 - codecov -f "CanoePoloLeagueOrganiser_coverage.xml"
 artifacts:
   - path: CanoePoloLeagueOrganiserXamarin\bin\Release\com.canoe_polo_organisr-Signed.apk
+deploy:
+  release: CanoePoloOrganisr-v$(appveyor_build_version)
+  description: 'CanoePoloOrganisr'
+  provider: GitHub
+  auth_token:
+    secure: OAFXjLXGixuTpHSoIJ4ZVzh5rk5q6zqivRWM2PhbeJIUe/w8XbjUt8Y0/VmwtZcn # encrypted auth token from GitHub
+  artifact: CanoePoloLeagueOrganiserXamarin\bin\Release\com.canoe_polo_organisr-Signed.apk
+  draft: false
+  prerelease: false
+  on:
+    branch: master                 # release from master branch only
+    appveyor_repo_tag: true        # deploy on tag push only
