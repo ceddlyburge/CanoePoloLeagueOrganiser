@@ -2,7 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/k50urjsh4edl5uf0?svg=true)](https://ci.appveyor.com/project/ceddlyburge/canoepololeagueorganiser)
 
-[![Code Coverage](https://codecov.io/gh/ceddlyburge/CanoePoloLeagueOrganiser/coverage.svg)](https://codecov.io/gh/ceddlyburge/CanoePoloLeagueOrganiser/coverage.svg)
+[![Code Coverage](https://codecov.io/gh/ceddlyburge/CanoePoloLeagueOrganiser/coverage.svg)](https://codecov.io/gh/ceddlyburge/CanoePoloLeagueOrganiser)
 
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=CanoePoloLeagueOrganiser)](https://sonarqube.com/dashboard/index/CanoePoloLeagueOrganiser)
 
