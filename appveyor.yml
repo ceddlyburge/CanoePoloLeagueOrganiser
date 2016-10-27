@@ -10,14 +10,17 @@ build:
   project: CanoePoloLeagueOrganiser.sln 
   verbosity: quiet
 after_test:
+- tools\sonar\MSBuild.SonarQube.Runner.exe begin /key:"CanoePoloLeagueOrganiser" /name:"CanoePoloLeagueOrganiser" /version:"1.0.0"
+# msbuild 14 must be used for sonarqube to work
 - msbuild /verbosity:quiet "/t:SignAndroidPackage" "/p:Configuration=Release" "/p:AndroidKeyStore=true" "/p:AndroidSigningKeyAlias=cuddlyburger" "/p:AndroidSigningKeyPass=%key-store-password%" "/p:AndroidSigningKeyStore=CanoePoloLeageOrganiserAndroidKey" "/p:AndroidSigningStorePass=%key-store-password%"  ".\CanoePoloLeagueOrganiserXamarin\CanoePoloLeagueOrganiserXamarin.csproj"
+- tools\sonar\MSBuild.SonarQube.Runner.exe end
 - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"CanoePoloLeagueOrganiserTests\bin\Debug\CanoePoloLeagueOrganiserTests.dll -noshadow -appveyor"  -output:.\CanoePoloLeagueOrganiser_coverage.xml
 - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
 - pip install codecov
 - codecov -f "CanoePoloLeagueOrganiser_coverage.xml"
 artifacts:
   - path: CanoePoloLeagueOrganiserXamarin\bin\Release\com.canoe_polo_organisr-Signed.apk
-# choosing builds to deploy via appveyor environment now, instead of automatically on tag, which seemed to go a bit funny
+# choosing builds to deploy via appveyor environment now, instead of automatically on tag, which seemed to go a bit funny. I reckon this was because when doing a release on git hub, github added a tag to the repo with the release info, which triggered another build on appveyor, which triggered another release etc etc.
 #deploy:
 #  release: CanoePoloOrganisr-v$(appveyor_build_version)
 #  description: 'CanoePoloOrganisr'
