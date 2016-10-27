@@ -6,7 +6,7 @@
 
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=CanoePoloLeagueOrganiser)](https://sonarqube.com/dashboard/index/CanoePoloLeagueOrganiser)
 
-[![Technical Debt](https://sonarqube.com/api/badges/gate?key=CanoePoloLeagueOrganiser&metric=new_sqale_debt_ratio)](https://sonarqube.com/dashboard/index/CanoePoloLeagueOrganiser&metric=new_sqale_debt_ratio)
+[![Technical Debt](https://sonarqube.com/api/badges/gate?key=CanoePoloLeagueOrganiser&metric=new_sqale_debt_ratio)](https://sonarqube.com/dashboard/index/CanoePoloLeagueOrganiser&metric=new_sqale_debt_ratio)	
 
 Designed to make it easier to organise UK Canoe Polo leagues. There are about 10 teams per league, and there are usually 5 days when when the games are played. Each team will play in 4 of these 5 days.
 
