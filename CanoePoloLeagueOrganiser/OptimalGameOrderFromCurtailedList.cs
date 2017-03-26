@@ -78,7 +78,7 @@ namespace CanoePoloLeagueOrganiser
                 lowestGamesNotPlayedBetweenFirstAndLast = gamesNotPlayedBetweenFirstAndLast;
                 addCandidate = true;
             }
-            else if (addCandidate == false && gamesNotPlayedBetweenFirstAndLast > lowestGamesNotPlayedBetweenFirstAndLast)
+            else if (addCandidate == false)
                 return continuePermupotatering;
 
             // we have found a new candidate so add it
