@@ -42,6 +42,7 @@
     <Compile Include="CurtailWhenATeamPlaysTwiceInARow.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameOrderCalculation.cs" />
+    <Compile Include="GameOrderPossiblyNullCalculation.cs" />
     <Compile Include="GamesNotPlayedBetweenFirstAndLast.cs" />
     <Compile Include="MaxConsecutiveMatchesByAnyTeam.cs" />
     <Compile Include="MutableGame.cs" />
