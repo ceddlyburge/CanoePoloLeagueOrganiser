@@ -14,7 +14,11 @@ namespace CanoePoloLeagueOrganiser
         public uint MaxConsecutiveMatchesByAnyTeam { get; }
         public uint GamesNotPlayedBetweenFirstAndLast { get;}
 
-        public GameOrderCandidate(IReadOnlyList<Game> gameOrder, uint occurencesOfTeamsPlayingConsecutiveMatches, uint maxConsecutiveMatchesByAnyTeam, uint gamesNotPlayedBetweenFirstAndLast)
+        public GameOrderCandidate(
+            IReadOnlyList<Game> gameOrder, 
+            uint occurencesOfTeamsPlayingConsecutiveMatches, 
+            uint maxConsecutiveMatchesByAnyTeam, 
+            uint gamesNotPlayedBetweenFirstAndLast)
         {
             // should also check that there are no duplicates
             Requires(gameOrder != null);
