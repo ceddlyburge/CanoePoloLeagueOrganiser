@@ -22,7 +22,7 @@ namespace CanoePoloLeagueOrganiser
             Marker = new MarkConsecutiveGames();
             Pragmatiser = pragmatiser;
             MaxConsecutiveMatchesByAnyTeam = new MaxConsecutiveMatchesByAnyTeam();
-            GamesNotPlayedBetweenFirstAndLast = new GamesNotPlayedBetweenFirstAndLast();// (games.ToArray());
+            GamesNotPlayedBetweenFirstAndLast = new GamesNotPlayedBetweenFirstAndLast();
             OccurencesOfTeamsPlayingConsecutiveMatches = new OccurencesOfTeamsPlayingConsecutiveMatches();
         }
 

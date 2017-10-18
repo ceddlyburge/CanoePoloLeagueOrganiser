@@ -25,13 +25,16 @@ namespace CanoePoloLeagueOrganiser
 
         public List<Game> DeSerialise(string json)
         {
-            return JsonConvert.DeserializeObject<List<MutableGame>>(json).Select(
-                g => new Game(
-                    homeTeam: new Team(g.homeTeam),
-                    awayTeam: new Team(g.awayTeam),
-                    homeTeamPlayingConsecutively: g.homeTeamPlayingConsecutively,
-                    awayTeamPlayingConsecutively: g.awayTeamPlayingConsecutively)
-                 ).ToList();
+            return JsonConvert
+                .DeserializeObject<List<MutableGame>>(json)
+                .Select(
+                    g => new Game(
+                        homeTeam: new Team(g.homeTeam),
+                        awayTeam: new Team(g.awayTeam),
+                        homeTeamPlayingConsecutively: g.homeTeamPlayingConsecutively,
+                        awayTeamPlayingConsecutively: g.awayTeamPlayingConsecutively)
+                     )
+                 .ToList();
         }
     }
 }

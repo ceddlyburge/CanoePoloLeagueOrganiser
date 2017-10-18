@@ -9,46 +9,51 @@ namespace CanoePoloLeagueOrganiser
 {
     public class MarkConsecutiveGames
     {
+        IReadOnlyList<Game> Games { get; set; }
+
         public IReadOnlyList<Game> MarkTeamsPlayingConsecutively(IReadOnlyList<Game> games)
         {
             Requires(games != null);
 
-            var gamesWithConsecutiveMatchesMarked = new List<Game>();
+            Games = games;
 
-            for (int i = 0; i < games.Count; i++)
-            {
-                gamesWithConsecutiveMatchesMarked.Add(MarkTeamsPlayingConsecutively(games[i], PreviousGame(games, i), NextGame(games, i)));
-            }
-
-            return gamesWithConsecutiveMatchesMarked;
+            return Enumerable.Range(0, Games.Count)
+                .Select(index => MarkTeamsPlayingConsecutivelyInGameByIndex(index))
+                .ToList();
         }
 
-        Game MarkTeamsPlayingConsecutively(Game game, Game previousGame, Game nextGame)
+        Game MarkTeamsPlayingConsecutivelyInGameByIndex(int index) =>
+            MarkTeamsPlayingConsecutivelyInGame(
+                  PreviousGame(index),
+                  Games[index],
+                  NextGame(index));
+
+        Game MarkTeamsPlayingConsecutivelyInGame(Game previousGame, Game game, Game nextGame) =>
+            new Game(
+                homeTeam: 
+                    game.HomeTeam,
+                awayTeam: 
+                    game.AwayTeam,
+                homeTeamPlayingConsecutively: 
+                    Playing(game.HomeTeam, previousGame) || Playing(game.HomeTeam, nextGame),
+                awayTeamPlayingConsecutively: 
+                    Playing(game.AwayTeam, previousGame) || Playing(game.AwayTeam, nextGame));
+
+        Game NextGame(int index)
         {
-            bool homeTeamPlayingInPreviousGame = (previousGame != null) && previousGame.Playing(game.HomeTeam);
+            int next = index + 1;
 
-            bool awayTeamPlayingInPreviousGame = (previousGame != null) && previousGame.Playing(game.AwayTeam);
-
-            bool homeTeamPlayingInNextGame = (nextGame != null) && nextGame.Playing(game.HomeTeam);
-
-            bool awayTeamPlayingInNextGame = (nextGame != null) && nextGame.Playing(game.AwayTeam);
-
-            return new Game(game.HomeTeam, game.AwayTeam, homeTeamPlayingInPreviousGame || homeTeamPlayingInNextGame, awayTeamPlayingInPreviousGame || awayTeamPlayingInNextGame);
+            return (next < Games.Count) ? Games[next] : null;
         }
 
-        Game NextGame(IReadOnlyList<Game> games, int i)
+        Game PreviousGame(int index)
         {
-            int next = i + 1;
+            int previous = index - 1;
 
-            return (next < games.Count) ? games[next] : null;
+            return (previous >= 0) ? Games[previous] : null;
         }
 
-        Game PreviousGame(IReadOnlyList<Game> games, int i)
-        {
-            int next = i - 1;
-
-            return (next >= 0) ? games[next] : null;
-        }
-
+        static bool Playing(Team team, Game game) =>
+            game?.Playing(team) ?? false;
     }
 }

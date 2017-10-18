@@ -44,6 +44,7 @@
     <Compile Include="GameOrderCalculation.cs" />
     <Compile Include="GameOrderPossiblyNullCalculation.cs" />
     <Compile Include="GamesNotPlayedBetweenFirstAndLast.cs" />
+    <Compile Include="GamesNotPlayedBetweenFirstAndLastByTeam.cs" />
     <Compile Include="MaxConsecutiveMatchesByAnyTeam.cs" />
     <Compile Include="MutableGame.cs" />
     <Compile Include="OccurencesOfTeamsPlayingConsecutiveMatches.cs" />
