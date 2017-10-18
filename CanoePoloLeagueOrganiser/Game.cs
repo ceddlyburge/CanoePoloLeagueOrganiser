@@ -10,6 +10,11 @@ namespace CanoePoloLeagueOrganiser
 {
     public class Game
     {
+        public Team HomeTeam { get; }
+        public bool HomeTeamPlayingConsecutively { get; }
+        public Team AwayTeam { get; }
+        public bool AwayTeamPlayingConsecutively { get; }
+
         Game(Team homeTeam, Team awayTeam)
         {
             Requires(homeTeam != null);
@@ -20,37 +25,32 @@ namespace CanoePoloLeagueOrganiser
             AwayTeam = awayTeam;
         }
 
-        public Game(string homeTeam, string awayTeam) : this(new Team(homeTeam), new Team(awayTeam))
+        public Game(string homeTeam, string awayTeam) : 
+            this(new Team(homeTeam), new Team(awayTeam))
         {
             Requires(!string.IsNullOrWhiteSpace(homeTeam));
             Requires(!string.IsNullOrWhiteSpace(awayTeam));
         }
 
-        public Game(Team homeTeam, Team awayTeam, bool homeTeamPlayingConsecutively, bool awayTeamPlayingConsecutively) : this(homeTeam, awayTeam)
+        public Game(
+            Team homeTeam, 
+            Team awayTeam, 
+            bool homeTeamPlayingConsecutively, 
+            bool awayTeamPlayingConsecutively) : 
+            this(homeTeam, awayTeam)
         {
             HomeTeamPlayingConsecutively = homeTeamPlayingConsecutively;
             AwayTeamPlayingConsecutively = awayTeamPlayingConsecutively;
         }
 
-        public Team HomeTeam { get; }
-        public bool HomeTeamPlayingConsecutively { get; }
-        public Team AwayTeam { get; }
-        public bool AwayTeamPlayingConsecutively { get; }
+        public bool Playing(Team team) =>
+            HomeTeam.Equals(team) || AwayTeam.Equals(team);
 
-        public bool Playing(Team team)
-        {
-            return (HomeTeam.Equals(team) || AwayTeam.Equals(team));
-        }
+        public bool Playing(string team) =>
+            HomeTeam.Name == team || AwayTeam.Name == team;
 
-        public bool Playing(string team)
-        {
-            return (HomeTeam.Name == team || AwayTeam.Name == team);
-        }
-
-        public override string ToString()
-        {
-            return $"{HomeTeam.Name} v {AwayTeam.Name}";
-        }
+        public override string ToString() =>
+            $"{HomeTeam.Name} v {AwayTeam.Name}";
 
     }
 }
