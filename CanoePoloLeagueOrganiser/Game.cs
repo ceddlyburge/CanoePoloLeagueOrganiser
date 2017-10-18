@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using static System.Diagnostics.Contracts.Contract;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +12,9 @@ namespace CanoePoloLeagueOrganiser
     {
         Game(Team homeTeam, Team awayTeam)
         {
-            Contract.Requires(homeTeam != null);
-            Contract.Requires(awayTeam != null);
-            Contract.Requires(!homeTeam.Equals(awayTeam));
+            Requires(homeTeam != null);
+            Requires(awayTeam != null);
+            Requires(!homeTeam.Equals(awayTeam));
 
             HomeTeam = homeTeam;
             AwayTeam = awayTeam;
@@ -22,8 +22,8 @@ namespace CanoePoloLeagueOrganiser
 
         public Game(string homeTeam, string awayTeam) : this(new Team(homeTeam), new Team(awayTeam))
         {
-            Contract.Requires(!string.IsNullOrWhiteSpace(homeTeam));
-            Contract.Requires(!string.IsNullOrWhiteSpace(awayTeam));
+            Requires(!string.IsNullOrWhiteSpace(homeTeam));
+            Requires(!string.IsNullOrWhiteSpace(awayTeam));
         }
 
         public Game(Team homeTeam, Team awayTeam, bool homeTeamPlayingConsecutively, bool awayTeamPlayingConsecutively) : this(homeTeam, awayTeam)

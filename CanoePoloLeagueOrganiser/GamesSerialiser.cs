@@ -34,12 +34,4 @@ namespace CanoePoloLeagueOrganiser
                  ).ToList();
         }
     }
-
-    public class MutableGame
-    {
-        public string homeTeam;
-        public bool homeTeamPlayingConsecutively;
-        public string awayTeam;
-        public bool awayTeamPlayingConsecutively;
-    }
 }

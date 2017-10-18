@@ -13,6 +13,26 @@ namespace CanoePoloLeagueOrganiserTests
     public class OptimalGameOrderFromCurtailedListTests
     {
         [Fact]
+        public void RegionalDiv2()
+        {
+            var games = new List<Game> {
+                new Game("Braintree", "meridian X"),
+                new Game("Braintree", "Jesters"),
+                new Game("Braintree", "Vkc Pilchards"),
+                new Game("Braintree", "Oxford"),
+                new Game("meridian X", "Jesters"),
+                new Game("meridian X", "Vkc Pilchards"),
+                new Game("meridian X", "Oxford"),
+                new Game("Jesters", "Vkc Pilchards"),
+                new Game("Jesters", "Oxford"),
+                new Game("Vkc Pilchards", "Oxford"),             };
+
+            var sut = new OptimalGameOrderFromCurtailedList(games, new NoCompromisesPragmatiser(), EnumerateAllPermutations(games)).CalculateGameOrder();
+
+            Assert.False(PlayingTwiceInARow("Castle", sut.OptimisedGameOrder.GameOrder));
+        }
+
+        [Fact]
         public void OneInputGameShouldResultInThisGameBeingPlayed()
         {
             var games = new List<Game> {

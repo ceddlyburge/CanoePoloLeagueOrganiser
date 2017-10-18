@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
+using static System.Diagnostics.Contracts.Contract;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +15,8 @@ namespace CanoePoloLeagueOrganiser
 
         public Permupotater(T[] items, Func<int[], int, bool> curtail)
         {
-            Contract.Requires(items != null);
-            Contract.Requires(curtail != null);
+            Requires(items != null);
+            Requires(curtail != null);
 
             Curtail = curtail;
             Items = items;
@@ -24,7 +24,7 @@ namespace CanoePoloLeagueOrganiser
 
         public bool EnumeratePermutations(Func<T[], bool> callback)
         {
-            Contract.Requires(callback != null);
+            Requires(callback != null);
 
             int length = Items.Length;
 

@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.Contracts;
+﻿using static System.Diagnostics.Contracts.Contract;
 
 namespace CanoePoloLeagueOrganiser
 {
@@ -20,7 +20,7 @@ namespace CanoePoloLeagueOrganiser
     {
         public GameOrderCalculation(GameOrderCandidate optimisedGameOrder, PragmatisationLevel pragmatisationLevel, string optimisationMessage) : base(optimisedGameOrder, pragmatisationLevel, optimisationMessage)
         {
-            Contract.Requires(optimisedGameOrder != null);
+            Requires(optimisedGameOrder != null);
         }
     }
 }

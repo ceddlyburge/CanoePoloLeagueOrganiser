@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using static System.Diagnostics.Contracts.Contract;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,8 +14,6 @@ namespace CanoePoloLeagueOrganiser
         Dictionary<string, int> LastGames { get; } 
         IReadOnlyDictionary<string, int> NumberOfGamesPlayed { get; }
 
-        uint gamesNotPlayedBetweenFirstAndLast;
-
         /// <summary>
         /// Calculates GamesNotPlayedBetweenFirstAndLast for a passed in list of games
         /// </summary>
@@ -24,7 +22,7 @@ namespace CanoePoloLeagueOrganiser
         /// </param>
         public GamesNotPlayedBetweenFirstAndLast(Game[] gamesInAnyOrder)
         {
-            Contract.Requires(gamesInAnyOrder != null);
+            Requires(gamesInAnyOrder != null);
 
             Teams = gamesInAnyOrder.Select(g => g.HomeTeam.Name).Concat(gamesInAnyOrder.Select(g => g.AwayTeam.Name)).Distinct().ToList();
             NumberOfGamesPlayed = Teams.ToDictionary(t => t, t => gamesInAnyOrder.Count(g => g.Playing(t)));
@@ -35,9 +33,9 @@ namespace CanoePoloLeagueOrganiser
         public uint Calculate(Game[] games)
         {
             // Could add a contract to check that games contains the same games that were passed in to the constructor. Not doing so to keep it fast.
-            Contract.Requires(games != null);
+            Requires(games != null);
 
-            gamesNotPlayedBetweenFirstAndLast = 0;
+            uint gamesNotPlayedBetweenFirstAndLast = 0;
 
             foreach (var team in Teams)
                 FirstGames[team] = -1;

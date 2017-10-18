@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using static System.Diagnostics.Contracts.Contract;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,13 +11,12 @@ namespace CanoePoloLeagueOrganiser
     {
         string lastHomeTeam;
         string lastAwayTeam;
-        uint occurences;
 
         public uint Calculate(Game[] games)
         {
-            Contract.Requires(games != null);
+            Requires(games != null);
 
-            occurences = 0;
+            uint occurences = 0;
 
             foreach (var game in games)
             {

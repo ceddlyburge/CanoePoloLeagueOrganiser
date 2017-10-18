@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using static System.Diagnostics.Contracts.Contract;
 
 namespace CanoePoloLeagueOrganiser
 {
@@ -9,7 +9,7 @@ namespace CanoePoloLeagueOrganiser
 
         public CurtailWhenATeamPlaysTwiceInARow(IReadOnlyList<Game> games)
         {
-            Contract.Requires(games != null);
+            Requires(games != null);
 
             Games = games;
         }

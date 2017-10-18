@@ -5,9 +5,9 @@ namespace CanoePoloLeagueOrganiser
 {
     public class TenSecondPragmatiser : IPragmatiser
     {
-        public string Message { get; private set; }
+        public string Message { get; set; }
 
-        public PragmatisationLevel Level { get; private set; }
+        public PragmatisationLevel Level { get; set; }
 
         public TenSecondPragmatiser()
         {

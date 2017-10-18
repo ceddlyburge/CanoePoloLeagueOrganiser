@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using static System.Diagnostics.Contracts.Contract;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +11,7 @@ namespace CanoePoloLeagueOrganiser
     {
         public IReadOnlyList<Game> MarkTeamsPlayingConsecutively(IReadOnlyList<Game> games)
         {
-            Contract.Requires(games != null);
+            Requires(games != null);
 
             var gamesWithConsecutiveMatchesMarked = new List<Game>();
 
@@ -23,7 +23,7 @@ namespace CanoePoloLeagueOrganiser
             return gamesWithConsecutiveMatchesMarked;
         }
 
-        private Game MarkTeamsPlayingConsecutively(Game game, Game previousGame, Game nextGame)
+        Game MarkTeamsPlayingConsecutively(Game game, Game previousGame, Game nextGame)
         {
             bool homeTeamPlayingInPreviousGame = (previousGame != null) && previousGame.Playing(game.HomeTeam);
 
@@ -36,14 +36,14 @@ namespace CanoePoloLeagueOrganiser
             return new Game(game.HomeTeam, game.AwayTeam, homeTeamPlayingInPreviousGame || homeTeamPlayingInNextGame, awayTeamPlayingInPreviousGame || awayTeamPlayingInNextGame);
         }
 
-        private Game NextGame(IReadOnlyList<Game> games, int i)
+        Game NextGame(IReadOnlyList<Game> games, int i)
         {
             int next = i + 1;
 
             return (next < games.Count) ? games[next] : null;
         }
 
-        private Game PreviousGame(IReadOnlyList<Game> games, int i)
+        Game PreviousGame(IReadOnlyList<Game> games, int i)
         {
             int next = i - 1;
 

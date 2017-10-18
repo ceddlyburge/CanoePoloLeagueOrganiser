@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using static System.Diagnostics.Contracts.Contract;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,22 +9,15 @@ namespace CanoePoloLeagueOrganiser
 {
     public class MaxConsecutiveMatchesByAnyTeam
     {
-        // use class variables as an optimisation, I think it will avoid a lot of allocation and deallocation of variables
-        uint maxConsecutiveGames;
-        uint lastHomeTeamConsecutiveGames;
-        uint lastAwayTeamConsecutiveGames;
-        string lastHomeTeam;
-        string lastAwayTeam;
-
         public uint Calculate(Game[] games)
         {
-            Contract.Requires(games != null);
+            Requires(games != null);
 
-            maxConsecutiveGames = 1;
-            lastHomeTeamConsecutiveGames = 0;
-            lastAwayTeamConsecutiveGames = 0;
-            lastHomeTeam = null;
-            lastAwayTeam = null;
+            uint maxConsecutiveGames = 1;
+            uint lastHomeTeamConsecutiveGames = 0;
+            uint lastAwayTeamConsecutiveGames = 0;
+            string lastHomeTeam = null;
+            string lastAwayTeam = null;
 
             foreach (var game in games)
             {

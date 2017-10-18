@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using static System.Diagnostics.Contracts.Contract;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,14 +13,14 @@ namespace CanoePoloLeagueOrganiser
 
         public OptimalGameOrder(IPragmatiser pragmatiser)
         {
-            Contract.Requires(pragmatiser != null);
+            Requires(pragmatiser != null);
             Pragmatiser = pragmatiser;
         }
 
         public GameOrderCandidate CalculateOriginalGameOrder(IReadOnlyList<Game> games)
         {
-            Contract.Ensures(Contract.Result<GameOrderCandidate>() != null);
-            Contract.Requires(games != null);
+            Requires(games != null);
+            Ensures(Result<GameOrderCandidate>() != null);
 
             return new GameOrderCandidate(
                 new MarkConsecutiveGames().MarkTeamsPlayingConsecutively(games),
@@ -29,8 +29,8 @@ namespace CanoePoloLeagueOrganiser
 
         public GameOrderCalculation OptimiseGameOrder(IReadOnlyList<Game> games)
         {
-            Contract.Ensures(Contract.Result<GameOrderCalculation>() != null);
-            Contract.Requires(games != null);
+            Requires(games != null);
+            Ensures(Result<GameOrderCalculation>() != null);
 
             var gameOrder = new OptimalGameOrderFromCurtailedList(games, Pragmatiser, new Permupotater<Game>(games.ToArray(), new CurtailWhenATeamPlaysTwiceInARow(games).Curtail)).CalculateGameOrder();
 
@@ -40,9 +40,7 @@ namespace CanoePoloLeagueOrganiser
             return new GameOrderCalculation(gameOrder.OptimisedGameOrder, gameOrder.PragmatisationLevel, gameOrder.OptimisationMessage);
         }
 
-        bool NoCurtailment(int[] gameIndexes, int length)
-        {
-            return false;
-        }
+        bool NoCurtailment(int[] gameIndexes, int length) =>
+            false;
     }
 }
