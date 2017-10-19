@@ -49,6 +49,9 @@ namespace CanoePoloLeagueOrganiser
         public bool Playing(string team) =>
             HomeTeam.Name == team || AwayTeam.Name == team;
 
+        public bool Playing(Game game) =>
+            Playing(game.HomeTeam) || Playing(game.AwayTeam);
+
         public override string ToString() =>
             $"{HomeTeam.Name} v {AwayTeam.Name}";
 

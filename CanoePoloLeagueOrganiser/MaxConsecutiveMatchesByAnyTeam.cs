@@ -4,34 +4,45 @@ using static System.Diagnostics.Contracts.Contract;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Math;
 
 namespace CanoePoloLeagueOrganiser
 {
     public class MaxConsecutiveMatchesByAnyTeam
     {
+        IReadOnlyList<Game> Games { get; set; }
+
         public uint Calculate(Game[] games)
         {
             Requires(games != null);
+            Games = games;
 
-            uint maxConsecutiveGames = 1;
-            uint lastHomeTeamConsecutiveGames = 0;
-            uint lastAwayTeamConsecutiveGames = 0;
-            string lastHomeTeam = null;
-            string lastAwayTeam = null;
-
-            foreach (var game in games)
-            {
-                lastHomeTeamConsecutiveGames = (game.Playing(lastHomeTeam) == true) ? lastHomeTeamConsecutiveGames + 1 : 1;
-                lastAwayTeamConsecutiveGames = (game.Playing(lastAwayTeam) == true) ? lastAwayTeamConsecutiveGames + 1 : 1;
-
-                maxConsecutiveGames = (maxConsecutiveGames < lastHomeTeamConsecutiveGames) ? lastHomeTeamConsecutiveGames : maxConsecutiveGames;
-                maxConsecutiveGames = (maxConsecutiveGames < lastAwayTeamConsecutiveGames) ? lastAwayTeamConsecutiveGames : maxConsecutiveGames;
-
-                lastHomeTeam = game.HomeTeam.Name;
-                lastAwayTeam = game.AwayTeam.Name;
-            }
-
-            return maxConsecutiveGames;
+            return Teams.Max(team => MaxConsecutiveGamesForTeam(team));
         }
+
+        uint MaxConsecutiveGamesForTeam(string team) =>
+            ConsecutiveGamesForTeamFromEachIndex(team).Max();
+
+        IEnumerable<uint> ConsecutiveGamesForTeamFromEachIndex(string team) =>
+            Enumerable.Range(0, Games.Count)
+                .Select(index => ConsecutiveGamesForTeamFromIndex(team, index));
+
+        uint ConsecutiveGamesForTeamFromIndex(string team, int index) =>
+            (uint)
+                Games
+                .Skip(index)
+                .TakeWhile(game => game.Playing(team))
+                .Count();
+
+        IEnumerable<string> Teams =>
+            HomeTeams
+            .Concat(AwayTeams)
+            .Distinct();
+
+        IEnumerable<string> HomeTeams =>
+            Games.Select(game => game.HomeTeam.Name);
+
+        IEnumerable<string> AwayTeams =>
+            Games.Select(game => game.AwayTeam.Name);
     }
 }
