@@ -19,16 +19,16 @@ namespace CanoePoloLeagueOrganiserXamarin
 
     class JavaGame : Java.Lang.Object
     {
-        public Game Game;
+        public AnalysedGame Game;
     }
 
-    public class GameListAdapter : BaseAdapter<Game>
+    public class GameListAdapter : BaseAdapter<AnalysedGame>
     {
-        List<Game> GamesMutable { get; }
+        List<AnalysedGame> GamesMutable { get; }
         GamesActivity Context { get; }
-        IOptimalGameOrder GameOrderCalculator { get; }
+        OptimalGameOrder GameOrderCalculator { get; }
 
-        public GameListAdapter(List<Game> games, GamesActivity context, IOptimalGameOrder gameOrderCalculator)
+        public GameListAdapter(List<AnalysedGame> games, GamesActivity context, OptimalGameOrder gameOrderCalculator)
         {
             Contract.Requires(gameOrderCalculator != null);
             Contract.Requires(games != null);
@@ -36,13 +36,13 @@ namespace CanoePoloLeagueOrganiserXamarin
 
             GameOrderCalculator = gameOrderCalculator;
             Context = context;
-            GamesMutable = new List<Game>();
+            GamesMutable = new List<AnalysedGame>();
             CalculateOriginalGameOrderAndSetGames(games);
         }
 
-        public IReadOnlyList<Game> Games => GamesMutable;
+        public IReadOnlyList<AnalysedGame> Games => GamesMutable;
 
-        public override Game this[int position] => GamesMutable[position];
+        public override AnalysedGame this[int position] => GamesMutable[position];
 
         public override int Count => GamesMutable.Count;
 
@@ -53,7 +53,7 @@ namespace CanoePoloLeagueOrganiserXamarin
             Contract.Ensures(Contract.Result<View>() != null);
 
             var game = GamesMutable[position];
-
+            
             var view = convertView ?? Context.LayoutInflater.Inflate(Resource.Layout.GameRow, null);
             if (convertView == null)
             {
@@ -78,13 +78,13 @@ namespace CanoePoloLeagueOrganiserXamarin
             return view;
         }
 
-        void DeleteGame(Game game)
+        void DeleteGame(AnalysedGame game)
         {
             GamesMutable.Remove(game);
             CalculateOriginalGameOrderAndSetGames(GamesMutable);
         }
 
-        void MoveGameUp(Game game)
+        void MoveGameUp(AnalysedGame game)
         {
 #pragma warning disable S2692 // "IndexOf" checks should not be for positive numbers
             Contract.Requires(GamesMutable.IndexOf(game) > 0);
@@ -96,7 +96,7 @@ namespace CanoePoloLeagueOrganiserXamarin
             CalculateOriginalGameOrderAndSetGames(GamesMutable);
         }
 
-        void MoveGameDown(Game game)
+        void MoveGameDown(AnalysedGame game)
         {
             Contract.Requires(GamesMutable.IndexOf(game) + 1 < GamesMutable.Count);
 
@@ -108,16 +108,20 @@ namespace CanoePoloLeagueOrganiserXamarin
 
         internal void AddGame(string homeTeam, string awayTeam)
         {
-            GamesMutable.Add(new Game(homeTeam, awayTeam));
+            // This is a bit untidy. Now that the nuget package has the concept of Game and AnalysedGame, we should use the concepts here
+            GamesMutable.Add(new AnalysedGame(new Team(homeTeam), new Team(awayTeam), false, false));
             CalculateOriginalGameOrderAndSetGames(GamesMutable);
         }
 
-        internal void CalculateOriginalGameOrderAndSetGames(IReadOnlyList<Game> games)
+        internal void CalculateOriginalGameOrderAndSetGames(IReadOnlyList<AnalysedGame> analysedGames)
         {
-            SetGames(GameOrderCalculator.CalculateOriginalGameOrder(games).GameOrder, "");
+            // This is a bit untidy. Now that the nuget package has the concept of Game and AnalysedGame, we should use the concepts here
+            var games = analysedGames.Select(ag => new Game(ag.HomeTeam.Name, ag.AwayTeam.Name)).ToList();
+
+            SetGames(new MarkConsecutiveGames().MarkTeamsPlayingConsecutively(games), "");
         }
 
-        internal void SetGames(IReadOnlyList<Game> newGames, string optimisationExplanation)
+        internal void SetGames(IReadOnlyList<AnalysedGame> newGames, string optimisationExplanation)
         {
             GamesMutable.Clear();
             GamesMutable.AddRange(newGames);

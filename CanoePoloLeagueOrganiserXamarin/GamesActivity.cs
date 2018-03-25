@@ -21,14 +21,14 @@ namespace CanoePoloLeagueOrganiserXamarin
         AutoCompleteTextView HomeTeamEntry;
         AutoCompleteTextView AwayTeamEntry;
         TextView Help;
-        IOptimalGameOrder GameOrderCalculator;
+        OptimalGameOrder GameOrderCalculator;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             var games = (savedInstanceState == null)
-                ? new List<Game>()
+                ? new List<AnalysedGame>()
                 : new GamesSerialiser().DeSerialise(savedInstanceState.GetString("games", "[]"));
 
             SetContentView(Resource.Layout.Games);
